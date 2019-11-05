@@ -4,12 +4,17 @@
 \alias{test_whereami}
 \title{FUNCTION_TITLE}
 \usage{
-test_whereami(expr, dirpath = tempdir())
+test_whereami(expr, dirpath = tempdir(), check = interactive(),
+  verbose = interactive())
 }
 \arguments{
 \item{expr}{PARAM_DESCRIPTION}
 
 \item{dirpath}{PARAM_DESCRIPTION, Default: tempdir()}
+
+\item{check}{PARAM_DESCRIPTION,  Default: interactive()}
+
+\item{verbose}{PARAM_DESCRIPTION,  Default: interactive()}
 }
 \value{
 OUTPUT_DESCRIPTION

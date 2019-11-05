@@ -2,6 +2,8 @@
 #' @description FUNCTION_DESCRIPTION
 #' @param expr PARAM_DESCRIPTION
 #' @param dirpath PARAM_DESCRIPTION, Default: tempdir()
+#' @param check PARAM_DESCRIPTION,  Default: interactive()
+#' @param verbose PARAM_DESCRIPTION,  Default: interactive()
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples 
@@ -21,7 +23,7 @@
 #' @importFrom wdman chrome
 #' @importFrom RSelenium rsDriver
 #' @importFrom jsonlite read_json
-test_whereami <- function(expr, dirpath = tempdir()){
+test_whereami <- function(expr, dirpath = tempdir(),check = interactive(), verbose = interactive()){
   
   on.exit({
     remDr$closeall()
@@ -64,18 +66,18 @@ test_whereami <- function(expr, dirpath = tempdir()){
   chrome_options <- list(args = chrome_args, prefs = chrome_pref)
   
   cDrv <- wdman::chrome(
-    verbose = FALSE,
-    check = FALSE
+    verbose = verbose,
+    check = check
   )
   
   rD <- RSelenium::rsDriver(
     browser = "chrome",
-    verbose = FALSE,
+    verbose = verbose,
     port = 4567L,
     extraCapabilities = list(
       chromeOptions = chrome_options
     ),
-    check = FALSE
+    check = check
   )
   
   remDr <- rD$client
