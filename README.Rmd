@@ -1,24 +1,27 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # reactor
 
 <!-- badges: start -->
-
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-When developing Shiny apps there is a lot of reactivity problems that
-can arise, where one `reactive` or `observe` element causes other
-elements to trigger. In some cases these can create cascasding
-reactivity (the horror). Being able to diagnose these reactivity
-problems and then plan unit tests to avert them during development is a
-valuable tool to make development more efficient and reliable.
+When developing Shiny apps there is a lot of reactivity problems that can arise, where one `reactive` or `observe` element causes other elements to trigger. In some cases these can create cascasding reactivity (the horror). Being able to diagnose these reactivity problems and then plan unit tests to avert them during development is a valuable tool to make development more efficient and reliable.
 
-The goal of reactor is to work in tandem with
-[whereami](https://yonicd.github.io/whereami/index.html) to create unit
-testing for shiny reactivity.
+The goal of reactor is to work in tandem with [whereami](https://yonicd.github.io/whereami/index.html) to create unit testing for shiny reactivity. 
 
 ## Installation
 
@@ -28,30 +31,23 @@ And the development version from [GitHub](https://github.com/) with:
 # install.packages("remotes")
 remotes::install_github("yonicd/reactor")
 ```
-
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
 
-``` r
+```{r example}
 library(reactor)
 ```
 
-Lets take an application written by @ColinFay using the
-[golem](https://thinkr-open.github.io/golem/) package for a [tidy
-tuesday](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-04-02)
-by @rfordatascience.
+Lets take an application written by @ColinFay using the [golem](https://thinkr-open.github.io/golem/) package for a [tidy tuesday](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-04-02) by @rfordatascience. 
 
-I forked the repository app
-[here](https://github.com/yonicd/tidytuesday201942).
+I forked the repository app [here](https://github.com/yonicd/tidytuesday201942). 
 
 ### Breadcrumbs
 
-I Dropped in a few `whereami` calls in the server functions so that
-every time the `go` button is hit and a plot is rendered whereami will
-log it.
+I Dropped in a few `whereami` calls in the server functions so that every time the `go` button is hit and a plot is rendered whereami will log it.
 
-``` r
+```{r,eval = FALSE}
 observeEvent( input$go , {
     
     whereami::whereami(tag = 'go') #<----- here
@@ -95,35 +91,24 @@ observeEvent( input$go , {
 
 ### Testing
 
-I added a
-[test](https://github.com/yonicd/tidytuesday201942/blob/master/tests/testthat/test-whereami.R)
-to the tests directory and I am good to go.
+I added a [test](https://github.com/yonicd/tidytuesday201942/blob/master/tests/testthat/test-whereami.R) to the tests directory and I am good to go.
 
 What I want to test:
 
-  - How many times is the plot UI rendered when I enter the app and
-    after I press the `go` button once.
+  - How many times is the plot UI rendered when I enter the app and after I press the `go` button once.
 
 What is happening here?
 
   - `test_whereami` is a wrapper that:
-      - A background process that runs the app via `processx`
-      - An `RSelenium` drives the app on a localhost on a headless
-        chrome driver.
-      - Runs the expressions passed into `test_whereami` are the
-        commands run
-          - `asyncr` : waits for the element called for to be generated
-            (or an attribute of it) before assigning it to the object.
-          - `asyncr_update` : waits for the element called to change for
-            a previous value before returning the new value.
-      - Returns the contents of the whereami.json that was created while
-        the app was running.
-  - `expect_count` then compares the amount of reactive hits that
-    whereami logged for each tag with the expected hit count.
+    - A background process that runs the app via `processx`
+    - An `RSelenium` drives the app on a localhost on a headless chrome driver. 
+    - Runs the expressions passed into `test_whereami` are the commands run
+      - `asyncr` : waits for the element called for to be generated (or an attribute of it) before assigning it to the object.
+      - `asyncr_update` : waits for the element called to change for a previous value before returning the new value.
+    - Returns the contents of the whereami.json that was created while the app was running.
+  - `expect_count` then compares the amount of reactive hits that whereami logged for each tag with the expected hit count.
 
-<!-- end list -->
-
-``` r
+```{r,eval = FALSE}
 context("reactivity")
 
 testthat::describe('reactive',{
@@ -183,7 +168,7 @@ testthat::describe('reactive',{
 
 ### Test Results
 
-``` r
+```r
 > devtools::test()
 Loading tidytuesday201942
 Testing tidytuesday201942
