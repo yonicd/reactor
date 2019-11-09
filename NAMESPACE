@@ -2,6 +2,8 @@
 
 export(asyncr)
 export(asyncr_update)
+export(chrome_options)
+export(driver)
 export(expect_count)
 export(file_timeout)
 export(test_whereami)
@@ -11,4 +13,3 @@ importFrom(glue,glue)
 importFrom(jsonlite,read_json)
 importFrom(processx,process)
 importFrom(testthat,expect_equal)
-importFrom(wdman,chrome)

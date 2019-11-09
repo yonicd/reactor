@@ -2,12 +2,12 @@ Package: reactor
 Type: Package
 Title: Unit Testing for Shiny Reactivity
 Description: Low level unit testing for Shiny reactive elements.
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: c( person(given = "Jonathan", family = "Sidi", email = "yonicd@gmail.com",
          role = c("aut", "cre"), comment = c(ORCID = "0000-0002-4222-1819")) )
 License: MIT + file LICENSE
 Depends: R (>= 3.2.0)
-Imports: testthat,glue,processx,wdman,RSelenium,jsonlite, whereami
+Imports: testthat,glue,processx,RSelenium,jsonlite, whereami
 URL: https://github.com/yonicd/reactor
 BugReports: https://github.com/yonicd/reactor/issues
 Encoding: UTF-8

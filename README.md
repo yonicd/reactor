@@ -133,7 +133,7 @@ testthat::describe('reactive',{
     #find geom point option
     
     elem1 <- reactor::asyncr(
-      remDr,
+      client, #<---- RSelenium driver client created with reactor::driver(test_path = test_path)
       using = "css selector",
       value = '#raw_data > div > ul > li:nth-child(1) > a'
     )
@@ -143,7 +143,7 @@ testthat::describe('reactive',{
     
     #what is the current plot img src?
     plot_src <- reactor::asyncr(
-      remDr,
+      client,
       using = "css selector",
       value = '#dataviz_ui_1-plot > img',
       attrib = 'src'
@@ -151,7 +151,7 @@ testthat::describe('reactive',{
     
     #find go button
     go_btn <- reactor::asyncr(
-      remDr,
+      client,
       using = "css selector",
       value = '#dataviz_ui_1-go'
     )
@@ -161,7 +161,7 @@ testthat::describe('reactive',{
     
     #wait for the plot to render and update the img src
     reactor::asyncr_update(
-      remDr,
+      client,
       using = "css selector",
       value = '#dataviz_ui_1-plot > img',
       attrib = 'src',

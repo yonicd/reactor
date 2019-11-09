@@ -4,17 +4,17 @@
 \alias{test_whereami}
 \title{FUNCTION_TITLE}
 \usage{
-test_whereami(expr, dirpath = tempdir(), check = interactive(),
-  verbose = interactive())
+test_whereami(expr, test_path = tempdir(),
+  test_driver = driver(test_path = test_path), test_ip = 6012)
 }
 \arguments{
 \item{expr}{PARAM_DESCRIPTION}
 
-\item{dirpath}{PARAM_DESCRIPTION, Default: tempdir()}
+\item{test_path}{PARAM_DESCRIPTION, Default: tempdir()}
 
-\item{check}{PARAM_DESCRIPTION,  Default: interactive()}
+\item{test_driver}{PARAM_DESCRIPTION, Default: driver(test_path = test_path)}
 
-\item{verbose}{PARAM_DESCRIPTION,  Default: interactive()}
+\item{test_ip}{PARAM_DESCRIPTION, Default: 6012}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -34,5 +34,4 @@ if(interactive()){
 }
 \seealso{
 \code{\link[processx]{process}}
-\code{\link[RSelenium]{rsDriver}}
 }
