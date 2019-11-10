@@ -139,7 +139,7 @@ Using `reactor` we can test this expectation\!
 If we run the test on the `good app` the test will pass and if we run it
 on the `bad app` then it will fail signaling a problem.
 
-![](media/example.gif)
+![](https://github.com/yonicd/reactor/raw/media/example.gif)
 
 <details closed>
 
@@ -204,7 +204,7 @@ testthat::context("bad reactivity")
 
 testthat::describe('reactive',{
   
-  testthat::skip_on_cran()
+  testthat::skip('bad test')
   
   hist_counter <- reactor::test_reactor({
     
