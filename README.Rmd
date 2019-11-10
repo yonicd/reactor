@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 When developing Shiny apps there is a lot of reactivity problems that can arise when one `reactive` or `observe` element triggers other elements. In some cases these can create cascading reactivity (the horror). The goal of `reactor` is to diagnose these reactivity problems and then plan unit tests to avert them during development to make development less painful.
 
-The goal of reactor is to work in tandem with [whereami](https://yonicd.github.io/whereami/index.html) to create unit testing for shiny reactivity. 
+![](https://github.com/yonicd/reactor/raw/media/example.gif)
 
 ## Installation
 
@@ -67,8 +67,6 @@ details::details('inst/examples/bad_app.R',summary = 'Bad App Script',open = TRU
 Using `reactor` we can test this expectation!
 
 If we run the test on the `good app` the test will pass and if we run it on the `bad app` then it will fail signaling a problem.
-
-![](https://github.com/yonicd/reactor/raw/media/example.gif)
 
 ```{r,echo=FALSE}
 details::details('tests/testthat/test-goodreactivity.R',summary = 'Good Reactivity Test Script')

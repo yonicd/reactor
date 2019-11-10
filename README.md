@@ -16,9 +16,7 @@ horror). The goal of `reactor` is to diagnose these reactivity problems
 and then plan unit tests to avert them during development to make
 development less painful.
 
-The goal of reactor is to work in tandem with
-[whereami](https://yonicd.github.io/whereami/index.html) to create unit
-testing for shiny reactivity.
+![](https://github.com/yonicd/reactor/raw/media/example.gif)
 
 ## Installation
 
@@ -138,8 +136,6 @@ Using `reactor` we can test this expectation\!
 
 If we run the test on the `good app` the test will pass and if we run it
 on the `bad app` then it will fail signaling a problem.
-
-![](https://github.com/yonicd/reactor/raw/media/example.gif)
 
 <details closed>
 
