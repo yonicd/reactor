@@ -4,9 +4,11 @@
 \alias{chrome_options}
 \title{FUNCTION_TITLE}
 \usage{
-chrome_options(download_path = tempdir())
+chrome_options(headless = TRUE, download_path = tempdir())
 }
 \arguments{
+\item{headless}{PARAM_DESCRIPTION, Default: TRUE}
+
 \item{download_path}{PARAM_DESCRIPTION, Default: tempdir()}
 }
 \value{

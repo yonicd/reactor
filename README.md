@@ -37,165 +37,117 @@ This is a basic example which shows you how to solve a common problem:
 library(reactor)
 ```
 
-Lets take an application written by @ColinFay using the
-[golem](https://thinkr-open.github.io/golem/) package for a [tidy
-tuesday](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-04-02)
-by @rfordatascience.
+## Simple App
 
-I forked the repository app
-[here](https://github.com/yonicd/tidytuesday201942).
+### Good App
 
-### Breadcrumbs
-
-I Dropped in a few `whereami` calls in the server functions so that
-every time the `go` button is hit and a plot is rendered whereami will
-log it.
+In this app the plot is only rendered when the `input$n` is updated. We
+expect `whereami` to log only once reactivity on line 18.
 
 ``` r
-observeEvent( input$go , {
-    
-    whereami::whereami(tag = 'go') #<----- here
-    
-    x <- rlang::sym(input$x)
-    
-    if (type == "point"){
-      y <- sym(input$y)
-      color <- sym(input$color)
-      r$plot <- ggplot(big_epa_cars, aes(!!x, !!y, color = !!color))  +
-        geom_point()+ 
-        scale_color_manual(
-          values = color_values(
-            1:length(unique(pull(big_epa_cars, !!color))), 
-            palette = input$palette
-          )
-        )
-      r$code <- sprintf(
-        "ggplot(big_epa_cars, aes(%s, %s, color = %s)) + 
-        geom_point() +
-        scale_color_manual(
-        values = color_values(
-        1:length(unique(dplyr::pull(big_epa_cars, %s))),
-        palette = '%s' 
-        )
-        )", 
-        input$x, 
-        input$y,  
-        input$color, 
-        input$color, 
-        input$palette 
-      )
-    } 
-    
-  output$plot <- renderPlot({
-    whereami::whereami(tag = 'plot') # <--- and here
-    r$plot
+library(whereami)
+
+# Define the UI
+ui <- shiny::bootstrapPage(
+  shiny::uiOutput('ui_n'),
+  shiny::plotOutput('plot')
+)
+
+# Define the server code
+server <- function(input, output) {
+  
+  output$ui_n <- shiny::renderUI({
+    shiny::numericInput('n', 'Number of obs', 200)
   })
   
+  shiny::observeEvent(input$n,{
+    output$plot <- shiny::renderPlot({
+      whereami::whereami(tag = 'hist')
+      graphics::hist(stats::runif(input$n))
+    })
+  })
+}
+
+# Return a Shiny app object
+shinyApp(ui = ui, server = server)
+```
+
+### Bad App
+
+In this app the plot is only rendered when the `input$n` is updated. We
+expect `whereami` to log more than once reactivity on line 18.
+
+``` r
+library(whereami)
+
+# Define the UI
+ui <- shiny::bootstrapPage(
+  shiny::uiOutput('ui_n'),
+  shiny::plotOutput('plot')
+)
+
+# Define the server code
+server <- function(input, output) {
+  
+  output$ui_n <- shiny::renderUI({
+    shiny::numericInput('n', 'Number of obs', 200)
+  })
+  
+  shiny::observe({
+    output$plot <- shiny::renderPlot({
+      whereami::whereami(tag = 'hist')
+      graphics::hist(stats::runif(input$n))
+    })
+  })
+}
+
+# Return a Shiny app object
+shinyApp(ui = ui, server = server)
 ```
 
 ### Testing
 
-I added a
-[test](https://github.com/yonicd/tidytuesday201942/blob/master/tests/testthat/test-whereami.R)
-to the tests directory and I am good to go.
+Now we can test this expectation\!
 
-What I want to test:
-
-  - How many times is the plot UI rendered when I enter the app and
-    after I press the `go` button once.
-
-What is happening here?
-
-  - `test_whereami` is a wrapper that:
-      - A background process that runs the app via `processx`
-      - An `RSelenium` drives the app on a localhost on a headless
-        chrome driver.
-      - Runs the expressions passed into `test_whereami` are the
-        commands run
-          - `asyncr` : waits for the element called for to be generated
-            (or an attribute of it) before assigning it to the object.
-          - `asyncr_update` : waits for the element called to change for
-            a previous value before returning the new value.
-      - Returns the contents of the whereami.json that was created while
-        the app was running.
-  - `expect_count` then compares the amount of reactive hits that
-    whereami logged for each tag with the expected hit count.
-
-<!-- end list -->
+If we run the test on the good app the test will pass and if we run it
+on the bad app then it will fail signaling a problem.
 
 ``` r
-context("reactivity")
+testthat::context("reactivity")
 
 testthat::describe('reactive',{
-
-  plot_counter <- reactor::test_whereami(expr = {
-    
-    #find geom point option
-    
-    elem1 <- reactor::asyncr(
-      client, #<---- RSelenium driver client created with reactor::driver(test_path = test_path)
-      using = "css selector",
-      value = '#raw_data > div > ul > li:nth-child(1) > a'
-    )
-    
-    #click geom point option
-    elem1$clickElement()
-    
-    #what is the current plot img src?
-    plot_src <- reactor::asyncr(
-      client,
-      using = "css selector",
-      value = '#dataviz_ui_1-plot > img',
-      attrib = 'src'
-    )
-    
-    #find go button
-    go_btn <- reactor::asyncr(
-      client,
-      using = "css selector",
-      value = '#dataviz_ui_1-go'
-    )
-    
-    #click go button
-    go_btn$clickElement()
-    
-    #wait for the plot to render and update the img src
-    reactor::asyncr_update(
-      client,
-      using = "css selector",
-      value = '#dataviz_ui_1-plot > img',
-      attrib = 'src',
-      old_value = plot_src
-    )
-    
-  })
   
+hist_counter <- reactor::test_reactor({
+  
+  # wait for input$n element to be created
+  el_n <- reactor::asyncr(client,using = 'id',value = 'n')
+  
+  # collect img src of histogram
+  hist_src <- reactor::asyncr(
+    client,
+    using = 'css',
+    value = '#plot > img',
+    attrib = 'src')
+  
+  # stepUp input$n by 4
+  client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el_n))
+  
+  # wait for the histogram img src to update
+  reactor::asyncr_update(client,
+                         using = 'css',
+                         value = '#plot > img',
+                         attrib = 'src',
+                         old_value = hist_src)
+
+  },
+  processx_args    = runApp_args(
+    appDir = system.file('examples/bad_app.R',package = 'reactor')
+  )
+)
+
   it('reactive hits in plot reactive chunk',{
-    reactor::expect_count(plot_counter, tag = 'plot', 2)
+    reactor::expect_count(hist_counter, tag = 'hist', 1)
   })
   
-  it('reactive hits of go tbn',{
-    reactor::expect_count(plot_counter, tag = 'go', 1)
-  })
-    
 })
-```
-
-### Test Results
-
-``` r
-> devtools::test()
-Loading tidytuesday201942
-Testing tidytuesday201942
-✔ |  OK F W S | Context
-✔ |   3       | golem tests [5.2 s]
-✔ |   2       | reactivity [5.8 s]
-
-══ Results ════════════════════════════════════════════════════════════════════
-Duration: 11.1 s
-
-OK:       5
-Failed:   0
-Warnings: 0
-Skipped:  0
 ```

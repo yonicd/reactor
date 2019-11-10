@@ -4,11 +4,11 @@
 \alias{driver}
 \title{FUNCTION_TITLE}
 \usage{
-driver(test_path, check = TRUE, verbose = FALSE, port = 4567L,
-  c_opts = chrome_options(download_path = test_path))
+driver(test_path = tempdir(), check = TRUE, verbose = FALSE,
+  port = 4567L, c_opts = chrome_options(download_path = test_path))
 }
 \arguments{
-\item{test_path}{PARAM_DESCRIPTION}
+\item{test_path}{PARAM_DESCRIPTION, Default: tempdir()}
 
 \item{check}{PARAM_DESCRIPTION, Default: TRUE}
 

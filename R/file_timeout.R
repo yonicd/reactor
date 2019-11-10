@@ -30,9 +30,9 @@ file_timeout <- function(path, maxiter = 20) {
   
   if (i >= maxiter) {
     # assuming this means timed out
-    stop("Could not find file in path, 
-         please check network connectivity and try again",
-         call. = FALSE
+    stop(glue::glue(
+    "Could not find {path}, please check network connectivity and try again"
+    ),call. = FALSE
     )
   }
   

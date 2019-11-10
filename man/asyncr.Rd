@@ -4,10 +4,10 @@
 \alias{asyncr}
 \title{FUNCTION_TITLE}
 \usage{
-asyncr(remDr, using, value, maxiter = 20, attrib = NULL)
+asyncr(client, using, value, maxiter = 20, attrib = NULL)
 }
 \arguments{
-\item{remDr}{PARAM_DESCRIPTION}
+\item{client}{PARAM_DESCRIPTION}
 
 \item{using}{PARAM_DESCRIPTION}
 
