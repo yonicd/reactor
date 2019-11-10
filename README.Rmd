@@ -75,7 +75,7 @@ shinyApp(ui = ui, server = server)
 
 ### Bad App
 
-In this app the plot is only rendered when the `input$n` is updated. We expect `whereami` to log more than once reactivity on line 18.
+In this app the plot is rendered every time reactive elements in `input` are invalidated. This kind of setup can cause a lot of unwanted reactivity in larger apps with many elements.  We expect `whereami` to log more than once reactivity on line 18.
 
 ```{r,eval = FALSE}
 library(whereami)
