@@ -36,5 +36,3 @@ vignettes/*.pdf
 rsconnect/
 
 *.Rproj
-
-old_readme.R
