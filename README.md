@@ -10,11 +10,11 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 <!-- badges: end -->
 
 When developing Shiny apps there is a lot of reactivity problems that
-can arise, where one `reactive` or `observe` element causes other
-elements to trigger. In some cases these can create cascasding
-reactivity (the horror). Being able to diagnose these reactivity
-problems and then plan unit tests to avert them during development is a
-valuable tool to make development more efficient and reliable.
+can arise when one `reactive` or `observe` element triggers other
+elements. In some cases these can create cascading reactivity (the
+horror). The goal of `reactor` is to diagnose these reactivity problems
+and then plan unit tests to avert them during development to make
+development less painful.
 
 The goal of reactor is to work in tandem with
 [whereami](https://yonicd.github.io/whereami/index.html) to create unit
@@ -41,10 +41,18 @@ library(reactor)
 
 ### Good App
 
-In this app the plot is only rendered when the `input$n` is updated. We
-expect `whereami` to log only once reactivity on line 18.
+In this app the plot is only rendered when the `input$n` is updated.
+
+  - We expect the reactive element that creates the plot to be
+    invalidated only once.
+
+<details open>
+
+<summary> <span title="Click to Expand"> Good App Script </span>
+</summary>
 
 ``` r
+
 library(whereami)
 
 # Define the UI
@@ -60,7 +68,7 @@ server <- function(input, output) {
     shiny::numericInput('n', 'Number of obs', 200)
   })
   
-  shiny::observeEvent(input$n,{
+  shiny::observeEvent(input$n,{  # <----- run only when input$n is invalidated
     output$plot <- shiny::renderPlot({
       whereami::whereami(tag = 'hist')
       graphics::hist(stats::runif(input$n))
@@ -71,15 +79,28 @@ server <- function(input, output) {
 # Return a Shiny app object
 shinyApp(ui = ui, server = server)
 ```
+
+</details>
+
+<br>
 
 ### Bad App
 
 In this app the plot is rendered every time reactive elements in `input`
-are invalidated. This kind of setup can cause a lot of unwanted
-reactivity in larger apps with many elements. We expect `whereami` to
-log more than once reactivity on line 18.
+are invalidated.
+
+  - This kind of setup can cause a lot of unwanted reactivity in larger
+    apps with many elements.
+  - We expect the reactive element that creates the plot to be
+    invalidated more than once.
+
+<details open>
+
+<summary> <span title="Click to Expand"> Bad App Script </span>
+</summary>
 
 ``` r
+
 library(whereami)
 
 # Define the UI
@@ -95,7 +116,7 @@ server <- function(input, output) {
     shiny::numericInput('n', 'Number of obs', 200)
   })
   
-  shiny::observe({
+  shiny::observe({ # <----- run every time any element in input is invalidated
     output$plot <- shiny::renderPlot({
       whereami::whereami(tag = 'hist')
       graphics::hist(stats::runif(input$n))
@@ -107,49 +128,119 @@ server <- function(input, output) {
 shinyApp(ui = ui, server = server)
 ```
 
+</details>
+
+<br>
+
 ### Testing
 
-Now we can test this expectation\!
+Using `reactor` we can test this expectation\!
 
-If we run the test on the good app the test will pass and if we run it
-on the bad app then it will fail signaling a problem.
+If we run the test on the `good app` the test will pass and if we run it
+on the `bad app` then it will fail signaling a problem.
+
+![](media/example.gif)
+
+<details closed>
+
+<summary> <span title="Click to Expand"> Good Reactivity Test Script
+</span> </summary>
 
 ``` r
-testthat::context("reactivity")
+
+testthat::context("good reactivity")
 
 testthat::describe('reactive',{
   
-hist_counter <- reactor::test_reactor({
+  testthat::skip_on_cran()
   
-  # wait for input$n element to be created
-  el_n <- reactor::asyncr(client,using = 'id',value = 'n')
-  
-  # collect img src of histogram
-  hist_src <- reactor::asyncr(
-    client,
-    using = 'css',
-    value = '#plot > img',
-    attrib = 'src')
-  
-  # stepUp input$n by 4
-  client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el_n))
-  
-  # wait for the histogram img src to update
-  reactor::asyncr_update(client,
-                         using = 'css',
-                         value = '#plot > img',
-                         attrib = 'src',
-                         old_value = hist_src)
-
+  hist_counter <- reactor::test_reactor({
+    
+    # wait for input$n element to be created
+    el_n <- reactor::asyncr(client,using = 'id',value = 'n')
+    
+    # collect img src of histogram
+    hist_src <- reactor::asyncr(
+      client,
+      using = 'css',
+      value = '#plot > img',
+      attrib = 'src')
+    
+    # stepUp input$n by 4
+    client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el_n))
+    
+    # wait for the histogram img src to update
+    reactor::asyncr_update(client,
+                           using = 'css',
+                           value = '#plot > img',
+                           attrib = 'src',
+                           old_value = hist_src)
+    
   },
   processx_args    = runApp_args(
-    appDir = system.file('examples/bad_app.R',package = 'reactor')
+    appDir = system.file('examples/good_app.R',package = 'reactor')
   )
-)
-
+  )
+  
   it('reactive hits in plot reactive chunk',{
-    reactor::expect_count(hist_counter, tag = 'hist', 1)
+    reactor::expect_reactivity(hist_counter, tag = 'hist', 1)
   })
   
 })
 ```
+
+</details>
+
+<br>
+
+<details closed>
+
+<summary> <span title="Click to Expand"> Bad Reactivity Test Script
+</span> </summary>
+
+``` r
+
+testthat::context("bad reactivity")
+
+testthat::describe('reactive',{
+  
+  testthat::skip_on_cran()
+  
+  hist_counter <- reactor::test_reactor({
+    
+    # wait for input$n element to be created
+    el_n <- reactor::asyncr(client,using = 'id',value = 'n')
+    
+    # collect img src of histogram
+    hist_src <- reactor::asyncr(
+      client,
+      using = 'css',
+      value = '#plot > img',
+      attrib = 'src')
+    
+    # stepUp input$n by 4
+    client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el_n))
+    
+    # wait for the histogram img src to update
+    reactor::asyncr_update(client,
+                           using = 'css',
+                           value = '#plot > img',
+                           attrib = 'src',
+                           old_value = hist_src)
+    
+  },
+  processx_args    = runApp_args(
+    appDir = system.file('examples/bad_app.R',package = 'reactor')
+  )
+  )
+  
+  it('reactive hits in plot reactive chunk',{
+    reactor::expect_reactivity(hist_counter, tag = 'hist', 1)
+  })
+  
+})
+```
+
+</details>
+
+<br>

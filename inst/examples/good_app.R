@@ -13,7 +13,7 @@ server <- function(input, output) {
     shiny::numericInput('n', 'Number of obs', 200)
   })
   
-  shiny::observeEvent(input$n,{
+  shiny::observeEvent(input$n,{  # <----- run only when input$n is invalidated
     output$plot <- shiny::renderPlot({
       whereami::whereami(tag = 'hist')
       graphics::hist(stats::runif(input$n))

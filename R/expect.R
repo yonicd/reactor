@@ -1,8 +1,8 @@
 #' @title FUNCTION_TITLE
 #' @description FUNCTION_DESCRIPTION
-#' @param counter PARAM_DESCRIPTION
+#' @param object PARAM_DESCRIPTION
 #' @param tag PARAM_DESCRIPTION
-#' @param exptected PARAM_DESCRIPTION
+#' @param count PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples 
@@ -11,16 +11,21 @@
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @seealso 
-#'  \code{\link[testthat]{equality-expectations}}
-#' @rdname expect_count
+#' @rdname expect_reactivity expect
 #' @export 
-#' @importFrom testthat expect_equal
-expect_count <- function(counter,tag,exptected){
+#' @importFrom testthat quasi_label 
+expect_reactivity <- function(object, tag, count) {
+
+  act <- testthat::quasi_label(rlang::enquo(object), arg = "object")
   
-  testthat::expect_equal(
-  max(counter$count[counter$tag==tag]),
-  exptected
+  # 2. Call expect()
+  act$count <- max(object$count[object$tag==tag])
+  
+  testthat::expect(
+    act$count == count,
+    sprintf("%s has reactivity count of %i, not %i.", tag, act$count, count)
   )
   
+  # 3. Invisibly return the value
+  invisible(act$val)
 }
