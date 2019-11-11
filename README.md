@@ -148,7 +148,7 @@ testthat::context("good reactivity")
 
 testthat::describe('reactive',{
   
-  testthat::skip_on_cran()
+  testthat::skip_if_not(interactive())
   
   hist_counter <- reactor::test_reactor({
     
@@ -199,8 +199,6 @@ testthat::describe('reactive',{
 testthat::context("bad reactivity")
 
 testthat::describe('reactive',{
-  
-  testthat::skip('bad test')
   
   hist_counter <- reactor::test_reactor({
     

@@ -19,5 +19,5 @@ read_reactor(path = file.path(tempdir(), "reactor"))
 contents of the file
 }
 \description{
-Read files created by \link[reactor:reactor_test]{reactor_test} in the test folder
+Read files created by \link[reactor:test_reactor]{test_reactor} in the test folder
 }

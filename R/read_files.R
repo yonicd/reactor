@@ -1,5 +1,5 @@
 #' @title Read Child Process Side Effects 
-#' @description Read files created by [reactor_test][reactor::reactor_test] in the test folder
+#' @description Read files created by [test_reactor][reactor::test_reactor] in the test folder
 #' @param path character, path to test folder, Default: file.path(tempdir(),'reactor')
 #' @return contents of the file
 #' @rdname read_reactor
