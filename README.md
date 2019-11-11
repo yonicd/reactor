@@ -200,6 +200,8 @@ testthat::context("bad reactivity")
 
 testthat::describe('reactive',{
   
+  testthat::skip_if_not(interactive())
+  
   hist_counter <- reactor::test_reactor({
     
     # wait for input$n element to be created
