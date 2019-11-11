@@ -66,7 +66,7 @@ test_reactor <- function(expr,
   file_timeout(file.path(testdir,'whereami.json'))
   
   # read json log
-  read_json(test_path)
+  read_reactor(testdir)
 
 }
 

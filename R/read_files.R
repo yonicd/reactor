@@ -1,29 +1,28 @@
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param path PARAM_DESCRIPTION, Default: tempdir()
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
+#' @title Read Child Process Side Effects 
+#' @description Read files created by [reactor_test][reactor::reactor_test] in the test folder
+#' @param path character, path to test folder, Default: file.path(tempdir(),'reactor')
+#' @return contents of the file
 #' @rdname read_reactor
 #' @export 
+read_stderr <- function(path = file.path(tempdir(),'reactor')) {
+  ret <- readLines(file.path(path,'err.txt'))
+  cat(ret,sep ='\n')
+  invisible(ret)
+  
+}
 
-read_stderr <- function(path = tempdir()) {
-  cat(readLines(file.path(path,'reactor','err.txt')),sep ='\n')
+#' @rdname read_reactor
+#' @export 
+read_stdout <- function(path = file.path(tempdir(),'reactor')) {
+  ret <- readLines(file.path(path,'out.txt'))
+  cat(ret,sep ='\n')
+  invisible(ret)
 }
 
 #' @importFrom jsonlite read_json
 #' @rdname read_reactor
-read_json <- function(path = tempdir()) {
-  jsonlite::read_json(file.path(path,'reactor','whereami.json'),
+#' @export 
+read_reactor <- function(path = file.path(tempdir(),'reactor')) {
+  jsonlite::read_json(file.path(path,'whereami.json'),
                       simplifyVector = TRUE)
-}
-
-#' @rdname read_reactor
-read_stdout <- function(path = tempdir()) {
-  cat(readLines(file.path(path,'reactor','out.txt')),sep = '\n')
 }

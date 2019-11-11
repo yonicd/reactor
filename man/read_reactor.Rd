@@ -2,32 +2,22 @@
 % Please edit documentation in R/read_files.R
 \name{read_stderr}
 \alias{read_stderr}
-\alias{read_json}
 \alias{read_stdout}
-\title{FUNCTION_TITLE}
+\alias{read_reactor}
+\title{Read Child Process Side Effects}
 \usage{
-read_stderr(path = tempdir())
+read_stderr(path = file.path(tempdir(), "reactor"))
 
-read_json(path = tempdir())
+read_stdout(path = file.path(tempdir(), "reactor"))
 
-read_stdout(path = tempdir())
+read_reactor(path = file.path(tempdir(), "reactor"))
 }
 \arguments{
-\item{path}{PARAM_DESCRIPTION, Default: tempdir()}
+\item{path}{character, path to test folder, Default: file.path(tempdir(),'reactor')}
 }
 \value{
-OUTPUT_DESCRIPTION
+contents of the file
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
-}
-\examples{
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
+Read files created by \link[reactor:reactor_test]{reactor_test} in the test folder
 }
