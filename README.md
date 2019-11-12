@@ -16,8 +16,6 @@ horror). The goal of `reactor` is to diagnose these reactivity problems
 and then plan unit tests to avert them during development to make
 development less painful.
 
-![](https://github.com/yonicd/reactor/raw/media/example.gif)
-
 ## Installation
 
 And the development version from [GitHub](https://github.com/) with:
@@ -46,7 +44,7 @@ In this app the plot is only rendered when the `input$n` is updated.
 
 ![](https://github.com/yonicd/reactor/raw/media/good_app.gif)
 
-<details open>
+<details closed>
 
 <summary> <span title="Click to Expand"> Good App Script </span>
 </summary>
@@ -65,9 +63,9 @@ ui <- shiny::bootstrapPage(
 server <- function(input, output) {
   
   output$ui_n <- shiny::renderUI({
-    shiny::numericInput('n', 'Number of obs', 200)
+      shiny::numericInput('n', 'Number of obs', 200)
   })
-  
+
   shiny::observeEvent(input$n,{  # <----- run only when input$n is invalidated
     output$plot <- shiny::renderPlot({
       whereami::whereami(tag = 'hist')
@@ -97,7 +95,7 @@ are invalidated.
 
 ![](https://github.com/yonicd/reactor/raw/media/bad_app.gif)
 
-<details open>
+<details closed>
 
 <summary> <span title="Click to Expand"> Bad App Script </span>
 </summary>
@@ -122,9 +120,7 @@ server <- function(input, output) {
   shiny::observe({ # <----- run every time any element in input is invalidated
     output$plot <- shiny::renderPlot({
       whereami::whereami(tag = 'hist')
-      if(!is.null(input$n)){
-        graphics::hist(stats::runif(input$n)) 
-      }
+      graphics::hist(stats::runif(input$n))
     })
   })
 }
@@ -144,7 +140,9 @@ Using `reactor` we can test this expectation\!
 If we run the test on the `good app` the test will pass and if we run it
 on the `bad app` then it will fail signaling a problem.
 
-<details open>
+![](https://github.com/yonicd/reactor/raw/media/example.gif)
+
+<details closed>
 
 <summary> <span title="Click to Expand"> Reactivity Test Script </span>
 </summary>

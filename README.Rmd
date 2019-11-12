@@ -21,8 +21,6 @@ knitr::opts_chunk$set(
 
 When developing Shiny apps there is a lot of reactivity problems that can arise when one `reactive` or `observe` element triggers other elements. In some cases these can create cascading reactivity (the horror). The goal of `reactor` is to diagnose these reactivity problems and then plan unit tests to avert them during development to make development less painful.
 
-![](https://github.com/yonicd/reactor/raw/media/example.gif)
-
 ## Installation
 
 And the development version from [GitHub](https://github.com/) with:
@@ -50,7 +48,7 @@ In this app the plot is only rendered when the `input$n` is updated.
 ![](https://github.com/yonicd/reactor/raw/media/good_app.gif)
 
 ```{r,echo = FALSE}
-details::details('inst/examples/good_app.R',summary = 'Good App Script',open = TRUE)
+details::details('inst/examples/good_app.R',summary = 'Good App Script')
 ```
 
 ### Bad App
@@ -64,7 +62,7 @@ In this app the plot is rendered every time reactive elements in `input` are inv
 ![](https://github.com/yonicd/reactor/raw/media/bad_app.gif)
 
 ```{r,echo = FALSE}
-details::details('inst/examples/bad_app.R',summary = 'Bad App Script',open = TRUE)
+details::details('inst/examples/bad_app.R',summary = 'Bad App Script')
 ```
 
 ### Testing
@@ -73,6 +71,10 @@ Using `reactor` we can test this expectation!
 
 If we run the test on the `good app` the test will pass and if we run it on the `bad app` then it will fail signaling a problem.
 
+
+![](https://github.com/yonicd/reactor/raw/media/example.gif)
+
+
 ```{r,echo=FALSE}
-details::details('tests/testthat/reactor-reactivity.R',summary = 'Reactivity Test Script',open = TRUE)
+details::details('tests/testthat/reactor-reactivity.R',summary = 'Reactivity Test Script')
 ```
