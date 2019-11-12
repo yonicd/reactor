@@ -9,11 +9,9 @@ asyncr(test_driver, e, maxiter = 20)
 \arguments{
 \item{test_driver}{PARAM_DESCRIPTION}
 
+\item{e}{PARAM_DESCRIPTION}
+
 \item{maxiter}{PARAM_DESCRIPTION, Default: 20}
-
-\item{using}{PARAM_DESCRIPTION}
-
-\item{value}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

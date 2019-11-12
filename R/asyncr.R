@@ -1,8 +1,7 @@
 #' @title FUNCTION_TITLE
 #' @description FUNCTION_DESCRIPTION
 #' @param test_driver PARAM_DESCRIPTION
-#' @param using PARAM_DESCRIPTION
-#' @param value PARAM_DESCRIPTION
+#' @param e PARAM_DESCRIPTION
 #' @param maxiter PARAM_DESCRIPTION, Default: 20
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -25,8 +24,7 @@ asyncr <- function(test_driver, e, maxiter = 20) {
 #' @title FUNCTION_TITLE
 #' @description FUNCTION_DESCRIPTION
 #' @param test_driver PARAM_DESCRIPTION
-#' @param using PARAM_DESCRIPTION
-#' @param value PARAM_DESCRIPTION
+#' @param e PARAM_DESCRIPTION
 #' @param attrib PARAM_DESCRIPTION
 #' @param maxiter PARAM_DESCRIPTION, Default: 20
 #' @return OUTPUT_DESCRIPTION
@@ -57,9 +55,8 @@ asyncr_attrib <- function(test_driver, e, attrib, maxiter = 20) {
 
 #' @title FUNCTION_TITLE
 #' @description FUNCTION_DESCRIPTION
-#' @param client PARAM_DESCRIPTION
-#' @param using PARAM_DESCRIPTION
-#' @param value PARAM_DESCRIPTION
+#' @param test_driver PARAM_DESCRIPTION
+#' @param e PARAM_DESCRIPTION
 #' @param attrib PARAM_DESCRIPTION
 #' @param old_attrib PARAM_DESCRIPTION
 #' @param maxiter PARAM_DESCRIPTION, Default: 20

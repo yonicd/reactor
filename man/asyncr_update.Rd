@@ -7,17 +7,15 @@
 asyncr_update(test_driver, e, attrib, old_attrib, maxiter = 20)
 }
 \arguments{
+\item{test_driver}{PARAM_DESCRIPTION}
+
+\item{e}{PARAM_DESCRIPTION}
+
 \item{attrib}{PARAM_DESCRIPTION}
 
 \item{old_attrib}{PARAM_DESCRIPTION}
 
 \item{maxiter}{PARAM_DESCRIPTION, Default: 20}
-
-\item{client}{PARAM_DESCRIPTION}
-
-\item{using}{PARAM_DESCRIPTION}
-
-\item{value}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
