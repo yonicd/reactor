@@ -164,7 +164,7 @@ To use `test_app` just name the test file `reactor-*.R` instead of
 
 ``` r
 
-testthat::context("testing reactivity on a good app")
+testthat::context("testing reactivity")
 
 driver_commands <- quote({
   
@@ -205,6 +205,8 @@ driver_commands <- quote({
     )
   
 })
+
+testthat::context("testing reactivity on a good app")
 
 # We run a test with the expectation that the hist tag will be triggered once.
 
