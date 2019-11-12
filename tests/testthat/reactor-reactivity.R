@@ -4,25 +4,39 @@ driver_commands <- quote({
   
   # wait for input$n element to be created
   el_n <- test_driver%>%
-    reactor::asyncr(
-    e = test_driver$client$findElement(using = 'id', value = 'n')
+    reactor::wait(
+      expr = test_driver$client$findElement(using = 'id', value = 'n')
     )
   
   # collect img src of histogram
   hist_src <-test_driver%>%
-    reactor::asyncr_attrib(
-    e = test_driver$client$findElement(using = 'css', value = '#plot > img'),
-    attrib = 'src')
-  
+    reactor::wait(
+      expr = test_driver$client$findElement(using = 'css', value = '#plot > img')
+    )%>%
+    reactor::then(
+      expr = function(elem) elem$getElementAttribute('src')[[1]],
+      test_driver = test_driver
+    )
+    
   # stepUp input$n by 4
   test_driver$client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el_n))
   
-  # wait for the histogram img src to update
+  #wait for the histogram img src to update
+  
   test_driver%>%
-    reactor::asyncr_update(
-    e = test_driver$client$findElement(using = 'css', value = '#plot > img'),
-    attrib = 'src',
-    old_attrib = hist_src)
+    reactor::wait(
+      expr   = test_driver$client$findElement(using = 'css', value = '#plot > img')
+    )%>%
+    reactor::then2(
+      elem2 = hist_src,
+      expr   = function(elem,elem2){
+       
+      elem$getElementAttribute('src')[[1]]%>%
+        is_identical(elem2)
+         
+      },
+      test_driver = test_driver
+    )
   
 })
 

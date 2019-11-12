@@ -1,7 +1,8 @@
 #' @title FUNCTION_TITLE
 #' @description FUNCTION_DESCRIPTION
 #' @param test_driver PARAM_DESCRIPTION
-#' @param e PARAM_DESCRIPTION
+#' @param expr PARAM_DESCRIPTION
+#' @param elem PARAM_DESCRIPTION
 #' @param maxiter PARAM_DESCRIPTION, Default: 20
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -11,21 +12,28 @@
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @rdname asyncr
+#' @rdname promise
 #' @export 
-# https://goo.gl/jFqKfS
-asyncr <- function(test_driver, e, maxiter = 20) {
+wait <- function(test_driver, expr, maxiter = 20) {
   
-  rachet(test_driver = test_driver, e = e, maxiter = maxiter)
+  rachet(test_driver = test_driver, e = expr, maxiter = maxiter)
 
 }
 
+#' @rdname promise
+#' @export 
+then <- function(elem, expr, test_driver, maxiter = 20) {
+  
+    rachet(test_driver = test_driver, e = expr, maxiter = maxiter)
+  
+}
 
 #' @title FUNCTION_TITLE
 #' @description FUNCTION_DESCRIPTION
 #' @param test_driver PARAM_DESCRIPTION
-#' @param e PARAM_DESCRIPTION
-#' @param attrib PARAM_DESCRIPTION
+#' @param expr PARAM_DESCRIPTION
+#' @param elem PARAM_DESCRIPTION
+#' @param elem2 PARAM_DESCRIPTION
 #' @param maxiter PARAM_DESCRIPTION, Default: 20
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -35,63 +43,12 @@ asyncr <- function(test_driver, e, maxiter = 20) {
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @rdname asyncr_attrib
+#' @rdname promise2
 #' @export 
-# https://goo.gl/jFqKfS
-asyncr_attrib <- function(test_driver, e, attrib, maxiter = 20) {
+then2 <- function(elem, elem2, expr, test_driver, maxiter = 20) {
   
-  elem <- rachet(test_driver = test_driver, e = e, maxiter = maxiter)
-
-  attr_out <- rachet(test_driver = test_driver,
-         e = quote({ elem$getElementAttribute(attrib)[[1]] }),
-         maxiter = maxiter
-  )
+    rachet(test_driver = test_driver, e = expr, maxiter = maxiter)
   
-  attr_out
-
-  
-}
-
-
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param test_driver PARAM_DESCRIPTION
-#' @param e PARAM_DESCRIPTION
-#' @param attrib PARAM_DESCRIPTION
-#' @param old_attrib PARAM_DESCRIPTION
-#' @param maxiter PARAM_DESCRIPTION, Default: 20
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @rdname asyncr_update
-#' @export 
-
-asyncr_update <- function(test_driver, e, attrib, old_attrib, maxiter = 20){
-  
-  if(is.null(old_attrib))
-    return(NULL)
-  
-  elem_update <- FALSE
-  
-  i <- 1
-  
-  while (!elem_update & (i <= maxiter)) {
-    
-    new_value <- asyncr_attrib(test_driver, e = e, attrib = attrib,  maxiter = maxiter)
-    
-    elem_update <- identical(old_attrib, new_value)
-    
-    Sys.sleep(0.02 * (i + 1))
-    
-    i <- i + 1
-  }
-  
-  invisible(new_value)
 }
 
 
@@ -101,6 +58,22 @@ is_busy <- function(test_driver){
     script = "return document.querySelector('html').getAttribute('class')=='shiny-busy';"
   )[[1]]
   
+}
+
+#' @title Tests objects for Exact Quality
+#' @description Wrapper on [identical][base::identical] that will return the 
+#' value of y if TRUE, else NULL. This function is useful with [wait][reactor::wait]/[then][reactor::then]
+#' @inheritParams base::identical
+#' @param \dots arguments passed to [identical][base::identical]
+#' @return value of __y__ if x and y are identical, else NULL
+#' @seealso [wait][reactor::wait], [then][reactor::then], [identical][base::identical]
+#' @export
+is_identical <- function(x,y,...){
+  if(identical(x,y,...)){
+    y
+  }else{
+    NULL
+  }
 }
 
 rachet <- function(test_driver, e, maxiter, cond = is.null){
