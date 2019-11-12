@@ -44,6 +44,8 @@ In this app the plot is only rendered when the `input$n` is updated.
   - We expect the reactive element that creates the plot to be
     invalidated only once.
 
+![](https://github.com/yonicd/reactor/raw/media/good_app.gif)
+
 <details open>
 
 <summary> <span title="Click to Expand"> Good App Script </span>
@@ -91,6 +93,9 @@ are invalidated.
     apps with many elements.
   - We expect the reactive element that creates the plot to be
     invalidated more than once.
+  - Notice how on the app initialization the chunk is rendered twice.
+
+![](https://github.com/yonicd/reactor/raw/media/bad_app.gif)
 
 <details open>
 
@@ -117,7 +122,9 @@ server <- function(input, output) {
   shiny::observe({ # <----- run every time any element in input is invalidated
     output$plot <- shiny::renderPlot({
       whereami::whereami(tag = 'hist')
-      graphics::hist(stats::runif(input$n))
+      if(!is.null(input$n)){
+        graphics::hist(stats::runif(input$n)) 
+      }
     })
   })
 }
@@ -137,45 +144,52 @@ Using `reactor` we can test this expectation\!
 If we run the test on the `good app` the test will pass and if we run it
 on the `bad app` then it will fail signaling a problem.
 
-<details closed>
+<details open>
 
-<summary> <span title="Click to Expand"> Good Reactivity Test Script
-</span> </summary>
+<summary> <span title="Click to Expand"> Reactivity Test Script </span>
+</summary>
 
 ``` r
 
-testthat::context("good reactivity")
+testthat::context("testing reactivity on a good app")
 
-testthat::describe('reactive',{
+
+driver_commands <- quote({
+  
+  # wait for input$n element to be created
+  el_n <- reactor::asyncr(test_driver,using = 'id',value = 'n')
+  
+  # collect img src of histogram
+  hist_src <- reactor::asyncr(
+    test_driver,
+    using = 'css',
+    value = '#plot > img',
+    attrib = 'src')
+  
+  # stepUp input$n by 4
+  test_driver$client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el_n))
+  
+  # wait for the histogram img src to update
+  reactor::asyncr_update(test_driver,
+                         using = 'css',
+                         value = '#plot > img',
+                         attrib = 'src',
+                         old_value = hist_src)
+  
+})
+
+# We run a test with the expectation that the hist tag will be triggered once.
+
+testthat::describe('good reactive',{
   
   testthat::skip_if_not(interactive())
   
-  hist_counter <- reactor::test_reactor({
-    
-    # wait for input$n element to be created
-    el_n <- reactor::asyncr(client,using = 'id',value = 'n')
-    
-    # collect img src of histogram
-    hist_src <- reactor::asyncr(
-      client,
-      using = 'css',
-      value = '#plot > img',
-      attrib = 'src')
-    
-    # stepUp input$n by 4
-    client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el_n))
-    
-    # wait for the histogram img src to update
-    reactor::asyncr_update(client,
-                           using = 'css',
-                           value = '#plot > img',
-                           attrib = 'src',
-                           old_value = hist_src)
-    
-  },
-  processx_args    = runApp_args(
-    appDir = system.file('examples/good_app.R',package = 'reactor')
-  )
+  hist_counter <- reactor::test_reactor(
+    expr          = driver_commands,
+    test_driver   = reactor::driver(), #selenium driver
+    processx_args = runApp_args(
+      appDir = system.file('examples/good_app.R',package = 'reactor')
+    )
   )
   
   it('reactive hits in plot reactive chunk',{
@@ -183,51 +197,21 @@ testthat::describe('reactive',{
   })
   
 })
-```
 
-</details>
+# We now run the same test but with the "bad" app  
+  
+testthat::context("testing reactivity on a bad app")
 
-<br>
-
-<details closed>
-
-<summary> <span title="Click to Expand"> Bad Reactivity Test Script
-</span> </summary>
-
-``` r
-
-testthat::context("bad reactivity")
-
-testthat::describe('reactive',{
+testthat::describe('bad reactive',{
   
   testthat::skip_if_not(interactive())
   
-  hist_counter <- reactor::test_reactor({
-    
-    # wait for input$n element to be created
-    el_n <- reactor::asyncr(client,using = 'id',value = 'n')
-    
-    # collect img src of histogram
-    hist_src <- reactor::asyncr(
-      client,
-      using = 'css',
-      value = '#plot > img',
-      attrib = 'src')
-    
-    # stepUp input$n by 4
-    client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el_n))
-    
-    # wait for the histogram img src to update
-    reactor::asyncr_update(client,
-                           using = 'css',
-                           value = '#plot > img',
-                           attrib = 'src',
-                           old_value = hist_src)
-    
-  },
-  processx_args    = runApp_args(
-    appDir = system.file('examples/bad_app.R',package = 'reactor')
-  )
+  hist_counter <- reactor::test_reactor(
+    expr          = driver_commands,
+    test_driver   = reactor::driver(), #selenium driver
+    processx_args = reactor::runApp_args(
+      appDir = system.file('examples/bad_app.R',package = 'reactor')
+    )
   )
   
   it('reactive hits in plot reactive chunk',{

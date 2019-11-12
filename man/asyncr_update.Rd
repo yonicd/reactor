@@ -4,11 +4,9 @@
 \alias{asyncr_update}
 \title{FUNCTION_TITLE}
 \usage{
-asyncr_update(client, using, value, maxiter = 20, attrib, old_value)
+asyncr_update(test_driver, using, value, maxiter = 20, attrib, old_value)
 }
 \arguments{
-\item{client}{PARAM_DESCRIPTION}
-
 \item{using}{PARAM_DESCRIPTION}
 
 \item{value}{PARAM_DESCRIPTION}
@@ -18,6 +16,8 @@ asyncr_update(client, using, value, maxiter = 20, attrib, old_value)
 \item{attrib}{PARAM_DESCRIPTION}
 
 \item{old_value}{PARAM_DESCRIPTION}
+
+\item{client}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

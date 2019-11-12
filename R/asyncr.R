@@ -1,6 +1,6 @@
 #' @title FUNCTION_TITLE
 #' @description FUNCTION_DESCRIPTION
-#' @param client PARAM_DESCRIPTION
+#' @param test_driver PARAM_DESCRIPTION
 #' @param using PARAM_DESCRIPTION
 #' @param value PARAM_DESCRIPTION
 #' @param maxiter PARAM_DESCRIPTION, Default: 20
@@ -16,7 +16,7 @@
 #' @rdname asyncr
 #' @export 
 # https://goo.gl/jFqKfS
-asyncr <- function(client, using, value, maxiter = 20, attrib = NULL) {
+asyncr <- function(test_driver, using, value, maxiter = 20, attrib = NULL) {
   
   elem <- NULL
   
@@ -26,7 +26,7 @@ asyncr <- function(client, using, value, maxiter = 20, attrib = NULL) {
 
     suppressMessages({
       elem <- tryCatch({
-        client$findElement(using = using, value = value)
+        test_driver$client$findElement(using = using, value = value)
       },
       error = function(e) {
         NULL
@@ -97,7 +97,7 @@ asyncr <- function(client, using, value, maxiter = 20, attrib = NULL) {
 #' @rdname asyncr_update
 #' @export 
 
-asyncr_update <- function(client, using, value, maxiter = 20, attrib, old_value){
+asyncr_update <- function(test_driver, using, value, maxiter = 20, attrib, old_value){
   
   if(is.null(old_value))
     return(NULL)
@@ -108,7 +108,7 @@ asyncr_update <- function(client, using, value, maxiter = 20, attrib, old_value)
   
   while (!elem_update & (i <= maxiter)) {
     
-    new_value <- asyncr(client, 
+    new_value <- asyncr(test_driver, 
                         using = using, 
                         value = value, 
                         maxiter = maxiter, 
@@ -125,9 +125,9 @@ asyncr_update <- function(client, using, value, maxiter = 20, attrib, old_value)
 }
 
 
-is_busy <- function(client){
+is_busy <- function(test_driver){
   
-  client$executeScript(
+  test_driver$client$executeScript(
     script = "return document.querySelector('html').getAttribute('class')=='shiny-busy';"
   )[[1]]
   

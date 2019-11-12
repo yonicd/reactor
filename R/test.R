@@ -22,16 +22,16 @@
 #' @importFrom glue glue
 #' @import whereami
 test_reactor <- function(expr, 
-                          test_path = tempdir(),
-                          test_ip = 6012,
-                          test_driver = driver(test_path = test_path),
-                          processx_args = shinyAppFile_args(test_ip, test_path),
-                          processx_cleanup = TRUE
+                         test_path = tempdir(),
+                         test_ip = 6012,
+                         test_driver = driver(test_path = test_path),
+                         processx_args = shinyAppFile_args(test_ip, test_path),
+                         processx_cleanup = TRUE
                           ){
   
   on.exit({
-    client$closeall()
-    server$stop()
+    test_driver$client$closeall()
+    test_driver$server$stop()
     x$kill()
     if(processx_cleanup)
       unlink(testdir,recursive = TRUE,force = TRUE)
@@ -52,15 +52,15 @@ test_reactor <- function(expr,
     stop('error in child process')
   }
 
-  # headless driver (selenium)
-  client <- test_driver$client
-  server <- test_driver$server
-  
   # navigate to app
-  client$navigate(glue::glue("http://127.0.0.1:{test_ip}"))
+  test_driver$client$navigate(glue::glue("http://127.0.0.1:{test_ip}"))
   
   # drive the app
-  eval(substitute(expr))
+  if(inherits(expr,'call')){
+    eval(substitute(expr))  
+  }else{
+    eval(expr)
+  }
   
   # wait for json log 
   file_timeout(file.path(testdir,'whereami.json'))
