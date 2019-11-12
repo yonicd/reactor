@@ -1,27 +1,28 @@
 testthat::context("testing reactivity on a good app")
 
-
 driver_commands <- quote({
   
   # wait for input$n element to be created
-  el_n <- reactor::asyncr(test_driver,using = 'id',value = 'n')
+  el_n <- test_driver%>%
+    reactor::asyncr(
+    e = test_driver$client$findElement(using = 'id', value = 'n')
+    )
   
   # collect img src of histogram
-  hist_src <- reactor::asyncr(
-    test_driver,
-    using = 'css',
-    value = '#plot > img',
+  hist_src <-test_driver%>%
+    reactor::asyncr_attrib(
+    e = test_driver$client$findElement(using = 'css', value = '#plot > img'),
     attrib = 'src')
   
   # stepUp input$n by 4
   test_driver$client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el_n))
   
   # wait for the histogram img src to update
-  reactor::asyncr_update(test_driver,
-                         using = 'css',
-                         value = '#plot > img',
-                         attrib = 'src',
-                         old_value = hist_src)
+  test_driver%>%
+    reactor::asyncr_update(
+    e = test_driver$client$findElement(using = 'css', value = '#plot > img'),
+    attrib = 'src',
+    old_attrib = hist_src)
   
 })
 

@@ -140,6 +140,21 @@ Using `reactor` we can test this expectation\!
 If we run the test on the `good app` the test will pass and if we run it
 on the `bad app` then it will fail signaling a problem.
 
+To run a test you can use standard `testthat` functions like
+`testthat::test_dir()`, or you can use a `reactor` function
+`reactor::test_app()`.
+
+To use `test_app` just name the test file `reactor-*.R` instead of
+`test-*.R` this will have two benefits.
+
+1.  These tests need an interactive environment, multiple cores and an
+    internet connection. Most CI’s do not have this and `covr` will not
+    pass the tests. This allows you to run the tests using `test_dir`
+    which does have the necessary characteristics to run the tests.
+2.  Allows the app tests to be isolated from the other unit tests thus
+    allowing for `covr` and `testthat` to run on R CMD CHECK without
+    needing to add `skip_*` into the app test files.
+
 ![](https://github.com/yonicd/reactor/raw/media/example.gif)
 
 <details closed>
@@ -151,28 +166,29 @@ on the `bad app` then it will fail signaling a problem.
 
 testthat::context("testing reactivity on a good app")
 
-
 driver_commands <- quote({
   
   # wait for input$n element to be created
-  el_n <- reactor::asyncr(test_driver,using = 'id',value = 'n')
+  el_n <- test_driver%>%
+    reactor::asyncr(
+    e = test_driver$client$findElement(using = 'id', value = 'n')
+    )
   
   # collect img src of histogram
-  hist_src <- reactor::asyncr(
-    test_driver,
-    using = 'css',
-    value = '#plot > img',
+  hist_src <-test_driver%>%
+    reactor::asyncr_attrib(
+    e = test_driver$client$findElement(using = 'css', value = '#plot > img'),
     attrib = 'src')
   
   # stepUp input$n by 4
   test_driver$client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el_n))
   
   # wait for the histogram img src to update
-  reactor::asyncr_update(test_driver,
-                         using = 'css',
-                         value = '#plot > img',
-                         attrib = 'src',
-                         old_value = hist_src)
+  test_driver%>%
+    reactor::asyncr_update(
+    e = test_driver$client$findElement(using = 'css', value = '#plot > img'),
+    attrib = 'src',
+    old_attrib = hist_src)
   
 })
 

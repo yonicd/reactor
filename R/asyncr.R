@@ -4,7 +4,6 @@
 #' @param using PARAM_DESCRIPTION
 #' @param value PARAM_DESCRIPTION
 #' @param maxiter PARAM_DESCRIPTION, Default: 20
-#' @param attrib PARAM_DESCRIPTION, Default: NULL
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples 
@@ -16,76 +15,54 @@
 #' @rdname asyncr
 #' @export 
 # https://goo.gl/jFqKfS
-asyncr <- function(test_driver, using, value, maxiter = 20, attrib = NULL) {
+asyncr <- function(test_driver, e, maxiter = 20) {
   
-  elem <- NULL
-  
-  i <- 0
+  rachet(test_driver = test_driver, e = e, maxiter = maxiter)
 
-  while (is.null(elem) & (i <= maxiter)) {
+}
 
-    suppressMessages({
-      elem <- tryCatch({
-        test_driver$client$findElement(using = using, value = value)
-      },
-      error = function(e) {
-        NULL
-      }
-      )
-    })
-    
-    Sys.sleep(0.02 * (i + 1))
-    
-    i <- i + 1
-  }
+
+#' @title FUNCTION_TITLE
+#' @description FUNCTION_DESCRIPTION
+#' @param test_driver PARAM_DESCRIPTION
+#' @param using PARAM_DESCRIPTION
+#' @param value PARAM_DESCRIPTION
+#' @param attrib PARAM_DESCRIPTION
+#' @param maxiter PARAM_DESCRIPTION, Default: 20
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples 
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname asyncr_attrib
+#' @export 
+# https://goo.gl/jFqKfS
+asyncr_attrib <- function(test_driver, e, attrib, maxiter = 20) {
   
-  if (is.null(elem) && i >= maxiter) {
-    # assuming this means timed out
-    stop("servers failed, please check network connectivity and try again",
-         call. = FALSE
-    )
-  }
+  elem <- rachet(test_driver = test_driver, e = e, maxiter = maxiter)
+
+  attr_out <- rachet(test_driver = test_driver,
+         e = quote({ elem$getElementAttribute(attrib)[[1]] }),
+         maxiter = maxiter
+  )
   
-  if(!is.null(attrib)){
-    
-    attr_out <- NULL
-    
-    i <- 0
-    
-    while (is.null(attr_out) & (i <= maxiter)) {
-    
-      attr_out <- tryCatch({
-        elem$getElementAttribute(attrib)[[1]]
-      },
-      error = function(e) {
-        NULL
-      }
-      )
-    
-      Sys.sleep(0.02 * (i + 1))
-      
-      i <- i + 1
-    }
-    
-    attr_out
-    
-  }else{
-    
-    elem
-    
-  }
-  
+  attr_out
+
   
 }
+
 
 #' @title FUNCTION_TITLE
 #' @description FUNCTION_DESCRIPTION
 #' @param client PARAM_DESCRIPTION
 #' @param using PARAM_DESCRIPTION
 #' @param value PARAM_DESCRIPTION
-#' @param maxiter PARAM_DESCRIPTION, Default: 20
 #' @param attrib PARAM_DESCRIPTION
-#' @param old_value PARAM_DESCRIPTION
+#' @param old_attrib PARAM_DESCRIPTION
+#' @param maxiter PARAM_DESCRIPTION, Default: 20
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples 
@@ -97,9 +74,9 @@ asyncr <- function(test_driver, using, value, maxiter = 20, attrib = NULL) {
 #' @rdname asyncr_update
 #' @export 
 
-asyncr_update <- function(test_driver, using, value, maxiter = 20, attrib, old_value){
+asyncr_update <- function(test_driver, e, attrib, old_attrib, maxiter = 20){
   
-  if(is.null(old_value))
+  if(is.null(old_attrib))
     return(NULL)
   
   elem_update <- FALSE
@@ -108,13 +85,9 @@ asyncr_update <- function(test_driver, using, value, maxiter = 20, attrib, old_v
   
   while (!elem_update & (i <= maxiter)) {
     
-    new_value <- asyncr(test_driver, 
-                        using = using, 
-                        value = value, 
-                        maxiter = maxiter, 
-                        attrib = attrib)
+    new_value <- asyncr_attrib(test_driver, e = e, attrib = attrib,  maxiter = maxiter)
     
-    elem_update <- identical(old_value, new_value)
+    elem_update <- identical(old_attrib, new_value)
     
     Sys.sleep(0.02 * (i + 1))
     
@@ -131,4 +104,48 @@ is_busy <- function(test_driver){
     script = "return document.querySelector('html').getAttribute('class')=='shiny-busy';"
   )[[1]]
   
+}
+
+rachet <- function(test_driver, e, maxiter, cond = is.null){
+  
+  elem <- NULL
+  
+  i <- 0
+
+  while (cond(elem) & (i <= maxiter)) {
+
+  if(!is_busy(test_driver)){
+    
+  suppressWarnings({
+    suppressMessages({
+      elem <- tryCatch({
+          if(inherits(e,'call')){
+              eval(substitute(e),parent.frame())
+          }else{
+              eval(e,parent.frame())
+          }
+      },
+      error = function(e) {
+        NULL
+      }
+      )
+    })
+  })
+    
+  }
+  
+  Sys.sleep(0.02 * (i + 1))
+    
+  i <- i + 1
+    
+  }
+  
+  if (is.null(elem) && i >= maxiter) {
+    # assuming this means timed out
+    stop("servers failed, please check network connectivity and try again",
+         call. = FALSE
+    )
+  }
+  
+  elem
 }
