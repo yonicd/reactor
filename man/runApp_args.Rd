@@ -2,33 +2,55 @@
 % Please edit documentation in R/app_args.R
 \name{runApp_args}
 \alias{runApp_args}
-\title{FUNCTION_TITLE}
+\alias{golem_args}
+\title{Arguments to pass to a Shiny App in a child process}
 \usage{
-runApp_args(appDir = getwd(), test_ip = 6012, test_path = tempdir(),
+runApp_args(appDir = getwd(), test_port = 6012,
+  test_path = tempdir(), workerId = "",
   host = getOption("shiny.host", "127.0.0.1"))
+
+golem_args(test_port = 6012, test_path = tempdir())
 }
 \arguments{
-\item{appDir}{PARAM_DESCRIPTION, Default: getwd()}
+\item{appDir}{The application to run. Should be one of the following (Default: getwd()):
+\itemize{
+\item A directory containing server.R, plus, either ui.R or a www directory
+that contains the file index.html.
+\item A directory containing app.R.
+\item An .R file containing a Shiny application, ending with an expression
+that produces a Shiny app object.
+}}
 
-\item{test_ip}{PARAM_DESCRIPTION, Default: 6012}
+\item{test_port}{numeric, port to run the app on, Default: 6012}
 
-\item{test_path}{PARAM_DESCRIPTION, Default: tempdir()}
+\item{test_path}{character, Path the child process will have access
+to on the master, Default: tempdir()}
 
-\item{host}{PARAM_DESCRIPTION, Default: getOption("shiny.host", "127.0.0.1")}
+\item{workerId}{Can generally be ignored. Exists to help some editions of
+Shiny Server Pro route requests to the correct process. Default: ""}
+
+\item{host}{The IPv4 address that the application should listen on.
+Default: getOption("shiny.host", "127.0.0.1")}
 }
 \value{
-OUTPUT_DESCRIPTION
+character
 }
 \description{
-FUNCTION_DESCRIPTION
+\itemize{
+\item runApp_args: Arguments that populate a \link[shiny:runApp]{runApp} call
+that will be run in a child process.
+\item golem_args:  Arguments that populate an app run via the golem package.
 }
-\details{
-DETAILS
+
+The command is appended predefined commands and sent to a \link[processx:process]{process} object.
 }
 \examples{
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
+
+runApp_args()
+
+golem_args()
+
 }
+\seealso{
+\link[shiny:runApp]{runApp}, \link[processx:process]{process}
 }

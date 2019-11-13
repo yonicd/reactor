@@ -6,7 +6,7 @@
 \usage{
 test_reactor(expr, test_path = tempdir(), test_ip = 6012,
   test_driver = driver(test_path = test_path),
-  processx_args = shinyAppFile_args(test_ip, test_path),
+  processx_args = runApp_args(test_ip, test_path),
   processx_cleanup = TRUE)
 }
 \arguments{
@@ -18,7 +18,7 @@ test_reactor(expr, test_path = tempdir(), test_ip = 6012,
 
 \item{test_driver}{PARAM_DESCRIPTION, Default: driver(test_path = test_path)}
 
-\item{processx_args}{PARAM_DESCRIPTION, Default: shinyAppFile_args(test_ip, test_path)}
+\item{processx_args}{PARAM_DESCRIPTION, Default: runApp_args(test_ip, test_path)}
 
 \item{processx_cleanup}{PARAM_DESCRIPTION, Default: TRUE}
 }

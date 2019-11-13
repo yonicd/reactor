@@ -2,34 +2,24 @@
 % Please edit documentation in R/asyncr.R
 \name{then2}
 \alias{then2}
-\title{FUNCTION_TITLE}
+\title{Reactor Then with two elements}
 \usage{
 then2(elem, elem2, expr, test_driver, maxiter = 20)
 }
 \arguments{
-\item{elem}{PARAM_DESCRIPTION}
+\item{elem}{element to pass to expr}
 
-\item{elem2}{PARAM_DESCRIPTION}
+\item{elem2}{element to pass to expr}
 
-\item{expr}{PARAM_DESCRIPTION}
+\item{expr}{expression to run}
 
-\item{test_driver}{PARAM_DESCRIPTION}
+\item{test_driver}{RSelenium \link[RSelenium:rsDriver]{driver} object}
 
-\item{maxiter}{PARAM_DESCRIPTION, Default: 20}
+\item{maxiter}{numeric, maximum number of iterations to wait in the then2 call, Default: 20}
 }
 \value{
-OUTPUT_DESCRIPTION
+value determined by expr return.
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
-}
-\examples{
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
+Mutli element Then functions used by reactor to interact with applications.
 }

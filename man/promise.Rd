@@ -3,34 +3,25 @@
 \name{wait}
 \alias{wait}
 \alias{then}
-\title{FUNCTION_TITLE}
+\title{Reactor Promises}
 \usage{
 wait(test_driver, expr, maxiter = 20)
 
 then(elem, expr, test_driver, maxiter = 20)
 }
 \arguments{
-\item{test_driver}{PARAM_DESCRIPTION}
+\item{test_driver}{RSelenium \link[RSelenium:rsDriver]{driver} object}
 
-\item{expr}{PARAM_DESCRIPTION}
+\item{expr}{expression to run}
 
-\item{maxiter}{PARAM_DESCRIPTION, Default: 20}
+\item{maxiter}{numeric, maximum number of iterations for wait
+and then calls, Default: 20}
 
-\item{elem}{PARAM_DESCRIPTION}
+\item{elem}{element returned by wait function for then call.}
 }
 \value{
-OUTPUT_DESCRIPTION
+value determined by expr return.
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
-}
-\examples{
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
+Wait and Then functions used by reactor to interact with applications.
 }

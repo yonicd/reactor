@@ -1,17 +1,11 @@
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param test_driver PARAM_DESCRIPTION
-#' @param expr PARAM_DESCRIPTION
-#' @param elem PARAM_DESCRIPTION
-#' @param maxiter PARAM_DESCRIPTION, Default: 20
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
+#' @title Reactor Promises
+#' @description Wait and Then functions used by reactor to interact with applications.
+#' @param test_driver RSelenium [driver][RSelenium::rsDriver] object
+#' @param expr expression to run
+#' @param elem element returned by wait function for then call.
+#' @param maxiter numeric, maximum number of iterations for wait 
+#' and then calls, Default: 20
+#' @return value determined by expr return.
 #' @rdname promise
 #' @export 
 wait <- function(test_driver, expr, maxiter = 20) {
@@ -28,21 +22,14 @@ then <- function(elem, expr, test_driver, maxiter = 20) {
   
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param test_driver PARAM_DESCRIPTION
-#' @param expr PARAM_DESCRIPTION
-#' @param elem PARAM_DESCRIPTION
-#' @param elem2 PARAM_DESCRIPTION
-#' @param maxiter PARAM_DESCRIPTION, Default: 20
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
+#' @title Reactor Then with two elements
+#' @description Mutli element Then functions used by reactor to interact with applications.
+#' @param test_driver RSelenium [driver][RSelenium::rsDriver] object
+#' @param expr expression to run
+#' @param elem element to pass to expr
+#' @param elem2 element to pass to expr
+#' @param maxiter numeric, maximum number of iterations to wait in the then2 call, Default: 20
+#' @return value determined by expr return.
 #' @rdname promise2
 #' @export 
 then2 <- function(elem, elem2, expr, test_driver, maxiter = 20) {
