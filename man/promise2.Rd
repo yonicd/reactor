@@ -21,5 +21,5 @@ then2(elem, elem2, expr, test_driver, maxiter = 20)
 value determined by expr return.
 }
 \description{
-Mutli element Then functions used by reactor to interact with applications.
+Mutli element Then function used by reactor to interact with applications.
 }

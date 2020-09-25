@@ -11,6 +11,7 @@
 #' @export
 #' @importFrom testthat test_dir
 test_app <- function(path = 'tests/testthat',...){
+
   td <- file.path(path,'reactor')
   dir.create(td,recursive = TRUE,showWarnings = FALSE)
   on.exit(unlink(td,recursive = TRUE,force = TRUE),add = TRUE)
@@ -18,5 +19,6 @@ test_app <- function(path = 'tests/testthat',...){
     file.copy(x,file.path(td,gsub('^reactor','test',basename(x))))
   }))
   testthat::test_dir(td,...)
+
 }
 

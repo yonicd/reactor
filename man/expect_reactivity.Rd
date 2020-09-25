@@ -17,7 +17,7 @@ expect_reactivity(object, tag, count)
 invisible result
 }
 \description{
-Compares the maximum counter value of a tag in a whereami counter
+Compares the maximum counter value of a tag in a \emph{whereami} counter
 object with a value
 }
 \examples{

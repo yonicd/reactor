@@ -2,28 +2,18 @@
 % Please edit documentation in R/file_timeout.R
 \name{file_timeout}
 \alias{file_timeout}
-\title{FUNCTION_TITLE}
+\title{Timer for waiting for File}
 \usage{
 file_timeout(path, maxiter = 20)
 }
 \arguments{
-\item{path}{PARAM_DESCRIPTION}
+\item{path}{character, Path to look for file}
 
-\item{maxiter}{PARAM_DESCRIPTION, Default: 20}
+\item{maxiter}{numeric, maximum iteration to wait, Default: 20}
 }
 \value{
-OUTPUT_DESCRIPTION
+logical
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
-}
-\examples{
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
+Wait for file to be creating in a local folder
 }

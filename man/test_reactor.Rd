@@ -2,41 +2,95 @@
 % Please edit documentation in R/test.R
 \name{test_reactor}
 \alias{test_reactor}
-\title{FUNCTION_TITLE}
+\title{Reactor testing Environment}
 \usage{
-test_reactor(expr, test_path = tempdir(), test_ip = 6012,
-  test_driver = driver(test_path = test_path),
-  processx_args = runApp_args(test_ip, test_path),
-  processx_cleanup = TRUE)
+test_reactor(
+  expr,
+  test_path = tempdir(),
+  test_ip = "http://127.0.0.1",
+  test_port = 6012,
+  test_driver = firefox_driver(test_path = test_path),
+  processx_args = runApp_args(test_port, test_path),
+  processx_cleanup = TRUE
+)
 }
 \arguments{
-\item{expr}{PARAM_DESCRIPTION}
+\item{expr}{expressions that drive the application}
 
-\item{test_path}{PARAM_DESCRIPTION, Default: tempdir()}
+\item{test_path}{character, path to run the test in. Default: tempdir()}
 
-\item{test_ip}{PARAM_DESCRIPTION, Default: 6012}
+\item{test_ip}{character, IP address to run the App. Default: 'http://127.0.0.1'}
 
-\item{test_driver}{PARAM_DESCRIPTION, Default: driver(test_path = test_path)}
+\item{test_port}{numeric, port to run the App. Default: 6012}
 
-\item{processx_args}{PARAM_DESCRIPTION, Default: runApp_args(test_ip, test_path)}
+\item{test_driver}{\link[RSelenium:remoteDriver-class]{remoteDriver}, Default: firefox_driver(test_path = test_path)}
 
-\item{processx_cleanup}{PARAM_DESCRIPTION, Default: TRUE}
+\item{processx_args}{list, arguments to pass to temporary session that serves the App. Default: runApp_args(test_ip, test_path)}
+
+\item{processx_cleanup}{logical, cleanup the artifacts created by processx. Default: TRUE}
 }
 \value{
-OUTPUT_DESCRIPTION
+whereami counter data.frame
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
+Environment which sets up and runs Shiny App tests.
 }
 \examples{
 \dontrun{
 if(interactive()){
- #EXAMPLE1
- }
-}
+
+driver_commands <- quote({
+# wait for input$n element to be created
+el_n <- test_driver\%>\%
+  reactor::wait(
+    expr = test_driver$client$findElement(using = 'id', value = 'n')
+  )
+
+# collect img src of histogram
+hist_src <-test_driver\%>\%
+  reactor::wait(
+    expr = test_driver$client$findElement(using = 'css', value = '#plot > img')
+ )\%>\%
+  reactor::then(
+    expr = function(elem) elem$getElementAttribute('src')[[1]],
+    test_driver = test_driver
+  )
+
+# stepUp input$n by 4
+test_driver$client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el_n))
+
+#wait for the histogram img src to update
+
+test_driver\%>\%
+  reactor::wait(
+    expr   = test_driver$client$findElement(using = 'css', value = '#plot > img')
+  )\%>\%
+  reactor::then2(
+    elem2 = hist_src,
+    expr   = function(elem,elem2){
+      
+      elem$getElementAttribute('src')[[1]]\%>\%
+        is_identical(elem2)
+      
+    },
+    test_driver = test_driver
+  )
+
+})
+ 
+  hist_counter <- reactor::test_reactor(
+       expr    = driver_commands,
+       test_driver   = reactor::firefox_driver(),
+       processx_args = runApp_args(
+       appDir = system.file('examples/good_app.R',package = 'reactor')
+       )
+     )  
+
+reactor::expect_reactivity(hist_counter, tag = 'hist', 1)
+
+reactor::expect_reactivity(hist_counter, tag = 'hist', 2)
+ 
+}}
 }
 \seealso{
 \code{\link[processx]{process}}

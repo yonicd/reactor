@@ -23,7 +23,7 @@ then <- function(elem, expr, test_driver, maxiter = 20) {
 }
 
 #' @title Reactor Then with two elements
-#' @description Mutli element Then functions used by reactor to interact with applications.
+#' @description Mutli element Then function used by reactor to interact with applications.
 #' @param test_driver RSelenium [driver][RSelenium::rsDriver] object
 #' @param expr expression to run
 #' @param elem element to pass to expr

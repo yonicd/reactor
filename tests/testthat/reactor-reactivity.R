@@ -50,7 +50,7 @@ testthat::describe('good reactive',{
   
   hist_counter <- reactor::test_reactor(
     expr          = driver_commands,
-    test_driver   = reactor::driver(), #selenium driver
+    test_driver   = reactor::firefox_driver(),
     processx_args = runApp_args(
       appDir = system.file('examples/good_app.R',package = 'reactor')
     )
@@ -72,7 +72,7 @@ testthat::describe('bad reactive',{
   
   hist_counter <- reactor::test_reactor(
     expr          = driver_commands,
-    test_driver   = reactor::driver(), #selenium driver
+    test_driver   = reactor::firefox_driver(), #selenium driver
     processx_args = reactor::runApp_args(
       appDir = system.file('examples/bad_app.R',package = 'reactor')
     )

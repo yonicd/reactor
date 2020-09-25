@@ -1,19 +1,69 @@
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param expr PARAM_DESCRIPTION
-#' @param test_path PARAM_DESCRIPTION, Default: tempdir()
-#' @param test_ip PARAM_DESCRIPTION, Default: 6012
-#' @param test_driver PARAM_DESCRIPTION, Default: driver(test_path = test_path)
-#' @param processx_args PARAM_DESCRIPTION, Default: runApp_args(test_ip, test_path)
-#' @param processx_cleanup PARAM_DESCRIPTION, Default: TRUE
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Reactor testing Environment
+#' @description Environment which sets up and runs Shiny App tests.
+#' @param expr expressions that drive the application
+#' @param test_path character, path to run the test in. Default: tempdir()
+#' @param test_ip character, IP address to run the App. Default: 'http://127.0.0.1'
+#' @param test_port numeric, port to run the App. Default: 6012
+#' @param test_driver [remoteDriver][RSelenium::remoteDriver], Default: firefox_driver(test_path = test_path)
+#' @param processx_args list, arguments to pass to temporary session that serves the App. Default: runApp_args(test_ip, test_path)
+#' @param processx_cleanup logical, cleanup the artifacts created by processx. Default: TRUE
+#' @return whereami counter data.frame
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
+#' 
+#' driver_commands <- quote({
+#' # wait for input$n element to be created
+#' el_n <- test_driver%>%
+#'   reactor::wait(
+#'     expr = test_driver$client$findElement(using = 'id', value = 'n')
+#'   )
+#' 
+#' # collect img src of histogram
+#' hist_src <-test_driver%>%
+#'   reactor::wait(
+#'     expr = test_driver$client$findElement(using = 'css', value = '#plot > img')
+#'  )%>%
+#'   reactor::then(
+#'     expr = function(elem) elem$getElementAttribute('src')[[1]],
+#'     test_driver = test_driver
+#'   )
+#' 
+#' # stepUp input$n by 4
+#' test_driver$client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el_n))
+#' 
+#' #wait for the histogram img src to update
+#' 
+#' test_driver%>%
+#'   reactor::wait(
+#'     expr   = test_driver$client$findElement(using = 'css', value = '#plot > img')
+#'   )%>%
+#'   reactor::then2(
+#'     elem2 = hist_src,
+#'     expr   = function(elem,elem2){
+#'       
+#'       elem$getElementAttribute('src')[[1]]%>%
+#'         is_identical(elem2)
+#'       
+#'     },
+#'     test_driver = test_driver
+#'   )
+#'
+#' })
+#'  
+#'   hist_counter <- reactor::test_reactor(
+#'        expr    = driver_commands,
+#'        test_driver   = reactor::firefox_driver(),
+#'        processx_args = runApp_args(
+#'        appDir = system.file('examples/good_app.R',package = 'reactor')
+#'        )
+#'      )  
+#' 
+#' reactor::expect_reactivity(hist_counter, tag = 'hist', 1)
+#' 
+#' reactor::expect_reactivity(hist_counter, tag = 'hist', 2)
+#'  
+#' }}
 #' @seealso 
 #'  \code{\link[processx]{process}}
 #' @rdname test_reactor
@@ -23,9 +73,10 @@
 #' @import whereami
 test_reactor <- function(expr, 
                          test_path = tempdir(),
-                         test_ip = 6012,
-                         test_driver = driver(test_path = test_path),
-                         processx_args = runApp_args(test_ip, test_path),
+                         test_ip = 'http://127.0.0.1',
+                         test_port = 6012,
+                         test_driver = firefox_driver(test_path = test_path),
+                         processx_args = runApp_args(test_port, test_path),
                          processx_cleanup = TRUE
                           ){
   
@@ -53,7 +104,7 @@ test_reactor <- function(expr,
   }
 
   # navigate to app
-  test_driver$client$navigate(glue::glue("http://127.0.0.1:{test_ip}"))
+  test_driver$client$navigate(glue::glue("{test_ip}:{test_port}"))
   
   # drive the app
   if(inherits(expr,'call')){

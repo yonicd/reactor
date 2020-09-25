@@ -18,8 +18,8 @@ value of \strong{y} if x and y are identical, else NULL
 }
 \description{
 Wrapper on \link[base:identical]{identical} that will return the
-value of y if TRUE, else NULL. This function is useful with \link[reactor:wait]{wait}/\link[reactor:then]{then}
+value of y if TRUE, else NULL. This function is useful with \link[=wait]{wait}/\link[=then]{then}
 }
 \seealso{
-\link[reactor:wait]{wait}, \link[reactor:then]{then}, \link[base:identical]{identical}
+\link[=wait]{wait}, \link[=then]{then}, \link[base:identical]{identical}
 }

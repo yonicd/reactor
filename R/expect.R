@@ -1,5 +1,5 @@
 #' @title Expectation: is the counter equal to a value?
-#' @description Compares the maximum counter value of a tag in a whereami counter
+#' @description Compares the maximum counter value of a tag in a _whereami_ counter
 #' object with a value
 #' @param object whereami counter object read from whereami.json
 #' @param tag character, tag name of the element in the counter object to query

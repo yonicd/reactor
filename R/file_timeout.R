@@ -1,15 +1,8 @@
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param path PARAM_DESCRIPTION
-#' @param maxiter PARAM_DESCRIPTION, Default: 20
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
+#' @title Timer for waiting for File
+#' @description Wait for file to be creating in a local folder
+#' @param path character, Path to look for file
+#' @param maxiter numeric, maximum iteration to wait, Default: 20
+#' @return logical
 #' @rdname file_timeout
 #' @export 
 

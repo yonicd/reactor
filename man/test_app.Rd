@@ -18,8 +18,8 @@ test_app(path = "tests/testthat", ...)
 Run unit tests for shiny apps
 }
 \details{
-reactor unit test files are like testthat test files, just the name is \code{reactor-*.R}, instead of
-\code{test-*.R}
+reactor unit test files are like testthat test files, just the name is \verb{reactor-*.R}, instead of
+\verb{test-*.R}
 }
 \seealso{
 \link[testthat:test_dir]{test_dir}

@@ -22,4 +22,4 @@ server <- function(input, output) {
 }
 
 # Return a Shiny app object
-shinyApp(ui = ui, server = server)
+shinyApp(ui = ui, server = server,options = list(port=6012))

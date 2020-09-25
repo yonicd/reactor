@@ -8,19 +8,18 @@
 #'   
 #' The command is appended predefined commands and sent to a [process][processx::process] object.
 #' 
+#' @param test_port numeric, port to run the app on, Default: 6012
+#' Default: getOption("shiny.host", "127.0.0.1")
+#' @param test_path character, Path the child process will have access
+#'  to on the master, Default: tempdir()
 #' @param appDir The application to run. Should be one of the following (Default: getwd()):
 #'   - A directory containing server.R, plus, either ui.R or a www directory 
 #'   that contains the file index.html.
 #'   - A directory containing app.R.
 #'   - An .R file containing a Shiny application, ending with an expression 
 #'   that produces a Shiny app object.
-#' @param test_port numeric, port to run the app on, Default: 6012
 #' @param host The IPv4 address that the application should listen on.
-#' Default: getOption("shiny.host", "127.0.0.1")
-#' @param test_path character, Path the child process will have access
-#'  to on the master, Default: tempdir()
-#' @param workerId Can generally be ignored. Exists to help some editions of 
-#' Shiny Server Pro route requests to the correct process. Default: ""
+#' @param workerId Can generally be ignored. Exists to help some editions of Shiny Server Pro route requests to the correct process. Default: ""
 #' @return character
 #' @examples 
 #' 
@@ -33,11 +32,13 @@
 #' @export 
 #' @importFrom glue glue
 #' @import shiny
-runApp_args <- function(appDir = getwd(), 
-                        test_port = 6012, 
-                        test_path = tempdir(), 
-                        workerId = "",
-                        host = getOption("shiny.host", "127.0.0.1")){
+runApp_args <- function(
+  test_port = 6012,
+  test_path = tempdir(), 
+  appDir = getwd(),
+  host = getOption("shiny.host", "127.0.0.1"),
+  workerId = ""
+  ){
   
   glue_args <- glue::glue(
     "appDir = '{appDir}'",
