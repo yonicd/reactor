@@ -53,6 +53,14 @@ The ability to **diagnose** and **resolve** cascading reactivity in Shiny applic
 
 - With __reactor__ defensive development can by applied to Shiny applications to both plan and preserve reactivity with multiple developers working on the application in a production environment.
 
+## Where it's at
+
+GitHub: https://github.com/yonicd/reactor
+
+```{r,eval = FALSE}
+remotes::install_github('yonicd/reactor')
+```
+
 ---
 
 # Reactor Testing Workflow
@@ -243,6 +251,22 @@ reactor::then2(
 ```
 
 ---
+# Test Reactor
+
+`test_reactor` ties all these concepts together. 
+
+```{r, eval = FALSE}
+hist_counter <- reactor::test_reactor(
+  expr          = driver_commands,
+  test_driver   = reactor::firefox_driver(),
+  processx_args = reactor::runApp_args(appDir = 'PATH_TO_APP')
+)
+```
+
+- __driver_commands__ contains the expressions to pass to the webdriver.
+- __test_driver__ contains the RSelenium Driver.
+- __processx_args__ contains the expressions to pass to the child process that will host the 
+---
 
 # Back to whereami
 
@@ -267,23 +291,6 @@ This is the important piece that we will use to connect all this to our unit tes
 <br>
 
 <warn-blockquote>Was this the intended action we wanted when developing the app?</warn-blockquote>
-
----
-# Test Reactor
-
-`test_reactor` ties all these concepts together. 
-
-```{r, eval = FALSE}
-hist_counter <- reactor::test_reactor(
-  expr          = driver_commands,
-  test_driver   = reactor::firefox_driver(),
-  processx_args = reactor::runApp_args(appDir = 'PATH_TO_APP')
-)
-```
-
-- __driver_commands__ contains the expressions to pass to the webdriver.
-- __test_driver__ contains the RSelenium Driver.
-- __processx_args__ contains the expressions to pass to the child process that will host the 
 
 ---
 # Unit Testing (Expectations)
