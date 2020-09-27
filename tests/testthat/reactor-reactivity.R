@@ -51,13 +51,13 @@ testthat::describe('good reactive',{
   hist_counter <- reactor::test_reactor(
     expr          = driver_commands,
     test_driver   = reactor::firefox_driver(),
-    processx_args = runApp_args(
+    processx_args = reactor::runApp_args(
       appDir = system.file('examples/good_app.R',package = 'reactor')
     )
   )
   
   it('reactive hits in plot reactive chunk',{
-    reactor::expect_reactivity(hist_counter, tag = 'hist', 1)
+    reactor::expect_reactivity(object = hist_counter, tag = 'hist',count =  1)
   })
   
 })
