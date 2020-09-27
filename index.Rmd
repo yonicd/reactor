@@ -2,7 +2,7 @@
 title: "Reactor"
 subtitle: "Unit Testing Shiny App Reactivity"  
 author: 
-  - "Jonathan Sidi"
+  - "Jonathan Sidi, R/Pharma 2020"
 date: '`r Sys.Date()`'
 output:
   xaringan::moon_reader:
