@@ -53,6 +53,7 @@
   --inverse-header-color: #E9EBEE;
   --title-slide-background-color: #23395b;
   --title-slide-text-color: #E9EBEE;
+  --title-slide-link-color: #E9EBEE;
   --header-background-color: #23395b;
   --header-background-text-color: #E9EBEE;
   --base: #23395b;
@@ -132,6 +133,10 @@ a, a > code {
 }
 .title-slide {
   background-color: var(--title-slide-background-color);
+}
+.title-slide a, a > code {
+  color: var(--title-slide-link-color);
+  text-decoration: none;
 }
 .title-slide .remark-slide-number {
   display: none;

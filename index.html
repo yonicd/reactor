@@ -3,11 +3,19 @@
   <head>
     <title>Reactor</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Jonathan Sidi, R/Pharma 2020" />
-    <meta name="date" content="2020-09-28" />
+    <meta name="author" content="Jonathan Sidi" />
     <script src="libs/header-attrs/header-attrs.js"></script>
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/shareon/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain/shareagain.js"></script>
     <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="css/colours.css" type="text/css" />
+    <link rel="stylesheet" href="css/title.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -15,10 +23,12 @@ class: center, middle, inverse, title-slide
 
 # Reactor
 ## Unit Testing Shiny App Reactivity
-### Jonathan Sidi, R/Pharma 2020
-### 2020-09-28
+### Jonathan Sidi
+### R/Pharma 2020<br/>2020-09-28<br/><br/><a href="https://bit.ly/36fTYFs" class="uri">https://bit.ly/36fTYFs</a>
 
 ---
+
+
 
 
 
@@ -47,7 +57,6 @@ The ability to **diagnose** and **resolve** cascading reactivity in Shiny applic
   - In Shiny applications the ability to diagnose and resolve reactivity problems through unit testing is lacking.
 
 ---
-
 # Solution
 
 - The __{reactor}__ package solves this issue by creating a new framework that adds reactivity expectations to unit testing in R.
@@ -81,24 +90,30 @@ __{shiny}::testServer__
 Built in testing script for __{shiny}__ that works with shiny modules to create testing environment to verify reactive outputs are as expected.
 ]
 
-&lt;message-blockquote&gt;These pacakges work well for testing that reactivity has occurred and that the output is as expected, but they do not test if the reactivity is creating problems with the app integrity and the second order effects such as repetitive or cascading reactivity.&lt;/message-blockquote&gt;
+&lt;message-blockquote&gt;These packages work well for testing that reactivity has occurred and that the output is as expected, but they do not test if the reactivity is creating problems with the app integrity and the second order effects such as repetitive or cascading reactivity.&lt;/message-blockquote&gt;
 
 ---
 
 # Reactor Testing Workflow
 
-The __{reactor}__ workflow is split into three sequential steps
+The __{reactor}__ workflow is split into three parts
 
 1. Serving a Shiny application nested with __{whereami}__ calls via __{processx}__.
-1. "Drive" the active Shiny application with pre-specified commands using headless browsing via __{Rselenium}__. As the application is reacting to the commands __{whereami}__ logs the reactivity events. 
-1. Once the prespecified commands have completed the __{whereami}__ log file is used by expectations of reactivity in a __{testthat}__ environment.
 
+![:scale 85%](media/reactor_01.svg)
 ---
-
 # Reactor Testing Workflow
 
-![](media/reactor.svg)
+2\. "Drive" the Shiny application with pre-specified commands using headless browsing via __{Rselenium}__. As the application is reacting to the commands __{whereami}__ logs the reactivity events.
 
+![](media/reactor_02.svg)
+
+---
+# Reactor Testing Workflow
+
+3\. Once the prespecified commands have completed the __{whereami}__ log file is used by expectations of reactivity in a __{testthat}__ environment.
+
+![](media/reactor_03.svg)
 ---
 
 # Shiny App
@@ -446,8 +461,8 @@ What __{reactor}__ gives you:
 .pull-right[
 ![](https://media.giphy.com/media/26gs78HRO8sOuhTkQ/giphy-downsized.gif)
 ]
-
-## Thank you :)
+&lt;br/&gt;
+### .center[Thank you :)]
 
 
     </textarea>

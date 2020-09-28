@@ -2,12 +2,12 @@
 title: "Reactor"
 subtitle: "Unit Testing Shiny App Reactivity"  
 author: 
-  - "Jonathan Sidi, R/Pharma 2020"
-date: '`r Sys.Date()`'
+  - "Jonathan Sidi"
+date: 'R/Pharma 2020<br/>`r Sys.Date()`<br/><br/>https://bit.ly/36fTYFs'
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: ["css/xaringan-themer.css", "css/colours.css"]
+    css: ["css/xaringan-themer.css", "css/colours.css","css/title.css"]
     nature:
       highlightStyle: github
       highlightLines: true
@@ -22,6 +22,11 @@ options(htmltools.dir.version = FALSE)
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 library(xaringanthemer)
 style_mono_light(base_color = "#23395b")
+```
+
+```{r share-again, echo=FALSE}
+xaringanExtra::use_clipboard()
+xaringanExtra::use_share_again()
 ```
 
 # Motivation
@@ -46,7 +51,6 @@ The ability to **diagnose** and **resolve** cascading reactivity in Shiny applic
   - In Shiny applications the ability to diagnose and resolve reactivity problems through unit testing is lacking.
 
 ---
-
 # Solution
 
 - The __{reactor}__ package solves this issue by creating a new framework that adds reactivity expectations to unit testing in R.
@@ -79,24 +83,30 @@ __{shiny}::testServer__
 Built in testing script for __{shiny}__ that works with shiny modules to create testing environment to verify reactive outputs are as expected.
 ]
 
-<message-blockquote>These pacakges work well for testing that reactivity has occurred and that the output is as expected, but they do not test if the reactivity is creating problems with the app integrity and the second order effects such as repetitive or cascading reactivity.</message-blockquote>
+<message-blockquote>These packages work well for testing that reactivity has occurred and that the output is as expected, but they do not test if the reactivity is creating problems with the app integrity and the second order effects such as repetitive or cascading reactivity.</message-blockquote>
 
 ---
 
 # Reactor Testing Workflow
 
-The __{reactor}__ workflow is split into three sequential steps
+The __{reactor}__ workflow is split into three parts
 
 1. Serving a Shiny application nested with __{whereami}__ calls via __{processx}__.
-1. "Drive" the active Shiny application with pre-specified commands using headless browsing via __{Rselenium}__. As the application is reacting to the commands __{whereami}__ logs the reactivity events. 
-1. Once the prespecified commands have completed the __{whereami}__ log file is used by expectations of reactivity in a __{testthat}__ environment.
 
+![:scale 85%](media/reactor_01.svg)
 ---
-
 # Reactor Testing Workflow
 
-![](media/reactor.svg)
+2\. "Drive" the Shiny application with pre-specified commands using headless browsing via __{Rselenium}__. As the application is reacting to the commands __{whereami}__ logs the reactivity events.
 
+![](media/reactor_02.svg)
+
+---
+# Reactor Testing Workflow
+
+3\. Once the prespecified commands have completed the __{whereami}__ log file is used by expectations of reactivity in a __{testthat}__ environment.
+
+![](media/reactor_03.svg)
 ---
 
 # Shiny App
@@ -435,7 +445,7 @@ What __{reactor}__ gives you:
 .pull-right[
 ![](https://media.giphy.com/media/26gs78HRO8sOuhTkQ/giphy-downsized.gif)
 ]
-
-## Thank you :)
+<br/>
+### .center[Thank you :)]
 
 
