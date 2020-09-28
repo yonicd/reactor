@@ -4,7 +4,7 @@
     <title>Reactor</title>
     <meta charset="utf-8" />
     <meta name="author" content="Jonathan Sidi, R/Pharma 2020" />
-    <meta name="date" content="2020-09-27" />
+    <meta name="date" content="2020-09-28" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="css/colours.css" type="text/css" />
@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 # Reactor
 ## Unit Testing Shiny App Reactivity
 ### Jonathan Sidi, R/Pharma 2020
-### 2020-09-27
+### 2020-09-28
 
 ---
 
@@ -50,9 +50,9 @@ The ability to **diagnose** and **resolve** cascading reactivity in Shiny applic
 
 # Solution
 
-- The __reactor__ package solves this issue by creating a new framework that adds reactivity expectations to unit testing in R.
+- The __{reactor}__ package solves this issue by creating a new framework that adds reactivity expectations to unit testing in R.
 
-- With __reactor__ defensive development can by applied to Shiny applications to both plan and preserve reactivity with multiple developers working on the application in a production environment.
+- With __{reactor}__ defensive development can by applied to Shiny applications to both plan and preserve reactivity with multiple developers working on the application in a production environment.
 
 ## Where it's at
 
@@ -145,26 +145,9 @@ Running the example app will trigger the command at `line 15` twice on app initi
 
 Now that we have an app with a __{whereami}__ call in the server script we need to run it in a child R process. 
 
+.pull-left[
 To do this we use __{processx}__ and use a `localhost` port by default.
 
-&lt;details closed&gt;
-&lt;summary&gt; &lt;span title='Click to Expand'&gt; Commands passed to child prcess &lt;/span&gt; &lt;/summary&gt;
-
-```r
-
-pkgload::load_all()
-library(whereami)
-whereami::set_whereami_log('tests/path/reactor')
-shiny::runApp(appDir = 'app/path', port = 6012L, host = '127.0.0.1', test.mode = TRUE, workerId = '')
-
-```
-
-&lt;/details&gt;
-&lt;br&gt;
-
---
-
-.pull-left[
 Don't worry! __{reactor}__ takes care of this machinery for you.
 ]
 
@@ -188,28 +171,19 @@ __{RSelenium}__ uses webdrivers to manipulate content on a web browser. __{react
 ]
 
 .pull-right[
-&lt;details open&gt;
-&lt;summary&gt; &lt;span title='Click to Expand'&gt; Firefox Preferences &lt;/span&gt; &lt;/summary&gt;
-
+Firefox Arguments:
 ```r
-
 $args
-[1] "--headless"   "--width=1280" "--height=800"
+[1] "--headless" "--width=1280" "--height=800"
 
 $prefs
 $prefs$browser.download.folderList
 [1] 2
-
 $prefs$browser.download.lastDir
-[1] "/var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmpnq1rcU"
-
+[1] "/var/folders/kx/.../Rtmp2ycQ6l"
 $prefs$browser.download.dir
-[1] "/var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmpnq1rcU"
-
+[1] "/var/folders/kx/.../Rtmp2ycQ6l"
 ```
-
-&lt;/details&gt;
-&lt;br&gt;
 
 ]
 
@@ -230,10 +204,26 @@ We use __{RSelenium}__ commands and built in __{reactor}__ functions that simpli
 
 # {reactor} asynchronous pipelines
 
-  - __wait__ will run the expression only shiny is not busy and the element exists.
+  - __wait__ will run the expression only if shiny is not busy and the element exists.
   - __then__ will run after __wait__ is evaluated.
-  
-In this example we are __waiting__ for shiny to finish invalidating elements and find the plot associated with `outpu$plot` and saves it in the object `elem`. Once `elem` is assigned __then__ we use it to retrieve src attribute. 
+
+When the app initializes we need to __wait__ for the initial UI to load and __wait__ for the `numericInput` to be created, after which we find the element `input$n` and assign it to `el_n`.
+
+
+```r
+el_n &lt;- test_driver%&gt;%
+    reactor::wait(
+      expr = test_driver$client$findElement(
+        using = 'id', 
+        value = 'n')
+    )
+```
+
+---
+
+Next we __wait__ for shiny to finish invalidating elements and find the plot associated with `output$plot` and return that element.
+
+The output of __wait__ is then piped into __then__ with the input the expression `elem`. Using this input we can then query attributes of it, in this case we retrieve the src attribute of the image. 
 
 
 ```r
@@ -253,7 +243,7 @@ hist_src &lt;- test_driver%&gt;%
 
 ---
 
-We change the value of `input$n` and increase it by 4
+Remembering that we assigned `input$n` to `el_n` we can manipulate the value here we increase it by 4.
 
 
 ```r
@@ -262,7 +252,22 @@ test_driver$client$executeScript(
   )
 ```
 
-Now we can compare the new img src attribute with `hist_src`. We use `then2` to pass 2 elements and use `is_identical` to ask the question is the old src and the new src the same?
+.pull-left[
+This mimics the exact actions that you would do manually in the app, causing shiny to go through an invalidation of the reactive elements and updating the histogram.
+]
+
+.pull-right[
+![](https://media.giphy.com/media/xUPGcmbWEgjx1epbS8/giphy-downsized.gif)
+]
+
+---
+
+Because we changed the histogram we would want compare the new img src attribute with `hist_src`. 
+
+We use __then2__ to pass 2 elements and use `is_identical` to ask the question is the old src and the new src the same?
+
+  - elem is the piped output from the __wait__ call we are running now
+  - elem2 is the object `hist_src` that was assigned originally
 
 
 ```r
@@ -275,7 +280,10 @@ test_driver%&gt;%
 reactor::then2(
   elem2 = hist_src,
   expr   = function(elem,elem2){
-    elem$getElementAttribute('src')[[1]]%&gt;%is_identical(elem2)
+    reactor::is_identical(
+      elem$getElementAttribute('src')[[1]],
+      elem2
+    )
   },
   test_driver = test_driver
 )
@@ -284,7 +292,7 @@ reactor::then2(
 ---
 # Test Reactor
 
-`test_reactor` ties all these concepts together. 
+To help simplify things `test_reactor` ties all these concepts together. 
 
 
 ```r
@@ -294,38 +302,43 @@ hist_counter &lt;- reactor::test_reactor(
   processx_args = reactor::runApp_args(appDir = 'PATH_TO_APP')
 )
 ```
-
-- __driver_commands__ contains the expressions to pass to the webdriver.
-- __test_driver__ contains the RSelenium Driver.
-- __processx_args__ contains the expressions to pass to the child process that will host the 
+![](media/test_reactor.svg)
 ---
 
-# Back to whereami
-
-As you are driving the app with __{RSelenium}__ there is a log file being updated by __{whereami}__ keeping a counter each time it is triggered. 
-
-This is the important piece that we will use to connect all this to our unit testing expectations.
+# Back to {whereami}
 
 .pull-left[
-- The following is an example of what the outputs stored looks like. 
-- Line 15 of the Shiny app was triggered twice consecutively.
+As you are driving the app with __{RSelenium}__ there is a log file being updated by __{whereami}__ keeping a counter each time it is triggered. 
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+Line 15 of the Shiny app was triggered twice consecutively.
+
+&lt;warn-blockquote&gt;Was this the intended action we wanted when developing the app?&lt;/warn-blockquote&gt;
 ]
 
 .pull-right[
+![](media/whereami.svg)
+
 |tag   |where         |when                 |  count|
 |:----:|:------------:|:-------------------:|:-----:|
 |hist  |app.R#15      |2020-09-27 10:19:59  |      1|
 |hist  |app.R#15      |2020-09-27 10:19:59  |      2|
 ]
 
---
+---
 
-&lt;br&gt;
+# Unit Testing
 
-&lt;warn-blockquote&gt;Was this the intended action we wanted when developing the app?&lt;/warn-blockquote&gt;
+We now have a log file on disk that we can use to query expectations of app reactivity.
+
+![](media/testing.svg)
+
 
 ---
-# Unit Testing (Expectations)
+# Expectations
 
 __{reactor}__ comes with its own set of expectations that are built for __{whereami}__ outputs and can be used inside __{testthat}__.
 
@@ -349,7 +362,7 @@ Error: The tag 'hist' has reactivity count of 2, not 1.
 
 ---
 
-# Fixing our App
+### Fixing our App
 &lt;warn-blockquote&gt; __Bad App__ `renderPlot` is in an `observe` which is triggered every time the app is invalidated &lt;/warn-blockquote&gt;
 
 ```r
@@ -371,11 +384,9 @@ Error: The tag 'hist' has reactivity count of 2, not 1.
   })
 ```
 
-
-
 ---
 
-# Unit Testing
+# Directory Structure
 
   - The testing file for __{reactor}__ is set up exactly the same as a __{testthat}__ file, except that instead of using the naming convention `test-*.R` you can use `reactor-*.R`. 
 
