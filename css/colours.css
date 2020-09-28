@@ -63,3 +63,17 @@ ok-blockquote {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
 }
+
+message-blockquote {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 20px;
+  margin-right: 20px;
+  border-left: solid 10px #999900;
+  background-color: #BEBEBE;
+  padding: 1em;
+  color: #fff;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}

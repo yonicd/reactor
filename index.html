@@ -64,6 +64,26 @@ remotes::install_github('yonicd/reactor')
 ```
 
 ---
+### How does {reactor} fit in with other packages?
+
+Currently there are not a lot of packages that deal with unit testing and specifically testing reactivity in Shiny applications. The two primary methods are:
+
+.pull-left[
+__{shinytest}__ 
+- Checks that inputs change properly and that UI behaves consistently.
+- Integrates with __{testthat}__
+- Integrates with Continous Integration
+]
+
+.pull-right[
+__{shiny}::testServer__
+
+Built in testing script for __{shiny}__ that works with shiny modules to create testing environment to verify reactive outputs are as expected.
+]
+
+&lt;message-blockquote&gt;These pacakges work well for testing that reactivity has occurred and that the output is as expected, but they do not test if the reactivity is creating problems with the app integrity and the second order effects such as repetitive or cascading reactivity.&lt;/message-blockquote&gt;
+
+---
 
 # Reactor Testing Workflow
 
@@ -204,22 +224,24 @@ We use __{RSelenium}__ commands and built in __{reactor}__ functions that simpli
 
 # {reactor} asynchronous pipelines
 
-  - __wait__ will run the expression only if shiny is not busy and the element exists.
-  - __then__ will run after __wait__ is evaluated.
-
-When the app initializes we need to __wait__ for the initial UI to load and __wait__ for the `numericInput` to be created, after which we find the element `input$n` and assign it to `el_n`.
+__wait__/__then__ : __wait__ will run the expression only if shiny is not busy and the element exists __then__ will run after __wait__ is evaluated.
 
 
 ```r
 el_n &lt;- test_driver%&gt;%
-    reactor::wait(
-      expr = test_driver$client$findElement(
-        using = 'id', 
-        value = 'n')
-    )
+  reactor::wait(
+    expr = test_driver$client$findElement(
+      using = 'id', 
+      value = 'n')
+  )
 ```
 
+When the app initializes we need to __wait__ for the initial UI to load and __wait__ for the `numericInput` to be created, after which we find the element `input$n` and assign it to `el_n`.
+
+This is a bit different from other implementations that use `timeout` in JavaScript and __{shinytest}__ in that the timer is built in and will manage for you the time needed to wait.
+
 ---
+# asynchronous pipelines
 
 Next we __wait__ for shiny to finish invalidating elements and find the plot associated with `output$plot` and return that element.
 
