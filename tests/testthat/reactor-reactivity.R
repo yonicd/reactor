@@ -68,8 +68,6 @@ testthat::context("testing reactivity on a bad app")
 
 testthat::describe('bad reactive',{
   
-  testthat::skip_if_not(interactive())
-  
   hist_counter <- reactor::test_reactor(
     expr          = driver_commands,
     test_driver   = reactor::firefox_driver(), #selenium driver
