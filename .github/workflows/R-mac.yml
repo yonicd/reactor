@@ -51,7 +51,7 @@ jobs:
       - name: Install package
         run: R CMD INSTALL .
 
-      - name: Query dependencies
+      - name: Run Reactor
         run: |
           reactor::test_app()
         shell: Rscript {0}
