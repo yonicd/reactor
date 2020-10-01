@@ -24,7 +24,7 @@ class: center, middle, inverse, title-slide
 # Reactor
 ## Unit Testing Shiny App Reactivity
 ### Jonathan Sidi
-### R/Pharma 2020<br/>2020-09-28<br/><br/><a href="https://bit.ly/36fTYFs" class="uri">https://bit.ly/36fTYFs</a>
+### R/Pharma 2020<br/>2020-09-30<br/><br/><a href="https://bit.ly/36fTYFs" class="uri">https://bit.ly/36fTYFs</a>
 
 ---
 
@@ -54,7 +54,7 @@ The ability to **diagnose** and **resolve** cascading reactivity in Shiny applic
 
   - This is commonly used in R package development to validate source code. 
   
-  - In Shiny applications the ability to diagnose and resolve reactivity problems through unit testing is lacking.
+  - In Shiny applications the ability to __diagnose and resolve reactivity problems through unit testing is lacking__.
 
 ---
 # Solution
@@ -125,7 +125,7 @@ The app will have two UI elements:
   - A numeric input (`input$n`) that the user can change.
   - A plot output showing the `histogram(runif(input$n))` which observes changes to `input$n`
 
-On the server side we will add a new element for logging reactivity using a package called __{whereami}__.
+On the server side we will add a new element for logging reactivity using __{whereami}__.
 
 ---
 
@@ -155,6 +155,11 @@ server &lt;- function(input, output) {
 shiny::shinyApp(ui = ui, server = server)
 ```
 
+--
+
+&lt;warn-blockquote&gt; What does `whereami::whereami(tag = 'hist')` do? &lt;/warn-blockquote&gt;
+
+
 ---
 
 # whereami ![:scale_right 15%](https://github.com/yonicd/hex/raw/master/images/logos/whereami.png)
@@ -162,18 +167,22 @@ __{whereami}__ is a package that logs the locations where command in an R sessio
 
 Using __{whereami}__ with shiny is simple. 
 
-In the app place `cat_where(whereami())` on the server side and every time the rendering application hits the line it will print to console indicating which line has been hit accompanied by a counter.
+In the app file place __cat_where(whereami(tag = 'hist'))__ on the server side.
+
+Every time the rendering application hits the line it will print to console indicating which line has been hit accompanied by a counter.
 
 ```r
-── Running renderPlot(...) at shiny.R#15 (1) ───────────────────────────────────────────
-── Running renderPlot(...) at shiny.R#15 (2) ───────────────────────────────────────────
+── Running renderPlot(...) at shiny.R#15 (1) ─────────────────
+── Running renderPlot(...) at shiny.R#15 (2) ─────────────────
 ```
 
-Running the example app will trigger the command at `line 15` twice on app initialization. The lines above will be printed to the console as the app runs and a json log file will be updated automatically.
+Using the __tag__ argument will log the counter to a specific internal label and allow multiple concurrent counters.
 
 ---
 ## Shiny whereami example
-![](https://github.com/yonicd/whereami/blob/media/whereami_shiny.gif?raw=true)
+.center[![:scale 85%](https://github.com/yonicd/whereami/blob/media/whereami_shiny.gif?raw=true)]
+
+&lt;message-blockquote&gt; Save the code to file to run the example &lt;/message-blockquote&gt;
 ---
 
 # Running our App
@@ -187,9 +196,23 @@ Don't worry! __{reactor}__ takes care of this machinery for you.
 ]
 
 .pull-right[
-![](https://media.giphy.com/media/xUPGcEghH2dZdXvZSw/giphy-downsized.gif)
+![:scale 80%](https://media.giphy.com/media/xUPGcEghH2dZdXvZSw/giphy-downsized.gif)
 ]
 
+&lt;details closed&gt;
+&lt;summary&gt; &lt;span title='Click to Expand'&gt; Dive deeper: Open to view script &lt;/span&gt; &lt;/summary&gt;
+
+```r
+
+pkgload::load_all()
+library(whereami)
+whereami::set_whereami_log('TEST_PATH/reactor')
+shiny::runApp(appDir = 'PATH_TO_APP', port = 6012L, host = '127.0.0.1', test.mode = TRUE, workerId = '')
+
+```
+
+&lt;/details&gt;
+&lt;br&gt;
 
 ---
 
@@ -197,30 +220,29 @@ Don't worry! __{reactor}__ takes care of this machinery for you.
 
 To interact with the application that is running in the child process reactor depends on __{RSelenium}__.
 
+When the __{RSelenium}__ is invoked it opens _another_ child process and port on the `localhost` to run the webdriver.
+
 .pull-left[
-
-When the __{RSelenium}__ is invoked it opens _another_ child process and port on the `localhost` to run the webdriver. 
-
-__{RSelenium}__ uses webdrivers to manipulate content on a web browser. __{reactor}__ comes with functions to set up the proper arguments and preferences to use webdrivers for `firefox` and `chrome`. 
-
-]
+__{RSelenium}__ uses webdrivers to manipulate content on a web browser.]
 
 .pull-right[
-Firefox Arguments:
+__{reactor}__ comes with functions to set up the proper arguments and preferences to use webdrivers for `firefox` and `chrome`.]
+
+&lt;details&gt;
+&lt;summary&gt; Dive deeper: Open to view script &lt;/summary&gt;
+
 ```r
 $args
 [1] "--headless" "--width=1280" "--height=800"
-
 $prefs
 $prefs$browser.download.folderList
 [1] 2
-$prefs$browser.download.lastDir
-[1] "/var/folders/kx/.../Rtmp2ycQ6l"
 $prefs$browser.download.dir
-[1] "/var/folders/kx/.../Rtmp2ycQ6l"
+[1] 'TEST_PATH'
 ```
 
-]
+&lt;/details&gt;
+&lt;br&gt;
 
 ---
 
@@ -235,28 +257,104 @@ We use __{RSelenium}__ commands and built in __{reactor}__ functions that simpli
 ![](https://media.giphy.com/media/xUA7aTTTOEYbozXg2I/giphy-downsized.gif)
 ]
 
+&lt;details&gt;&lt;summary&gt;Side Note&lt;/summary&gt;
+&lt;ok-blockquote&gt;
+{reactor} works with {crrri} or {crrry} much the same way it works with {RSelenium}. More info in the package GitHub repository.
+&lt;/ok-blockquote&gt;
+&lt;/details&gt;
+&lt;br&gt;
+
 ---
 
-# {reactor} asynchronous pipelines
+# Test Reactor
 
-__wait__/__then__ : __wait__ will run the expression only if shiny is not busy and the element exists __then__ will run after __wait__ is evaluated.
+To help simplify things `test_reactor` ties all these concepts together. 
+
+
+```r
+reactor::test_reactor(
+  expr          = driver_commands,
+  test_driver   = reactor::firefox_driver(),
+  processx_args = reactor::runApp_args(appDir = 'PATH_TO_APP')
+)
+```
+![](media/test_reactor.svg)
+---
+
+# Driver Commands
+
+RSelenium driver methods that query and manipulate the shiny app are placed in
+
+```r
+driver_commands &lt;- quote({...})
+```
+
+The remoteDriver `test_driver` is evaluated in the `test_reator` environment. 
+
+Some example methods:
+
+&lt;details closed&gt;
+&lt;summary&gt; &lt;span title='Click to Expand'&gt; Navigate to App &lt;/span&gt; &lt;/summary&gt;
+
+
+```r
+test_driver$client$navigate("http://127.0.0.1:6012")
+```
+
+&lt;/details&gt;
+&lt;br&gt;
+
+&lt;details closed&gt;
+&lt;summary&gt; &lt;span title='Click to Expand'&gt; Find an Element &lt;/span&gt; &lt;/summary&gt;
+
+Search for an element on the page, starting from the document root. The located element will be returned as an object of webElement class.
+
+
+```r
+el &lt;- test_driver$client$findElement(using = "id", value = "n")
+```
+
+&lt;/details&gt;
+&lt;br&gt;
+
+&lt;details closed&gt;
+&lt;summary&gt; &lt;span title='Click to Expand'&gt; Execute Script &lt;/span&gt; &lt;/summary&gt;
+
+Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame.
+
+
+```r
+test_driver$client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el))
+```
+
+&lt;/details&gt;
+&lt;br&gt;
+
+The next few slides dive into __{reactor}__ and how it interacts with remoteDriver methods, for the full example code [.red[click here]](https://github.com/yonicd/reactor/blob/master/tests/testthat/reactor-reactivity.R#L3_L41).
+
+---
+
+## asynchronous pipelines
+
+__Assigning DOM elements to R objects__
+
+- __wait__ will run the expression only if shiny is not busy
+  - When the app initializes we need to __wait__ for the initial UI to load and with it element `numericInput` with the id `n`
+- __then__ will run after __wait__ is evaluated.
+  - __then__ we find the element using the `id` with the value `n` and assign the DOM element to `el_n` to use in our commands
 
 
 ```r
 el_n &lt;- test_driver%&gt;%
   reactor::wait(
-    expr = test_driver$client$findElement(
-      using = 'id', 
-      value = 'n')
+    expr = test_driver$client$findElement(using = 'id', value = 'n')
   )
 ```
 
-When the app initializes we need to __wait__ for the initial UI to load and __wait__ for the `numericInput` to be created, after which we find the element `input$n` and assign it to `el_n`.
-
-This is a bit different from other implementations that use `timeout` in JavaScript and __{shinytest}__ in that the timer is built in and will manage for you the time needed to wait.
+&lt;message-blockquote&gt;This is a bit different from other implementations that use timeout in JavaScript and shinytest in that the timer is built in and will manage for you the time needed to wait.&lt;/message-blockquote&gt;
 
 ---
-# asynchronous pipelines
+__asynchronous pipelines: Retrieving element attributes__
 
 Next we __wait__ for shiny to finish invalidating elements and find the plot associated with `output$plot` and return that element.
 
@@ -279,6 +377,7 @@ hist_src &lt;- test_driver%&gt;%
 ```
 
 ---
+__asynchronous pipelines: Manipulating elements__
 
 Remembering that we assigned `input$n` to `el_n` we can manipulate the value here we increase it by 4.
 
@@ -298,10 +397,9 @@ This mimics the exact actions that you would do manually in the app, causing shi
 ]
 
 ---
+__asynchronous pipelines: Comparing elements__
 
-Because we changed the histogram we would want compare the new img src attribute with `hist_src`. 
-
-We use __then2__ to pass 2 elements and use `is_identical` to ask the question is the old src and the new src the same?
+Because we changed the histogram we would want compare the new img src attribute with `hist_src`. We use __then2__ to pass 2 elements and use `is_identical` to ask the question is the old src and the new src the same?
 
   - elem is the piped output from the __wait__ call we are running now
   - elem2 is the object `hist_src` that was assigned originally
@@ -325,23 +423,7 @@ reactor::then2(
   test_driver = test_driver
 )
 ```
-
 ---
-# Test Reactor
-
-To help simplify things `test_reactor` ties all these concepts together. 
-
-
-```r
-hist_counter &lt;- reactor::test_reactor(
-  expr          = driver_commands,
-  test_driver   = reactor::firefox_driver(),
-  processx_args = reactor::runApp_args(appDir = 'PATH_TO_APP')
-)
-```
-![](media/test_reactor.svg)
----
-
 # Back to {whereami}
 
 .pull-left[
@@ -383,10 +465,12 @@ Using the __{whereami}__ log output structure we indicate the `tag` we want to u
 
 
 ```r
-it('reactive hits in plot reactive chunk',{
-  reactor::expect_reactivity(
-    object = hist_counter, tag = 'hist',count =  1
-  )
+testthat::describe('reactive test',{
+  it('reactive hits in plot reactive chunk',{
+    reactor::expect_reactivity(
+      object = hist_counter, tag = 'hist',count =  1
+    )
+  })
 })
 ```
 
@@ -459,6 +543,8 @@ What __{reactor}__ gives you:
 ]
 
 .pull-right[
+&lt;br/&gt;
+&lt;br/&gt;
 ![](https://media.giphy.com/media/26gs78HRO8sOuhTkQ/giphy-downsized.gif)
 ]
 &lt;br/&gt;
