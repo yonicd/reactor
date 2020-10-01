@@ -26,15 +26,15 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
 
-    - name: Install Google Chrome
-      run: |
-       brew cask install chromedriver
-       chromedriver --version
-       
-    - name: Install Gecko
-      run: |
-       brew install geckodriver
-       geckodriver --version
+      - name: Install Google Chrome
+        run: |
+         brew cask install chromedriver
+         chromedriver --version
+         
+      - name: Install Gecko
+        run: |
+         brew install geckodriver
+         geckodriver --version
 
       - name: Cache R packages
         uses: actions/cache@v1
