@@ -45,9 +45,7 @@ testthat::context("testing reactivity on a good app")
 # We run a test with the expectation that the hist tag will be triggered once.
 
 testthat::describe('good reactive',{
-  
-  testthat::skip_if_not(interactive())
-  
+
   hist_counter <- reactor::test_reactor(
     expr          = driver_commands,
     test_driver   = reactor::firefox_driver(),
