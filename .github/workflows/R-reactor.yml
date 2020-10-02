@@ -28,6 +28,11 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
 
+      - name: Install Gecko
+        run: |
+         brew install geckodriver
+         geckodriver --version
+
       - name: Cache R packages
         uses: actions/cache@v1
         with:
