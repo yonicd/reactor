@@ -37,5 +37,4 @@ rsconnect/
 
 *.Rproj
 
-old_readme.R
-*.mp4
+.DS_Store
