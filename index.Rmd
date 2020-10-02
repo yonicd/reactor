@@ -19,6 +19,21 @@ output:
 options(htmltools.dir.version = FALSE)
 ```
 
+```{css, echo=FALSE}
+pre {
+  background: #FFBB33;
+  max-width: 100%;
+  max-height: 350px;
+  overflow-x: auto;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+```
+
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 library(xaringanthemer)
 style_mono_light(base_color = "#23395b")
@@ -504,6 +519,72 @@ tests
 ![](https://github.com/yonicd/reactor/raw/media/example.gif)
 
 ---
+#Continuous Integration
+
+{reactor} can also be utilized with version control and continuous integration to improve the stability of shiny app development with many collaborators. An example workflow for github actions which comes with `googledriver` and `geckodriver` pre-installed. 
+
+```yml
+on: [push, pull_request]
+
+name: R-mac
+  
+jobs:
+  check:
+    runs-on: ${{ matrix.config.os }}
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - { os: macOS-latest, r: '3.6', args: "--no-manual"}
+
+    env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      CRAN: ${{ matrix.config.cran }}
+      
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: r-lib/actions/setup-pandoc@master
+
+      - uses: r-lib/actions/setup-r@master
+        with:
+          r-version: ${{ matrix.config.r }}
+
+      - name: Cache R packages
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('DESCRIPTION') }}
+
+      - name: Install dependencies
+        run: Rscript -e "install.packages('remotes')" -e "remotes::install_deps(dependencies = TRUE)" -e "remotes::install_cran('rcmdcheck')"
+
+      - name: Check
+        run: Rscript -e "rcmdcheck::rcmdcheck(args = '${{ matrix.config.args }}', error_on = 'warning', check_dir = 'check')"
+
+      - name: Install package
+        run: R CMD INSTALL .
+
+      - name: Run Reactor
+        run: |
+          reactor::test_app()
+        shell: Rscript {0}
+        
+```
+
+
+
+
+
+---
+
+# Continuous Integration Output
+
+![](media/gha.png)
+---
+
 
 # Go forth and test your apps!
 
