@@ -75,7 +75,7 @@ To run a test you can use standard `testthat` functions like `testthat::test_dir
 
 To use `test_app` just name the test file `reactor-*.R` instead of `test-*.R` this will have two benefits.
 
-  1. These tests need an interactive environment,  multiple cores and an internet connection. Most CI's do not have this and `covr` will not pass the tests. This allows you to run the tests using `test_dir` which does have the necessary characteristics to run the tests.
+  1. `covr` will not pass the tests. This allows you to run the tests using `test_dir` which does have the necessary characteristics to run the tests.
   2. Allows the app tests to be isolated from the other unit tests thus allowing for `covr` and `testthat` to run on R CMD CHECK without needing to add `skip_*` into the app test files.
 
 
