@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# reactor
+# reactor <img src="https://github.com/yonicd/hex/raw/master/images/logos/reactor.png" align="right" class="logo"/>
 
 <!-- badges: start -->
 
