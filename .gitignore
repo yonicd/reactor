@@ -38,3 +38,4 @@ rsconnect/
 *.Rproj
 
 .DS_Store
+inst/doc

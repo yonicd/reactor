@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
 When developing Shiny apps there is a lot of reactivity problems that
@@ -75,7 +75,7 @@ server <- function(input, output) {
 }
 
 # Return a Shiny app object
-shinyApp(ui = ui, server = server)
+shinyApp(ui = ui, server = server,options = list(port=6012))
 ```
 
 </details>
@@ -147,8 +147,9 @@ To run a test you can use standard `testthat` functions like
 To use `test_app` just name the test file `reactor-*.R` instead of
 `test-*.R` this will have two benefits.
 
-1. `covr` will not pass the tests. This allows you to run the tests using 
-    `test_dir` which does have the necessary characteristics to run the tests.
+1.  `covr` will not pass the tests. This allows you to run the tests
+    using `test_dir` which does have the necessary characteristics to
+    run the tests.
 2.  Allows the app tests to be isolated from the other unit tests thus
     allowing for `covr` and `testthat` to run on R CMD CHECK without
     needing to add `skip_*` into the app test files.
@@ -209,19 +210,17 @@ testthat::context("testing reactivity on a good app")
 # We run a test with the expectation that the hist tag will be triggered once.
 
 testthat::describe('good reactive',{
-  
-  testthat::skip_if_not(interactive())
-  
+
   hist_counter <- reactor::test_reactor(
     expr          = driver_commands,
-    test_driver   = reactor::driver(), #selenium driver
-    processx_args = runApp_args(
+    test_driver   = reactor::firefox_driver(),
+    processx_args = reactor::runApp_args(
       appDir = system.file('examples/good_app.R',package = 'reactor')
     )
   )
   
   it('reactive hits in plot reactive chunk',{
-    reactor::expect_reactivity(hist_counter, tag = 'hist', 1)
+    reactor::expect_reactivity(object = hist_counter, tag = 'hist',count =  1)
   })
   
 })
@@ -232,11 +231,9 @@ testthat::context("testing reactivity on a bad app")
 
 testthat::describe('bad reactive',{
   
-  testthat::skip_if_not(interactive())
-  
   hist_counter <- reactor::test_reactor(
     expr          = driver_commands,
-    test_driver   = reactor::driver(), #selenium driver
+    test_driver   = reactor::firefox_driver(), #selenium driver
     processx_args = reactor::runApp_args(
       appDir = system.file('examples/bad_app.R',package = 'reactor')
     )
