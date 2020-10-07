@@ -13,57 +13,40 @@
 #' if(interactive()){
 #' 
 #' driver_commands <- quote({
+#' 
 #' # wait for input$n element to be created
-#' el_n <- test_driver%>%
-#'   reactor::wait(
-#'     expr = test_driver$client$findElement(using = 'id', value = 'n')
-#'   )
+#' el_n <- reactor::wait(
+#' test_driver = test_driver,
+#' expr = test_driver$client$findElement(using = 'id', value = 'n')
+#' )
 #' 
-#' # collect img src of histogram
-#' hist_src <-test_driver%>%
-#'   reactor::wait(
-#'     expr = test_driver$client$findElement(using = 'css', value = '#plot > img')
-#'  )%>%
-#'   reactor::then(
-#'     expr = function(elem) elem$getElementAttribute('src')[[1]],
-#'     test_driver = test_driver
-#'   )
+#' # Set input$n to 500
+#' test_driver$client$executeScript(script = 'Shiny.setInputValue("n","500");')
 #' 
-#' # stepUp input$n by 4
-#' test_driver$client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el_n))
-#' 
-#' #wait for the histogram img src to update
-#' 
-#' test_driver%>%
-#'   reactor::wait(
-#'     expr   = test_driver$client$findElement(using = 'css', value = '#plot > img')
-#'   )%>%
-#'   reactor::then2(
-#'     elem2 = hist_src,
-#'     expr   = function(elem,elem2){
-#'       
-#'       elem$getElementAttribute('src')[[1]]%>%
-#'         is_identical(elem2)
-#'       
-#'     },
-#'     test_driver = test_driver
-#'   )
-#'
 #' })
-#'  
-#'   hist_counter <- reactor::test_reactor(
-#'        expr    = driver_commands,
-#'        test_driver   = reactor::firefox_driver(),
-#'        processx_args = runApp_args(
-#'        appDir = system.file('examples/good_app.R',package = 'reactor')
-#'        )
-#'      )  
 #' 
-#' reactor::expect_reactivity(hist_counter, tag = 'hist', 1)
+#' hist_counter_good <- reactor::test_reactor(
+#' expr          = driver_commands,
+#' test_driver   = reactor::firefox_driver(),
+#' processx_args = reactor::runApp_args(
+#' appDir = system.file('examples/good_app.R',package = 'reactor')
+#' )
+#' )
 #' 
-#' reactor::expect_reactivity(hist_counter, tag = 'hist', 2)
+#' reactor::expect_reactivity(object = hist_counter_good, tag = 'hist',count =  2)
+#' 
+#' hist_counter_bad <- reactor::test_reactor(
+#' expr          = driver_commands,
+#' test_driver   = reactor::firefox_driver(),
+#' processx_args = reactor::runApp_args(
+#' appDir = system.file('examples/bad_app.R',package = 'reactor')
+#' )
+#' )
+#' 
+#' reactor::expect_reactivity(object = hist_counter_bad, tag = 'hist',count =  2)
 #'  
-#' }}
+#' }
+#' 
 #' @seealso 
 #'  \code{\link[processx]{process}}
 #' @rdname test_reactor
@@ -117,6 +100,7 @@ test_reactor <- function(expr,
   file_timeout(file.path(testdir,'whereami.json'))
   
   # read json log
+  Sys.sleep(0.3)
   read_reactor(testdir)
 
 }

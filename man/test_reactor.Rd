@@ -35,63 +35,6 @@ whereami counter data.frame
 \description{
 Environment which sets up and runs Shiny App tests.
 }
-\examples{
-\dontrun{
-if(interactive()){
-
-driver_commands <- quote({
-# wait for input$n element to be created
-el_n <- test_driver\%>\%
-  reactor::wait(
-    expr = test_driver$client$findElement(using = 'id', value = 'n')
-  )
-
-# collect img src of histogram
-hist_src <-test_driver\%>\%
-  reactor::wait(
-    expr = test_driver$client$findElement(using = 'css', value = '#plot > img')
- )\%>\%
-  reactor::then(
-    expr = function(elem) elem$getElementAttribute('src')[[1]],
-    test_driver = test_driver
-  )
-
-# stepUp input$n by 4
-test_driver$client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el_n))
-
-#wait for the histogram img src to update
-
-test_driver\%>\%
-  reactor::wait(
-    expr   = test_driver$client$findElement(using = 'css', value = '#plot > img')
-  )\%>\%
-  reactor::then2(
-    elem2 = hist_src,
-    expr   = function(elem,elem2){
-      
-      elem$getElementAttribute('src')[[1]]\%>\%
-        is_identical(elem2)
-      
-    },
-    test_driver = test_driver
-  )
-
-})
- 
-  hist_counter <- reactor::test_reactor(
-       expr    = driver_commands,
-       test_driver   = reactor::firefox_driver(),
-       processx_args = runApp_args(
-       appDir = system.file('examples/good_app.R',package = 'reactor')
-       )
-     )  
-
-reactor::expect_reactivity(hist_counter, tag = 'hist', 1)
-
-reactor::expect_reactivity(hist_counter, tag = 'hist', 2)
- 
-}}
-}
 \seealso{
 \code{\link[processx]{process}}
 }
