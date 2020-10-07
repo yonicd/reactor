@@ -550,14 +550,15 @@ tests
 {reactor} can also be utilized with version control and continuous integration to improve the stability of shiny app development with many collaborators. An example workflow for github actions which comes with `googledriver` and `geckodriver` pre-installed. 
 
 ```yml
-on: [push, pull_request]
+on: [push]
 
-name: R-mac
+name: Reactor
   
 jobs:
   check:
     runs-on: ${{ matrix.config.os }}
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    if: "contains(github.event.head_commit.message, 'deploy reactor')"    
 
     strategy:
       fail-fast: false
@@ -568,7 +569,8 @@ jobs:
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       CRAN: ${{ matrix.config.cran }}
-      
+      GITHUB_PAT: ${{ secrets.GH_PAT }}
+
     steps:
       - uses: actions/checkout@master
 
@@ -578,31 +580,28 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
 
+      - name: Install Gecko
+        run: |
+         brew install geckodriver
+         geckodriver --version
       - name: Cache R packages
         uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('DESCRIPTION') }}
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}
 
       - name: Install dependencies
-        run: Rscript -e "install.packages('remotes')" -e "remotes::install_deps(dependencies = TRUE)" -e "remotes::install_cran('rcmdcheck')"
-
-      - name: Check
-        run: Rscript -e "rcmdcheck::rcmdcheck(args = '${{ matrix.config.args }}', error_on = 'warning', check_dir = 'check')"
-
-      - name: Install package
-        run: R CMD INSTALL .
+        run: |
+          install.packages('remotes')
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_github('yonicd/reactor')
+        shell: Rscript {0}
 
       - name: Run Reactor
         run: |
           reactor::test_app()
         shell: Rscript {0}
-        
 ```
-
-
-
-
 
 ---
 
