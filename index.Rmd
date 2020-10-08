@@ -283,95 +283,13 @@ hist_counter <- reactor::test_reactor(
 
 # Driver Commands
 
-RSelenium driver methods that query and manipulate the shiny app are placed in
-
-```r
-driver_commands <- quote({...})
-```
-
-The remoteDriver `test_driver` is evaluated in the `test_reator` environment. 
-
-Some example methods:
-
-<details closed>
-<summary> <span title='Click to Expand'> Navigate to App </span> </summary>
-
-```{r,eval = FALSE}
-test_driver$client$navigate("http://127.0.0.1:6012")
-```
-
-</details>
-<br>
-
-<details closed>
-<summary> <span title='Click to Expand'> Find an Element </span> </summary>
-
-Search for an element on the page, starting from the document root. The located element will be returned as an object of webElement class.
-
-```{r,eval = FALSE}
-el <- test_driver$client$findElement(using = "id", value = "n")
-```
-
-</details>
-<br>
-
-<details closed>
-<summary> <span title='Click to Expand'> Execute Script </span> </summary>
-
-Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame.
-
-```{r,eval = FALSE}
-test_driver$client$executeScript(script = 'Shiny.setInputValue("n","500");')
-```
-
-</details>
-<br>
-
----
-
-## asynchronous pipelines
-
-__Assigning DOM elements to R objects__
-
-- __wait__ will run the expression only if shiny is not busy
-  - When the app initializes we need to __wait__ for the initial UI to load and with it element `numericInput` with the id `n`
-- __then__ will run after __wait__ is evaluated.
-  - __then__ we find the element using the `id` with the value `n` and assign the DOM element to `el_n` to use in our commands
-
-```{r, eval = FALSE}
-el_n <- test_driver%>%
-  reactor::wait(
-    expr = test_driver$client$findElement(using = 'id', value = 'n')
-  )
-```
-
-<message-blockquote>This is a bit different from other implementations that use timeout in JavaScript and shinytest in that the timer is built in and will manage for you the time needed to wait.</message-blockquote>
-
----
-__asynchronous pipelines: Manipulating elements__
-
-Remembering that we assigned `input$n` to `el_n` we can manipulate the value here we increase it by 4.
-
-```{r,eval = FALSE}
-test_driver$client$executeScript(script = 'Shiny.setInputValue("n","500");')
-```
-
-.pull-left[
-This mimics the exact actions that you would do manually in the app, causing shiny to go through an invalidation of the reactive elements and updating the histogram.
-]
-
-.pull-right[
-![](https://media.giphy.com/media/xUPGcmbWEgjx1epbS8/giphy-downsized.gif)
-]
-
----
-# Complete driver_commands Script
+RSelenium driver methods that query and manipulate the shiny app are placed in a `quote` to be evaluated at a later time.
 
 ```{r,eval = FALSE}
 driver_commands <- quote({
   
   # wait for input$n element to be created
-  el_n <- reactor::wait(
+  reactor::wait(
       test_driver = test_driver,
       expr = test_driver$client$findElement(using = 'id', value = 'n')
     )
@@ -381,6 +299,22 @@ driver_commands <- quote({
   
 })
 ```
+
+---
+
+## Asynchronous Calls
+
+- __wait__ will run the expression only if shiny is not busy
+- This is a bit different from other implementations that use timeout in JavaScript and shinytest in that the timer is built in and will manage for you the time needed to wait.
+
+```{r, eval = FALSE}
+test_driver%>%
+  reactor::wait(
+    expr = test_driver$client$findElement(using = 'id', value = 'n')
+  )
+```
+
+
 
 ---
 # Back to {whereami}
