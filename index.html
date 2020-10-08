@@ -287,7 +287,7 @@ To help simplify things `test_reactor` ties all these concepts together.
 
 
 ```r
-reactor::test_reactor(
+hist_counter &lt;- reactor::test_reactor(
   expr          = driver_commands,
   test_driver   = reactor::firefox_driver(),
   processx_args = reactor::runApp_args(appDir = 'PATH_TO_APP')
@@ -339,13 +339,11 @@ Inject a snippet of JavaScript into the page for execution in the context of the
 
 
 ```r
-test_driver$client$executeScript(script = 'arguments[0].stepUp(4);',args = list(el))
+test_driver$client$executeScript(script = 'Shiny.setInputValue("n","500");')
 ```
 
 &lt;/details&gt;
 &lt;br&gt;
-
-The next few slides dive into __{reactor}__ and how it interacts with remoteDriver methods, for the full example code [.red[click here]](https://github.com/yonicd/reactor/blob/master/tests/testthat/reactor-reactivity.R#L3_L41).
 
 ---
 
@@ -369,38 +367,13 @@ el_n &lt;- test_driver%&gt;%
 &lt;message-blockquote&gt;This is a bit different from other implementations that use timeout in JavaScript and shinytest in that the timer is built in and will manage for you the time needed to wait.&lt;/message-blockquote&gt;
 
 ---
-__asynchronous pipelines: Retrieving element attributes__
-
-Next we __wait__ for shiny to finish invalidating elements and find the plot associated with `output$plot` and return that element.
-
-The output of __wait__ is then piped into __then__ with the input the expression `elem`. Using this input we can then query attributes of it, in this case we retrieve the src attribute of the image. 
-
-
-```r
-hist_src &lt;- test_driver%&gt;%
-    reactor::wait(
-      expr = test_driver$client$findElement(
-        using = 'css', 
-        value = '#plot &gt; img')
-    )%&gt;%
-    reactor::then(
-      expr = function(elem) {
-        elem$getElementAttribute('src')[[1]]
-      },
-      test_driver = test_driver
-    )
-```
-
----
 __asynchronous pipelines: Manipulating elements__
 
 Remembering that we assigned `input$n` to `el_n` we can manipulate the value here we increase it by 4.
 
 
 ```r
-test_driver$client$executeScript(
-  script = 'arguments[0].stepUp(4);',args = list(el_n)
-  )
+test_driver$client$executeScript(script = 'Shiny.setInputValue("n","500");')
 ```
 
 .pull-left[
@@ -412,32 +385,24 @@ This mimics the exact actions that you would do manually in the app, causing shi
 ]
 
 ---
-__asynchronous pipelines: Comparing elements__
-
-Because we changed the histogram we would want compare the new img src attribute with `hist_src`. We use __then2__ to pass 2 elements and use `is_identical` to ask the question is the old src and the new src the same?
-
-  - elem is the piped output from the __wait__ call we are running now
-  - elem2 is the object `hist_src` that was assigned originally
+# Complete driver_commands Script
 
 
 ```r
-test_driver%&gt;%
-  reactor::wait(
-    expr   = test_driver$client$findElement(
-      using = 'css', value = '#plot &gt; img'
-      )
-)%&gt;%
-reactor::then2(
-  elem2 = hist_src,
-  expr   = function(elem,elem2){
-    reactor::is_identical(
-      elem$getElementAttribute('src')[[1]],
-      elem2
+driver_commands &lt;- quote({
+  
+  # wait for input$n element to be created
+  el_n &lt;- reactor::wait(
+      test_driver = test_driver,
+      expr = test_driver$client$findElement(using = 'id', value = 'n')
     )
-  },
-  test_driver = test_driver
-)
+
+  # Set input$n to 500
+  test_driver$client$executeScript(script = 'Shiny.setInputValue("n","500");')
+  
+})
 ```
+
 ---
 # Back to {whereami}
 
@@ -476,14 +441,14 @@ We now have a log file on disk that we can use to query expectations of app reac
 
 __{reactor}__ comes with its own set of expectations that are built for __{whereami}__ outputs and can be used inside __{testthat}__.
 
-Using the __{whereami}__ log output structure we indicate the `tag` we want to use (`'hist'`) and the expected counter value (`1`).
+Using the __{whereami}__ log output structure we indicate the `tag` we want to use (`'hist'`) and the expected counter value (`2`).
 
 
 ```r
 testthat::describe('reactive test',{
   it('reactive hits in plot reactive chunk',{
     reactor::expect_reactivity(
-      object = hist_counter, tag = 'hist',count =  1
+      object = hist_counter, tag = 'hist',count =  2
     )
   })
 })
@@ -493,7 +458,7 @@ If `FALSE` the following error message is returned
 
 
 ```r
-Error: The tag 'hist' has reactivity count of 2, not 1.
+Error: The tag 'hist' has reactivity count of 3, not 2.
 ```
 
 ---
@@ -607,7 +572,7 @@ jobs:
 
 # Continuous Integration Output
 
-![](media/gha.png)
+.center[![:scale 80%](media/gha.png)]
 ---
 
 
