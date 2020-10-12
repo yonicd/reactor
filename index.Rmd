@@ -48,6 +48,8 @@ xaringanExtra::use_share_again()
 
 .pull-left[
 The ability to **diagnose** and **resolve** cascading reactivity in Shiny applications is an integral part of good application development preventing a waste of resources and negative user experiences.
+
+__Cascading Reactivity__: Elements in a shiny app trigger each other in a manner the developer did not intend.
 ]
 
 .pull-right[
@@ -143,13 +145,17 @@ n <- 200
 
 # Define the UI
 ui <- shiny::bootstrapPage(
-  shiny::numericInput('n', 'Number of obs', n),
+  shiny::uiOutput('n'),
   shiny::plotOutput('plot')
 )
 
 # Define the server code
 server <- function(input, output) {
 
+  output$n <- renderUI({
+    shiny::numericInput('n', 'Number of obs', n)
+  })
+  
   shiny::observe({
     output$plot <- shiny::renderPlot({
       whereami::whereami(tag = 'hist') #<<
@@ -375,7 +381,7 @@ Error: The tag 'hist' has reactivity count of 3, not 2.
 ---
 
 ### Fixing our App
-<warn-blockquote> __Bad App__ `renderPlot` is in an `observe` which is triggered every time the app is invalidated </warn-blockquote>
+<warn-blockquote> __Bad App__ `renderPlot` is in an `observe` which is triggered twice when the app is initially invalidated, as elements are generated in the app. </warn-blockquote>
 ```{r,eval = FALSE}
 shiny::observe({ #<<
   output$plot <- shiny::renderPlot({
