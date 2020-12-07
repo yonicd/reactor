@@ -3,7 +3,7 @@ title: "Reactor"
 subtitle: "Unit Testing Shiny App Reactivity"  
 author: 
   - "Jonathan Sidi"
-date: 'R/Pharma 2020<br/><br/>https://bit.ly/36fTYFs'
+date: 'Toronto R<br/><br/>https://bit.ly/36fTYFs'
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -23,7 +23,7 @@ options(htmltools.dir.version = FALSE)
 pre {
   background: #FFBB33;
   max-width: 100%;
-  max-height: 350px;
+  max-height: 525px;
   overflow-x: auto;
   overflow-y: auto;
   white-space: pre-wrap;
@@ -39,7 +39,7 @@ library(xaringanthemer)
 style_mono_light(base_color = "#23395b")
 ```
 
-```{r share-again, echo=FALSE}
+```{r share-again, echo=FALSE, eval = FALSE}
 xaringanExtra::use_clipboard()
 xaringanExtra::use_share_again()
 ```
@@ -420,68 +420,15 @@ tests
 
 ---
 
-# Unit Tesing Reactivity ![:scale_right 25%](https://media.giphy.com/media/l3UcA1HpL5kLuiWOc/giphy.gif)
-<br>
-![](https://github.com/yonicd/reactor/raw/media/example.gif)
+# Unit Testing Reactivity ![:scale_right 25%](https://media.giphy.com/media/l3UcA1HpL5kLuiWOc/giphy.gif)
+<img src = "https://github.com/yonicd/reactor/raw/media/example.gif" height="450px">
 
 ---
 #Continuous Integration
 
-{reactor} can also be utilized with version control and continuous integration to improve the stability of shiny app development with many collaborators. An example workflow for github actions which comes with `googledriver` and `geckodriver` pre-installed. 
+{reactor} can also be utilized with version control and continuous integration to improve the stability of shiny app development with many collaborators. 
 
-```yml
-on: [push]
-
-name: Reactor
-  
-jobs:
-  check:
-    runs-on: ${{ matrix.config.os }}
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-    if: "contains(github.event.head_commit.message, 'deploy reactor')"    
-
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-        - { os: macOS-latest, r: '3.6', args: "--no-manual"}
-
-    env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      CRAN: ${{ matrix.config.cran }}
-      GITHUB_PAT: ${{ secrets.GH_PAT }}
-
-    steps:
-      - uses: actions/checkout@master
-
-      - uses: r-lib/actions/setup-pandoc@master
-
-      - uses: r-lib/actions/setup-r@master
-        with:
-          r-version: ${{ matrix.config.r }}
-
-      - name: Install Gecko
-        run: |
-         brew install geckodriver
-         geckodriver --version
-      - name: Cache R packages
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}
-
-      - name: Install dependencies
-        run: |
-          install.packages('remotes')
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_github('yonicd/reactor')
-        shell: Rscript {0}
-
-      - name: Run Reactor
-        run: |
-          reactor::test_app()
-        shell: Rscript {0}
-```
+An example workflow for github actions which comes with `googledriver` and `geckodriver` pre-installed can be found [here](https://github.com/yonicd/reactor/blob/master/.github/workflows/R-reactor.yml).
 
 ---
 

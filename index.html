@@ -5,14 +5,8 @@
     <meta charset="utf-8" />
     <meta name="author" content="Jonathan Sidi" />
     <script src="libs/header-attrs/header-attrs.js"></script>
-    <script src="libs/clipboard/clipboard.min.js"></script>
-    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
-    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
-    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
-    <link href="libs/shareon/shareon.min.css" rel="stylesheet" />
-    <script src="libs/shareon/shareon.min.js"></script>
-    <link href="libs/xaringanExtra-shareagain/shareagain.css" rel="stylesheet" />
-    <script src="libs/xaringanExtra-shareagain/shareagain.js"></script>
+    <link href="libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+    <script src="libs/anchor-sections/anchor-sections.js"></script>
     <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="css/colours.css" type="text/css" />
     <link rel="stylesheet" href="css/title.css" type="text/css" />
@@ -24,7 +18,7 @@ class: center, middle, inverse, title-slide
 # Reactor
 ## Unit Testing Shiny App Reactivity
 ### Jonathan Sidi
-### R/Pharma 2020<br/><br/><a href="https://bit.ly/36fTYFs" class="uri">https://bit.ly/36fTYFs</a>
+### Toronto R<br/><br/><a href="https://bit.ly/36fTYFs" class="uri">https://bit.ly/36fTYFs</a>
 
 ---
 
@@ -35,7 +29,7 @@ class: center, middle, inverse, title-slide
 pre {
   background: #FFBB33;
   max-width: 100%;
-  max-height: 350px;
+  max-height: 525px;
   overflow-x: auto;
   overflow-y: auto;
   white-space: pre-wrap;
@@ -441,68 +435,15 @@ tests
 
 ---
 
-# Unit Tesing Reactivity ![:scale_right 25%](https://media.giphy.com/media/l3UcA1HpL5kLuiWOc/giphy.gif)
-&lt;br&gt;
-![](https://github.com/yonicd/reactor/raw/media/example.gif)
+# Unit Testing Reactivity ![:scale_right 25%](https://media.giphy.com/media/l3UcA1HpL5kLuiWOc/giphy.gif)
+&lt;img src = "https://github.com/yonicd/reactor/raw/media/example.gif" height="450px"&gt;
 
 ---
 #Continuous Integration
 
-{reactor} can also be utilized with version control and continuous integration to improve the stability of shiny app development with many collaborators. An example workflow for github actions which comes with `googledriver` and `geckodriver` pre-installed. 
+{reactor} can also be utilized with version control and continuous integration to improve the stability of shiny app development with many collaborators. 
 
-```yml
-on: [push]
-
-name: Reactor
-  
-jobs:
-  check:
-    runs-on: ${{ matrix.config.os }}
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-    if: "contains(github.event.head_commit.message, 'deploy reactor')"    
-
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-        - { os: macOS-latest, r: '3.6', args: "--no-manual"}
-
-    env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      CRAN: ${{ matrix.config.cran }}
-      GITHUB_PAT: ${{ secrets.GH_PAT }}
-
-    steps:
-      - uses: actions/checkout@master
-
-      - uses: r-lib/actions/setup-pandoc@master
-
-      - uses: r-lib/actions/setup-r@master
-        with:
-          r-version: ${{ matrix.config.r }}
-
-      - name: Install Gecko
-        run: |
-         brew install geckodriver
-         geckodriver --version
-      - name: Cache R packages
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}
-
-      - name: Install dependencies
-        run: |
-          install.packages('remotes')
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_github('yonicd/reactor')
-        shell: Rscript {0}
-
-      - name: Run Reactor
-        run: |
-          reactor::test_app()
-        shell: Rscript {0}
-```
+An example workflow for github actions which comes with `googledriver` and `geckodriver` pre-installed can be found [here](https://github.com/yonicd/reactor/blob/master/.github/workflows/R-reactor.yml).
 
 ---
 
