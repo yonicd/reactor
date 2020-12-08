@@ -15,7 +15,7 @@ server <- function(input, output) {
   
   shiny::observe({ # <----- run every time any element in input is invalidated
     output$plot <- shiny::renderPlot({
-      whereami::whereami(tag = 'hist')
+      whereami::cat_where(whereami::whereami(tag = 'hist'))
       graphics::hist(stats::runif(input$n))
     })
   })

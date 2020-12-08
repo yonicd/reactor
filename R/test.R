@@ -76,7 +76,7 @@ test_reactor <- function(expr,
   
   # spawn child process for app
   x <- processx::process$new(
-    command = "R", 
+    command = normalizePath(file.path(Sys.getenv("R_HOME"),'R')), 
     args    = c("-e", paste0(processx_args,collapse = ';')),
     stderr  = file.path(testdir,'err.txt'),
     stdout  = file.path(testdir,'out.txt'))
