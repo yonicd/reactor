@@ -2,7 +2,7 @@ Package: reactor
 Type: Package
 Title: Unit Testing for Shiny Reactivity
 Description: Low level unit testing for Shiny reactive elements.
-Version: 0.0.8
+Version: 0.1.0
 Authors@R: c( person(given = "Jonathan", family = "Sidi", email = "yonicd@gmail.com",
          role = c("aut", "cre"), comment = c(ORCID = "0000-0002-4222-1819")) )
 License: MIT + file LICENSE
@@ -14,5 +14,6 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
-Suggests: covr, knitr, rmarkdown
+Suggests: covr, knitr, rmarkdown, crrry
+Remotes: ColinFay/crrry
 VignetteBuilder: knitr
