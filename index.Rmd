@@ -138,35 +138,27 @@ The app will have two UI elements:
 On the server side we will add a new element for logging reactivity using __{whereami}__.
 
 ---
-
 ```{r,eval = FALSE}
 # Global Variables
 n <- 200
-
 # Define the UI
 ui <- shiny::bootstrapPage(
   shiny::uiOutput('n'),
   shiny::plotOutput('plot')
 )
-
 # Define the server code
 server <- function(input, output) {
-
   output$n <- renderUI({
     shiny::numericInput('n', 'Number of obs', n)
   })
   
-  shiny::observe({
-    output$plot <- shiny::renderPlot({
-      whereami::whereami(tag = 'hist') #<<
-      graphics::hist(stats::runif(input$n))
-    })
+  output$plot <- shiny::renderPlot({
+    whereami::whereami(tag = 'hist') #<<
+    graphics::hist(stats::runif(input$n))
   })
 }
-
 # Return a Shiny app object
 shiny::shinyApp(ui = ui, server = server)
-
 ```
 
 --
@@ -225,9 +217,8 @@ appDir = 'PATH_TO_APP'
 
 # Communicating with the App
 
-To interact with the application that is running in the child process reactor depends on __{RSelenium}__.
-
-When the __{RSelenium}__ is invoked it opens _another_ child process and port on the `localhost` to run the webdriver.
+- To interact with the application that is running in the child process reactor depends on __{RSelenium}__.
+- When the __{RSelenium}__ is invoked it opens _another_ child process and port on the `localhost` to run the webdriver.
 
 .pull-left[
 __{RSelenium}__ uses webdrivers to manipulate content on a web browser.]
@@ -381,23 +372,22 @@ Error: The tag 'hist' has reactivity count of 3, not 2.
 ---
 
 ### Fixing our App
-<warn-blockquote> __Bad App__ `renderPlot` is in an `observe` which is triggered twice when the app is initially invalidated, as elements are generated in the app. </warn-blockquote>
+<warn-blockquote> __Bad App__ `renderPlot` is triggered twice when the app is initially invalidated, as elements are generated in the app. </warn-blockquote>
 ```{r,eval = FALSE}
-shiny::observe({ #<<
-  output$plot <- shiny::renderPlot({
-    whereami::whereami(tag = 'hist')
-    hist(stats::runif(input$n))})
-  })
+output$plot <- shiny::renderPlot({
+  whereami::whereami(tag = 'hist')
+  hist(stats::runif(input$n))
+})
 ```
 
-<ok-blockquote> __Good App__ `renderPlot` is in an `observeEvent` which is triggered only when `input$n` is invalidated. </ok-blockquote>
+<ok-blockquote> __Good App__ `req` is in the `renderPlot` which is triggered only when `input$n` exists and is invalidated. </ok-blockquote>
 
 ```{r,eval = FALSE}
-shiny::observeEvent(input$n,{ #<<
-  output$plot <- shiny::renderPlot({
-    whereami::whereami(tag = 'hist')
-    hist(stats::runif(input$n))})
-  })
+output$plot <- shiny::renderPlot({
+  shiny::req(input$n) #<<
+  whereami::whereami(tag = 'hist')
+  hist(stats::runif(input$n))
+})
 ```
 
 ---
