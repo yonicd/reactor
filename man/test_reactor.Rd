@@ -35,6 +35,46 @@ whereami counter data.frame
 \description{
 Environment which sets up and runs Shiny App tests.
 }
+\examples{
+\dontrun{
+if(interactive()){
+
+driver_commands <- quote({
+
+# wait for input$n element to be created
+el_n <- reactor::wait(
+test_driver = test_driver,
+expr = test_driver$client$findElement(using = 'id', value = 'n')
+)
+
+# Set input$n to 500
+test_driver$client$executeScript(script = 'Shiny.setInputValue("n","500");')
+
+})
+
+hist_counter_good <- reactor::test_reactor(
+expr          = driver_commands,
+test_driver   = reactor::firefox_driver(),
+processx_args = reactor::runApp_args(
+appDir = system.file('examples/good_app.R',package = 'reactor')
+)
+)
+
+reactor::expect_reactivity(object = hist_counter_good, tag = 'hist',count =  2)
+
+hist_counter_bad <- reactor::test_reactor(
+expr          = driver_commands,
+test_driver   = reactor::firefox_driver(),
+processx_args = reactor::runApp_args(
+appDir = system.file('examples/bad_app.R',package = 'reactor')
+)
+)
+
+reactor::expect_reactivity(object = hist_counter_bad, tag = 'hist',count =  2)
+ 
+}
+}
+}
 \seealso{
 \code{\link[processx]{process}}
 }

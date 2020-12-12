@@ -46,7 +46,7 @@
 #' reactor::expect_reactivity(object = hist_counter_bad, tag = 'hist',count =  2)
 #'  
 #' }
-#' 
+#' }
 #' @seealso 
 #'  \code{\link[processx]{process}}
 #' @rdname test_reactor

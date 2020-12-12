@@ -59,7 +59,8 @@ runApp_args <- function(
 golem_args <- function(test_port = 6012,test_path = tempdir()){
   
   c(reactor_args(test_path = test_path),
-    glue::glue("run_app(shiny_opts = list(port = {test_port}L))")
+    glue::glue("options('shiny.port'= {test_port},shiny.host='0.0.0.0')"),
+    "run_app()"
   )
   
 }
