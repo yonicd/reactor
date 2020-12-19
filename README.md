@@ -84,15 +84,15 @@ obj <- obj%>%
 reactor:
   processx:
     runApp:
-      test_port: 17905
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpaVh80k
+      test_port: 9706
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpUcJ0fu
       test_ip: 127.0.0.1
       appDir: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R
   driver:
     chrome:
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpaVh80k
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpUcJ0fu
       verbose: no
-      port: 36055
+      port: 7387
       opts:
         args:
         - --headless
@@ -103,7 +103,7 @@ reactor:
           download.prompt_for_download: no
           download.directory_upgrade: yes
           safebrowsing.enabled: yes
-          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpaVh80k
+          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpUcJ0fu
 ```
 
 </details>
@@ -128,15 +128,15 @@ obj <- obj%>%
 reactor:
   processx:
     runApp:
-      test_port: 17905
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpaVh80k
+      test_port: 9706
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpUcJ0fu
       test_ip: 127.0.0.1
       appDir: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R
   driver:
     chrome:
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpaVh80k
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpUcJ0fu
       verbose: no
-      port: 5138
+      port: 19027
       opts:
         args:
         - --disable-gpu
@@ -146,7 +146,7 @@ reactor:
           download.prompt_for_download: no
           download.directory_upgrade: yes
           safebrowsing.enabled: yes
-          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpaVh80k
+          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpUcJ0fu
 ```
 
 </details>
@@ -218,6 +218,7 @@ init_reactor()%>%
 ### Testing Expectations
 
 Reactor can also test reactivity expectations in a `testthat` framework
+using the builtin `expect_reactivity()` function
 
 ``` r
 init_reactor()%>%

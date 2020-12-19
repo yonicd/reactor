@@ -149,7 +149,7 @@ init_reactor()%>%
 
 ### Testing Expectations
 
-Reactor can also test reactivity expectations in a `testthat` framework
+Reactor can also test reactivity expectations in a `testthat` framework using the builtin `expect_reactivity()` function 
 
 ```{r,eval = FALSE}
 init_reactor()%>%
