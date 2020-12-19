@@ -161,5 +161,6 @@ init_reactor()%>%
   set_id_value('n',500)%>%
   expect_reactivity('hist',1)%>%
   set_id_value('n',200)%>%
-  expect_reactivity('hist',2)
+  expect_reactivity('hist',2)%>%
+  kill_app()
 ```

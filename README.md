@@ -84,15 +84,15 @@ obj <- obj%>%
 reactor:
   processx:
     runApp:
-      test_port: 30232
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp8mDxVU
+      test_port: 17905
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpaVh80k
       test_ip: 127.0.0.1
       appDir: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R
   driver:
     chrome:
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp8mDxVU
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpaVh80k
       verbose: no
-      port: 14844
+      port: 36055
       opts:
         args:
         - --headless
@@ -103,7 +103,7 @@ reactor:
           download.prompt_for_download: no
           download.directory_upgrade: yes
           safebrowsing.enabled: yes
-          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp8mDxVU
+          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpaVh80k
 ```
 
 </details>
@@ -128,15 +128,15 @@ obj <- obj%>%
 reactor:
   processx:
     runApp:
-      test_port: 30232
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp8mDxVU
+      test_port: 17905
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpaVh80k
       test_ip: 127.0.0.1
       appDir: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R
   driver:
     chrome:
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp8mDxVU
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpaVh80k
       verbose: no
-      port: 44144
+      port: 5138
       opts:
         args:
         - --disable-gpu
@@ -146,7 +146,7 @@ reactor:
           download.prompt_for_download: no
           download.directory_upgrade: yes
           safebrowsing.enabled: yes
-          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp8mDxVU
+          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpaVh80k
 ```
 
 </details>
@@ -229,5 +229,6 @@ init_reactor()%>%
   set_id_value('n',500)%>%
   expect_reactivity('hist',1)%>%
   set_id_value('n',200)%>%
-  expect_reactivity('hist',2)
+  expect_reactivity('hist',2)%>%
+  kill_app()
 ```
