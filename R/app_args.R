@@ -8,18 +8,16 @@
 #'   
 #' The command is appended predefined commands and sent to a [process][processx::process] object.
 #' 
-#' @param test_port numeric, port to run the app on, Default: 6012
-#' Default: getOption("shiny.host", "127.0.0.1")
-#' @param test_path character, Path the child process will have access
-#'  to on the master, Default: tempdir()
 #' @param appDir The application to run. Should be one of the following (Default: getwd()):
 #'   - A directory containing server.R, plus, either ui.R or a www directory 
 #'   that contains the file index.html.
 #'   - A directory containing app.R.
-#'   - An .R file containing a Shiny application, ending with an expression 
-#'   that produces a Shiny app object.
-#' @param host The IPv4 address that the application should listen on.
-#' @param workerId Can generally be ignored. Exists to help some editions of Shiny Server Pro route requests to the correct process. Default: ""
+#'   - An .R file containing a Shiny application, ending with an expression that produces a Shiny app object.
+#' @param package_name name of the golem package
+#' @param test_port integer, port to run the app on, Default: httpuv::randomPort()
+#' Default: getOption("shiny.host", "127.0.0.1")
+#' @param test_ip The IPv4 address that the application should listen on.
+#' @param test_path character, Path the child process will have access to on the master, Default: tempdir()
 #' @return character
 #' @examples 
 #' 
@@ -32,36 +30,37 @@
 #' @export 
 #' @importFrom glue glue
 #' @import shiny
+#' @importFrom httpuv randomPort
 runApp_args <- function(
-  test_port = 6012,
-  test_path = tempdir(), 
   appDir = getwd(),
-  host = getOption("shiny.host", "127.0.0.1"),
-  workerId = ""
-  ){
-  
-  glue_args <- glue::glue(
-    "appDir = '{appDir}'",
-    "port = {test_port}L",
-    "host = '{host}'",
-    "test.mode = TRUE",
-    "workerId = '{workerId}'",.sep = ', ')
+  test_port = httpuv::randomPort(),
+  test_ip = getOption("shiny.host", "127.0.0.1"),
+  test_path = tempdir()){
   
   c(reactor_args(test_path = test_path),
-    glue::glue("shiny::runApp({glue_args})")
+    glue::glue("options('shiny.port'= {test_port},shiny.host='{test_ip}')"),
+    glue::glue("shiny::runApp(appDir = '{appDir}')")
     )
-  
 }
 
 #' @rdname runApp_args
 #' @export 
 #' @importFrom glue glue
-golem_args <- function(test_port = 6012,test_path = tempdir()){
+#' @importFrom httpuv randomPort
+golem_args <- function(package_name ='', 
+                       test_port = httpuv::randomPort(),
+                       test_ip = getOption('shiny.host','127.0.0.1'),
+                       test_path = tempdir()){
   
-  c(reactor_args(test_path = test_path),
-    glue::glue("options('shiny.port'= {test_port},shiny.host='0.0.0.0')"),
-    "run_app()"
-  )
+  app_call <- "run_app()"
+  
+  if(nzchar(package_name)){
+    app_call <- paste(package_name,app_call,sep = '::')  
+  }
+
+  shiny_opts <- glue::glue("options('shiny.port'= {test_port},shiny.host='{test_ip}')")
+  
+  c(reactor_args(test_path = test_path),shiny_opts,app_call)
   
 }
 
@@ -72,4 +71,78 @@ reactor_args <- function(test_path = tempdir()){
     glue::glue("whereami::set_whereami_log('{file.path(test_path,'reactor')}')")
   )
   
+}
+
+#' @title FUNCTION_TITLE
+#' @description FUNCTION_DESCRIPTION
+#' @param obj PARAM_DESCRIPTION
+#' @param appDir PARAM_DESCRIPTION, Default: getwd()
+#' @param test_port PARAM_DESCRIPTION, Default: httpuv::randomPort()
+#' @param test_ip The IPv4 address that the application should listen on.
+#' @param test_path PARAM_DESCRIPTION, Default: tempdir()
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples 
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname set_runapp_args
+#' @export 
+#' @importFrom httpuv randomPort
+set_runapp_args <- function(
+  obj, 
+  appDir = getwd(), 
+  test_port = httpuv::randomPort(),
+  test_path = tempdir(), 
+  test_ip = getOption('shiny.host','127.0.0.1')){
+  
+  obj$processx <- list(
+    runApp = list(
+      test_port = test_port, 
+      test_path = test_path, 
+      test_ip = test_ip,
+      appDir = appDir
+    )
+  )
+  
+  invisible(obj)
+}
+
+#' @title FUNCTION_TITLE
+#' @description FUNCTION_DESCRIPTION
+#' @param obj PARAM_DESCRIPTION
+#' @param package_name PARAM_DESCRIPTION, Default: ''
+#' @param test_port PARAM_DESCRIPTION, Default: httpuv::randomPort()
+#' @param test_ip The IPv4 address that the application should listen on.
+#' @param test_path PARAM_DESCRIPTION, Default: tempdir()
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples 
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname set_golem_args
+#' @export 
+#' @importFrom httpuv randomPort
+set_golem_args <- function(
+  obj, 
+  package_name ='', 
+  test_port = httpuv::randomPort(),
+  test_path = tempdir(), 
+  test_ip = getOption('shiny.host','127.0.0.1')
+  ){
+  obj$processx <- list(
+    golem = list(
+      test_port = test_port, 
+      test_path = test_path, 
+      test_ip = test_ip,
+      package = package_name
+    )
+  )
+  
+  invisible(obj)
 }

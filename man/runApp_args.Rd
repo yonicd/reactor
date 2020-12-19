@@ -6,34 +6,36 @@
 \title{Arguments to pass to a Shiny App in a child process}
 \usage{
 runApp_args(
-  test_port = 6012,
-  test_path = tempdir(),
   appDir = getwd(),
-  host = getOption("shiny.host", "127.0.0.1"),
-  workerId = ""
+  test_port = httpuv::randomPort(),
+  test_ip = getOption("shiny.host", "127.0.0.1"),
+  test_path = tempdir()
 )
 
-golem_args(test_port = 6012, test_path = tempdir())
+golem_args(
+  package_name = "",
+  test_port = httpuv::randomPort(),
+  test_ip = getOption("shiny.host", "127.0.0.1"),
+  test_path = tempdir()
+)
 }
 \arguments{
-\item{test_port}{numeric, port to run the app on, Default: 6012
-Default: getOption("shiny.host", "127.0.0.1")}
-
-\item{test_path}{character, Path the child process will have access
-to on the master, Default: tempdir()}
-
 \item{appDir}{The application to run. Should be one of the following (Default: getwd()):
 \itemize{
 \item A directory containing server.R, plus, either ui.R or a www directory
 that contains the file index.html.
 \item A directory containing app.R.
-\item An .R file containing a Shiny application, ending with an expression
-that produces a Shiny app object.
+\item An .R file containing a Shiny application, ending with an expression that produces a Shiny app object.
 }}
 
-\item{host}{The IPv4 address that the application should listen on.}
+\item{test_port}{integer, port to run the app on, Default: httpuv::randomPort()
+Default: getOption("shiny.host", "127.0.0.1")}
 
-\item{workerId}{Can generally be ignored. Exists to help some editions of Shiny Server Pro route requests to the correct process. Default: ""}
+\item{test_ip}{The IPv4 address that the application should listen on.}
+
+\item{test_path}{character, Path the child process will have access to on the master, Default: tempdir()}
+
+\item{package_name}{name of the golem package}
 }
 \value{
 character

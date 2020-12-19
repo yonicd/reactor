@@ -7,7 +7,7 @@
 expect_reactivity(object, tag, count)
 }
 \arguments{
-\item{object}{whereami counter object read from whereami.json}
+\item{object}{a reactor class object or the path to whereami.json}
 
 \item{tag}{character, tag name of the element in the counter object to query}
 
@@ -21,30 +21,9 @@ Compares the maximum counter value of a tag in a \emph{whereami} counter
 object with a value
 }
 \examples{
+\dontrun{
 if(interactive()){
-
-txt <- "
-whereami::cat_where(whereami::whereami(tag = 'reactor test'))
-"
-
-whereami::set_whereami_log(tempdir())
-
-tf <- tempfile(fileext = '.R')
-
-cat(txt,file = tf)
-
-source(tf)
-
-counter <- read_reactor(path = tempdir())
-
-expect_reactivity(counter,'reactor test',1)
-
-# clean up temp files
-
-whereami::counter_reset()
-unlink(tf)
-unlink(reactor_dir, recursive = TRUE, force = TRUE)
-
+ #EXAMPLE1
 }
-
+}
 }

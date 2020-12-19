@@ -1,43 +1,27 @@
 #' @title Expectation: is the counter equal to a value?
 #' @description Compares the maximum counter value of a tag in a _whereami_ counter
 #' object with a value
-#' @param object whereami counter object read from whereami.json
+#' @param object a reactor class object or the path to whereami.json
 #' @param tag character, tag name of the element in the counter object to query
 #' @param count numeric, expected value
 #' @return invisible result
 #' @examples 
+#' \dontrun{
 #' if(interactive()){
-#' 
-#' txt <- "
-#' whereami::cat_where(whereami::whereami(tag = 'reactor test'))
-#' "
-#'
-#' whereami::set_whereami_log(tempdir())
-#'
-#' tf <- tempfile(fileext = '.R')
-#'
-#' cat(txt,file = tf)
-#'
-#' source(tf)
-#' 
-#' counter <- read_reactor(path = tempdir())
-#' 
-#' expect_reactivity(counter,'reactor test',1)
-#' 
-#' # clean up temp files
-#' 
-#' whereami::counter_reset()
-#' unlink(tf)
-#' unlink(reactor_dir, recursive = TRUE, force = TRUE)
-#' 
+#'  #EXAMPLE1
 #' }
-#' 
+#' }
 #' @rdname expect_reactivity
-#' @export 
+#' @export
+expect_reactivity <- function(object, tag, count) {
+  UseMethod('expect_reactivity')
+}
+
 #' @importFrom testthat quasi_label expect
 #' @importFrom rlang enquo
-expect_reactivity <- function(object, tag, count) {
-
+#' @export
+expect_reactivity.default <- function(object, tag, count) {
+  
   act <- testthat::quasi_label(rlang::enquo(object), arg = "object")
   
   if(tag%in%object$tag){
@@ -54,6 +38,17 @@ expect_reactivity <- function(object, tag, count) {
     act$count == count,
     sprintf("The tag '%s' has reactivity count of %i, not %i.", tag, act$count, count)
   )
+}
+
+#' @export
+expect_reactivity.reactor <- function(object, tag, count) {
+
+  wait_for_shiny(object)
+  Sys.sleep(0.3)
   
-  invisible(act$val)
+  obj <- read_reactor(object)
+  
+  expect_reactivity(obj, tag, count)
+  
+  invisible(object)
 }
