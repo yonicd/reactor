@@ -1,0 +1,8 @@
+pandoc: 2.7.3
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  golem: golem.html
+  simple_example: simple_example.html
+last_built: 2020-12-20T20:35Z
+
