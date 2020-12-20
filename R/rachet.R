@@ -3,7 +3,7 @@ rachet <- function(obj,ip,port,silent = FALSE, time_vec = c(0.5,1,2,6,10)){
   FLAG <- TRUE
   
   if(!silent){
-    cat('Attempting to connect to app')
+    cat('\nAttempting to connect to app')
   }
   
   while (FLAG & (i <= length(time_vec))) {

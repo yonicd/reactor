@@ -125,6 +125,7 @@ start_reactor <- function(obj, silent = FALSE, processx_cleanup = TRUE){
 #' @title FUNCTION_TITLE
 #' @description FUNCTION_DESCRIPTION
 #' @param obj PARAM_DESCRIPTION
+#' @param silent PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples 

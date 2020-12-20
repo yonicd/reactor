@@ -8,6 +8,8 @@ navigate_to_app(obj, silent = FALSE)
 }
 \arguments{
 \item{obj}{PARAM_DESCRIPTION}
+
+\item{silent}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
