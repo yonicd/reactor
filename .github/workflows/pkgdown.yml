@@ -1,6 +1,6 @@
 on:
   workflow_run:
-    workflows: ["R-mac"]
+    workflows: ["R-CMD-check"]
     branches: [master,main]
     types: completed
       
