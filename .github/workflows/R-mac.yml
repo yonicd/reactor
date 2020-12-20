@@ -57,6 +57,7 @@ jobs:
 
       - name: Run Reactor
         run: |
-          reactor::test_app()
+          library(reactor)
+          test_app()
         shell: Rscript {0}
         
