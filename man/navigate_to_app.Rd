@@ -4,7 +4,7 @@
 \alias{navigate_to_app}
 \title{FUNCTION_TITLE}
 \usage{
-navigate_to_app(obj)
+navigate_to_app(obj, silent = FALSE)
 }
 \arguments{
 \item{obj}{PARAM_DESCRIPTION}

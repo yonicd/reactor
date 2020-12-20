@@ -67,6 +67,7 @@ print.reactor <- function(x,...){
 #' @title FUNCTION_TITLE
 #' @description FUNCTION_DESCRIPTION
 #' @param obj PARAM_DESCRIPTION
+#' @param silent PARAM_DESCRIPTION
 #' @param processx_cleanup PARAM_DESCRIPTION, Default: TRUE
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -81,7 +82,7 @@ print.reactor <- function(x,...){
 #' @rdname start_reactor
 #' @export 
 #' @importFrom processx process
-start_reactor <- function(obj, processx_cleanup = TRUE){
+start_reactor <- function(obj, silent = FALSE, processx_cleanup = TRUE){
   
   driver_name <- names(obj$driver)
   process_name <- names(obj$processx)
@@ -115,7 +116,7 @@ start_reactor <- function(obj, processx_cleanup = TRUE){
   }
   obj$app_flag <- FALSE
   
-  obj <- navigate_to_app(obj)
+  obj <- navigate_to_app(obj,silent)
   
   invisible(wait_for_shiny(obj))
 
@@ -137,17 +138,11 @@ start_reactor <- function(obj, processx_cleanup = TRUE){
 #' @rdname navigate_to_app
 #' @export 
 #' @importFrom glue glue
-navigate_to_app <- function(obj){
+navigate_to_app <- function(obj,silent = FALSE){
   port <- obj$processx[[1]]$test_port
   ip <- obj$processx[[1]]$test_ip
-  
-  if(!obj$app_flag){
-    Sys.sleep(3)
-    obj$app_flag <- TRUE  
-  }
-  
+  obj <- rachet(obj,ip,port,silent)
   obj <- set_timeout(obj)
-  obj$test_driver$client$navigate(glue::glue('http://{ip}:{port}'))
   invisible(obj)
 }
 

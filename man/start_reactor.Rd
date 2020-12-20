@@ -4,10 +4,12 @@
 \alias{start_reactor}
 \title{FUNCTION_TITLE}
 \usage{
-start_reactor(obj, processx_cleanup = TRUE)
+start_reactor(obj, silent = FALSE, processx_cleanup = TRUE)
 }
 \arguments{
 \item{obj}{PARAM_DESCRIPTION}
+
+\item{silent}{PARAM_DESCRIPTION}
 
 \item{processx_cleanup}{PARAM_DESCRIPTION, Default: TRUE}
 }
