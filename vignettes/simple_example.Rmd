@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(details)
 ```
 
 ```{r setup}
@@ -26,10 +27,8 @@ In this app the plot is only rendered when the `input$n` is updated.
 
 - We expect the reactive element that creates the plot to be invalidated only once.
 
-![](https://github.com/yonicd/reactor/raw/media/good_app.gif)
-
-```{r,echo = FALSE}
-details::details('inst/examples/good_app.R',summary = 'Good App Script')
+```{details,echo = FALSE,details.summary  = 'Good App Script',details.open = TRUE}
+system.file('examples/good_app.R',package = 'reactor')
 ```
 
 ### Bad App
@@ -40,10 +39,8 @@ In this app the plot is rendered every time reactive elements in `input` are inv
   - We expect the reactive element that creates the plot to be invalidated more than once.
   - Notice how on the app initialization the chunk is rendered twice. 
 
-![](https://github.com/yonicd/reactor/raw/media/bad_app.gif)
-
-```{r,echo = FALSE}
-details::details('inst/examples/bad_app.R',summary = 'Bad App Script')
+```{details,echo = FALSE,details.summary = 'Bad App Script',details.open = TRUE}
+system.file('examples/bad_app.R',package = 'reactor')
 ```
 
 ### Testing
@@ -60,13 +57,6 @@ To use `test_app` just name the test file `reactor-*.R` instead of `test-*.R` th
   2. Allows the app tests to be isolated from the other unit tests thus allowing for `covr` and `testthat` to run on R CMD CHECK without needing to add `skip_*` into the app test files.
 
 
-![](https://github.com/yonicd/reactor/raw/media/example.gif)
-
-
-```{r,echo=FALSE}
-details::details('../tests/testthat/reactor-rselenium.R',summary = 'Reactivity Test Script')
-```
-
-```{r,echo=FALSE}
-details::details('../tests/testthat/reactor-crrry.R',summary = 'Reactivity Test Script Using Crrry')
+```{details,echo = FALSE,details.summary = 'Reactivity Test Script',details.open = TRUE}
+'../tests/testthat/reactor-rselenium.R'
 ```

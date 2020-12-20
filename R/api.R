@@ -112,7 +112,9 @@ start_reactor <- function(obj, processx_cleanup = TRUE){
   }
   obj$app_flag <- FALSE
   
-  invisible(navigate_to_app(obj))
+  obj <- navigate_to_app(obj)
+  
+  invisible(wait_for_shiny(obj))
 
 }
 
