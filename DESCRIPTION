@@ -8,7 +8,7 @@ Authors@R: c( person(given = "Jonathan", family = "Sidi", email = "yonicd@gmail.
 License: MIT + file LICENSE
 Depends: R (>= 3.6.0)
 Imports: glue, jsonlite, magrittr, processx, yaml, httpuv,
-  rlang, RSelenium, shiny, testthat, whereami,pagedown
+  rlang, RSelenium, shiny, testthat, whereami, pagedown
 URL: https://github.com/yonicd/reactor
 BugReports: https://github.com/yonicd/reactor/issues
 Encoding: UTF-8

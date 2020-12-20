@@ -52,6 +52,9 @@ jobs:
       - name: Install package
         run: R CMD INSTALL .
 
+      - name: Install crrry
+        run: Rscript -e "remotes::install_github('ColinFay/crrry')"
+
       - name: Run Reactor
         run: |
           reactor::test_app()

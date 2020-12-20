@@ -10,12 +10,15 @@
 #'  }
 #' }
 #' @rdname init_reactor
+#' @importFrom whereami counter_names
 #' @export 
 init_reactor <- function(){
   ret <- list(
     processx = NULL,
     driver   = NULL
   )
+  # force import of whereami
+  whereami::counter_names() 
   structure(ret,class = 'reactor')
 }
 
