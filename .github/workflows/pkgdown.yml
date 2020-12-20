@@ -1,7 +1,7 @@
 on:
   workflow_run:
     workflows: ["R-mac"]
-    branches: [api]
+    branches: [master,main]
     types: completed
       
 name: pkgdown
