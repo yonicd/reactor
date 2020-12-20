@@ -46,8 +46,14 @@ jobs:
           remotes::install_github('yonicd/reactor')
         shell: Rscript {0}
 
+      - name: Install crrry
+        run: |
+          remotes::install_github('colinfay/crrry')
+        shell: Rscript {0}
+
       - name: Run Reactor
         run: |
-          reactor::test_app()
+          library(reactor)
+          test_app(filter = 'good')
         shell: Rscript {0}
         

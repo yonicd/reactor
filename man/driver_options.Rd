@@ -13,7 +13,7 @@ chrome_options(
 )
 
 firefox_options(
-  cargs = c("--width=1280", "--height=800"),
+  cargs = c("--width=1280", "--height=800", "--memory 1024mb"),
   headless = TRUE,
   ...,
   download_path = tempdir()

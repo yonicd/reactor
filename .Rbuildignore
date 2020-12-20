@@ -4,3 +4,6 @@
 ^README\.Rmd$
 ^slides$
 ^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

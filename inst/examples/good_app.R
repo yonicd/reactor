@@ -13,9 +13,10 @@ server <- function(input, output) {
       shiny::numericInput('n', 'Number of obs', 200)
   })
 
+  # Run only when input$n exists and is changed
   output$plot <- shiny::renderPlot({
-    shiny::req(input$n) # <--- Run only when input$n exists and is changed
-    whereami::cat_where(whereami::whereami(tag = 'hist'))
+    shiny::req(input$n) 
+      whereami::whereami(tag = 'hist')
       graphics::hist(stats::runif(input$n))
   })
 }

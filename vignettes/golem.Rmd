@@ -1,0 +1,157 @@
+---
+title: "Using reactor with golem"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using reactor with golem}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+## Reactor and Golem
+
+Reactor is built to run regular Shiny Applications and ones that are packaged using the golem package. 
+
+In this example we are using package called [puzzlemath](https://github.com/yonicd/puzzlemath). 
+
+### Puzzlemath
+
+This application is made for creating simple arithmetic questions for the user and given a correct answer a piece of the "puzzle" is revealed to the user.
+
+The user can control the application using the following inputs:
+
+- `game`: action button that invokes a new game
+- `draw`: action button that draws a new question in a game
+- `ans`: textInput that the user types in the answer to a question
+- `range`: a slider that controls the range of values that the questions can be drawn from. Interacting with this input will invoke a new game.
+- `n`: a slider that controls the number of questions to use in the game. Interacting with this input will invoke a new game.
+- `signs`: radiobuttons that control which operator signs to construct the questions from (+,-,*,/). The user can click on the buttons to toggle the operator on or off. Interacting with this input will invoke a new game.
+
+The application has the following outputs:
+
+- `plot`: renderPlot object that displays the puzzle
+- `ques`: verbatimText object that displays the current question
+- `anspanel`: wellPanel that encloses the `ans` object.
+
+### whereami observers
+
+[whereami](https://github.com/yonicd/whereami) observers are placed in the reactive part of the application to log when chunks are being triggered by shiny. 
+
+We use this in order to track reactivity while the application is running and test expected reactivity against it.
+
+The observers placed in `puzzlemath` are placed in the following places in order to test the reactivity of the plotting and when new questions are drawn.
+
+- [renderPlot](https://github.com/yonicd/puzzlemath/blob/main/R/mod_plot.R#L31)
+
+- [observeEvent for input$draw](https://github.com/yonicd/puzzlemath/blob/main/R/app_server.R#L35)
+
+## Testing Reactivity with Reactor
+
+### Intialize reactor
+
+reactor starts with initialization of the reactor object and populating the application and the webdriver fields. In this example we are using a golem based application and a chrome webdriver. 
+
+RSelenium will run more consistently with an explicit assignment of the web driver version. For this reactor comes with it a function that returns the version of chrome that is installed on the system `chrome_version()`.
+
+```{r,eval=TRUE}
+library(reactor)
+```
+
+```{r}
+obj <- init_reactor()%>%
+  set_golem_args(
+    package_name = 'puzzlemath'
+  )%>%
+  set_chrome_driver(
+    chromever = chrome_version()
+  )
+
+```
+
+### Starting reactor
+
+Once the reactor fields are populated reactor can be started. This step will create two child processes one for hosting the application and the other for hosting the webdriver to interact with the application.
+ 
+```{r}
+obj <- obj%>%
+  start_reactor()
+
+```
+ 
+### Testing reactivity at application startup
+
+Usually there are reactive components being invalidated at application startup. For this app the inputs plot and draw are both expected to be invalidated once. 
+ 
+```{r}
+obj%>%
+  expect_reactivity('plot',1)%>%
+  expect_reactivity('draw',1)
+
+```
+
+### Sending Commands to the Application
+
+We now want to do something in the application, click the draw button. Once it is clicked we are expecting a new question to be drawn, but not rerendering the plot.
+
+```{r}
+obj%>%
+  click_id('draw')%>%
+  expect_reactivity('plot',1)
+  expect_reactivity('draw',2)
+
+```
+ 
+The application has a sliderInput object with the id 'range' which controls the range of values that can be used in each question. Once it is clicked a new game is created and a question is drawn. We test that following expectation.
+ 
+```{r}
+obj%>%
+  set_id_value('range',c(10,20))%>%
+  expect_reactivity('plot',2)%>%
+  expect_reactivity('draw',3)
+
+```
+
+### Querying the Application
+
+Now we are interested in querying the value of a question in order to send correct value to the appropriate textInput with an id 'ans'.
+
+We can do this with `query_output_id()` using the 'ques' id, the result is in the form of a question, e.g. '3 + 1 ?'
+ 
+```{r}
+current_ans <- obj%>%
+  query_output_id('ques')%>%
+  gsub('\\?','',.)%>%
+  parse(text = .)%>%
+  eval()
+
+obj%>%
+  set_id_value('ans',current_ans)
+
+```
+ 
+Given the correct answer the app is supposed to change the border of the div surrounding the textInput with the color green, rgb (0,128,0). We can send a query to the app using JavaScript functions and return the value to R. The argument flatten is used to unlist the result and return the character.  
+
+We can test this expectation using testthat expectations. 
+
+```{r}
+obj%>%
+  query("$('#anspanel').css('border-color')",flatten = TRUE)%>%
+  testthat::expect_equal(expected = "rgb(0, 128, 0)")
+
+```
+
+### Closing Reactor
+
+To cleanly close reactor we run the following.
+
+```{r}
+obj%>%
+  kill_app()
+```

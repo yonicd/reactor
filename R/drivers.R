@@ -49,7 +49,7 @@ chrome_options <- function(
 
 #' @rdname driver_options
 #' @export
-firefox_options <- function(cargs  = c('--width=1280','--height=800'), headless = TRUE,..., download_path = tempdir()){
+firefox_options <- function(cargs  = c('--width=1280','--height=800','--memory 1024mb'), headless = TRUE,..., download_path = tempdir()){
   
   if(headless)
     cargs <- c("--headless",cargs)
@@ -85,9 +85,10 @@ firefox_options <- function(cargs  = c('--width=1280','--height=800'), headless 
 #' @rdname driver
 #' @export 
 #' @importFrom RSelenium rsDriver
+#' @importFrom httpuv randomPort
 firefox_driver <- function(test_path = tempdir(),
                            verbose = FALSE, 
-                           port = 4567L,
+                           port = httpuv::randomPort(),
                            opts = firefox_options(download_path = test_path),...){
   
   RSelenium::rsDriver(
@@ -105,9 +106,10 @@ firefox_driver <- function(test_path = tempdir(),
 #' @rdname driver
 #' @export 
 #' @importFrom RSelenium rsDriver
+#' @importFrom httpuv randomPort
 chrome_driver <- function(test_path = tempdir(),
                           verbose = FALSE, 
-                          port = 4567L,
+                          port = httpuv::randomPort(),
                           opts = chrome_options(download_path = test_path),...){
   
   RSelenium::rsDriver(
@@ -122,3 +124,85 @@ chrome_driver <- function(test_path = tempdir(),
   
 }
 
+
+#' @title FUNCTION_TITLE
+#' @description FUNCTION_DESCRIPTION
+#' @param obj PARAM_DESCRIPTION
+#' @param test_path PARAM_DESCRIPTION, Default: tempdir()
+#' @param verbose PARAM_DESCRIPTION, Default: FALSE
+#' @param port PARAM_DESCRIPTION, Default: httpuv::randomPort()
+#' @param opts PARAM_DESCRIPTION, Default: chrome_options(download_path = test_path)
+#' @param ... PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples 
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname set_chrome_driver
+#' @export 
+#' @importFrom httpuv randomPort
+set_chrome_driver <- function(
+  obj,
+  test_path = tempdir(),
+  verbose = FALSE, 
+  port = httpuv::randomPort(),
+  opts = chrome_options(download_path = test_path),
+  ...){
+  
+  chrome = list(
+    test_path = test_path,
+    verbose = verbose, 
+    port = port,
+    opts = opts
+  )
+  
+  chrome <- append(chrome,list(...))
+  
+  obj$driver <- list(chrome = chrome)
+  
+  invisible(obj)
+}
+
+#' @title FUNCTION_TITLE
+#' @description FUNCTION_DESCRIPTION
+#' @param obj PARAM_DESCRIPTION
+#' @param test_path PARAM_DESCRIPTION, Default: tempdir()
+#' @param verbose PARAM_DESCRIPTION, Default: FALSE
+#' @param port PARAM_DESCRIPTION, Default: httpuv::randomPort()
+#' @param opts PARAM_DESCRIPTION, Default: firefox_options(download_path = test_path)
+#' @param ... PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples 
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname set_firefox_driver
+#' @export 
+#' @importFrom httpuv randomPort
+set_firefox_driver <- function(
+  obj,
+  test_path = tempdir(),
+  verbose = FALSE, 
+  port = httpuv::randomPort(),
+  opts = firefox_options(download_path = test_path),
+  ...){
+  
+  firefox = list(
+    test_path = test_path,
+    verbose = verbose, 
+    port = port,
+    opts = opts
+  )
+  
+  firefox <- append(firefox,list(...))
+  
+  obj$driver <- list(firefox = firefox)
+  
+  invisible(obj)
+}

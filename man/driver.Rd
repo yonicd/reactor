@@ -8,7 +8,7 @@
 firefox_driver(
   test_path = tempdir(),
   verbose = FALSE,
-  port = 4567L,
+  port = httpuv::randomPort(),
   opts = firefox_options(download_path = test_path),
   ...
 )
@@ -16,7 +16,7 @@ firefox_driver(
 chrome_driver(
   test_path = tempdir(),
   verbose = FALSE,
-  port = 4567L,
+  port = httpuv::randomPort(),
   opts = chrome_options(download_path = test_path),
   ...
 )

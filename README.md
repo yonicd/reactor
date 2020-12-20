@@ -25,200 +25,225 @@ And the development version from [GitHub](https://github.com/) with:
 remotes::install_github("yonicd/reactor")
 ```
 
-## Example
+## Usage
 
-This is a basic example which shows you how to solve a common problem:
+Reactor is a pipeline driven api where the user does not need to learn
+RSelenium in order to be able to drive their applications
+
+### Initializing Reactor
+
+Start by creating a reactor class object
 
 ``` r
 library(reactor)
+obj <- init_reactor()
+obj
+#> reactor:
+#>   processx: ~
+#>   driver: ~
 ```
 
-## Simple App
+### Populating Specifications
 
-### Good App
+You can see it is expecting to be populated by two objects
 
-In this app the plot is only rendered when the `input$n` is updated.
+-   **processx**: Specifications for the background process that will
+    host the application
+-   **driver**: Specifications for the webdriver that will interact with
+    the application in the background process
 
-  - We expect the reactive element that creates the plot to be
-    invalidated only once.
+Reactor comes with functions to help you create these specifications
 
-![](https://github.com/yonicd/reactor/raw/media/good_app.gif)
-
-<details closed>
-
-<summary> <span title="Click to Expand"> Good App Script </span>
-</summary>
+-   **processx**:
+    -   `set_runapp_args()` : Assumes that the application is located in
+        a path on the machine and uses `shiny::runApp` as the function
+        to launch the application
+    -   `set_golem_args()`: Assumes that the application is a
+        [golem](https://github.com/ThinkR-open/golem) package and uses
+        the `golem` logic to launch the application.
+-   **driver**:
+    -   `set_chrome_driver()`: Launches `RSelenium` with a chrome
+        webdriver
+    -   `set_firefox_driver()`: Launches `RSelenium` with a firefox
+        (gecko) webdriver
 
 ``` r
-
-library(whereami)
-
-# Define the UI
-ui <- shiny::bootstrapPage(
-  shiny::uiOutput('ui_n'),
-  shiny::plotOutput('plot')
-)
-
-# Define the server code
-server <- function(input, output) {
-  
-  output$ui_n <- shiny::renderUI({
-      shiny::numericInput('n', 'Number of obs', 200)
-  })
-
-  shiny::observeEvent(input$n,{  # <----- run only when input$n is invalidated
-    output$plot <- shiny::renderPlot({
-      whereami::whereami(tag = 'hist')
-      graphics::hist(stats::runif(input$n))
-    })
-  })
-}
-
-# Return a Shiny app object
-shinyApp(ui = ui, server = server,options = list(port=6012))
+obj <- obj%>%
+  set_runapp_args(
+    appDir = system.file('examples/good_app.R',package = 'reactor')
+  )%>%
+  set_chrome_driver()
 ```
 
-</details>
-
-<br>
-
-### Bad App
-
-In this app the plot is rendered every time reactive elements in `input`
-are invalidated.
-
-  - This kind of setup can cause a lot of unwanted reactivity in larger
-    apps with many elements.
-  - We expect the reactive element that creates the plot to be
-    invalidated more than once.
-  - Notice how on the app initialization the chunk is rendered twice.
-
-![](https://github.com/yonicd/reactor/raw/media/bad_app.gif)
-
 <details closed>
-
-<summary> <span title="Click to Expand"> Bad App Script </span>
+<summary>
+<span title="Click to Open"> reactor object </span>
 </summary>
 
-``` r
-
-library(whereami)
-
-# Define the UI
-ui <- shiny::bootstrapPage(
-  shiny::uiOutput('ui_n'),
-  shiny::plotOutput('plot')
-)
-
-# Define the server code
-server <- function(input, output) {
-  
-  output$ui_n <- shiny::renderUI({
-    shiny::numericInput('n', 'Number of obs', 200)
-  })
-  
-  shiny::observe({ # <----- run every time any element in input is invalidated
-    output$plot <- shiny::renderPlot({
-      whereami::whereami(tag = 'hist')
-      graphics::hist(stats::runif(input$n))
-    })
-  })
-}
-
-# Return a Shiny app object
-shinyApp(ui = ui, server = server)
+``` yml
+reactor:
+  processx:
+    runApp:
+      test_port: 47904
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
+      test_ip: 127.0.0.1
+      appDir: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R
+  driver:
+    chrome:
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
+      verbose: no
+      port: 29175
+      opts:
+        args:
+        - --headless
+        - --disable-gpu
+        - --window-size=1280,800
+        prefs:
+          profile.default_content_settings.popups: 0
+          download.prompt_for_download: no
+          download.directory_upgrade: yes
+          safebrowsing.enabled: yes
+          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
 ```
 
 </details>
 
 <br>
 
-### Testing
-
-Using `reactor` we can test this expectation\!
-
-If we run the test on the `good app` the test will pass and if we run it
-on the `bad app` then it will fail signaling a problem.
-
-To run a test you can use standard `testthat` functions like
-`testthat::test_dir()`, or you can use a `reactor` function
-`reactor::test_app()`.
-
-To use `test_app` just name the test file `reactor-*.R` instead of
-`test-*.R` this will have two benefits.
-
-1.  `covr` will not pass the tests. This allows you to run the tests
-    using `test_dir` which does have the necessary characteristics to
-    run the tests.
-2.  Allows the app tests to be isolated from the other unit tests thus
-    allowing for `covr` and `testthat` to run on R CMD CHECK without
-    needing to add `skip_*` into the app test files.
-
-![](https://github.com/yonicd/reactor/raw/media/example.gif)
-
-<details closed>
-
-<summary> <span title="Click to Expand"> Reactivity Test Script </span>
-</summary>
+If you want turn off headless mode you can update the object
 
 ``` r
-
-testthat::context("testing reactivity")
-
-driver_commands <- quote({
-  
-  # wait for input$n element to be created
-  el_n <- reactor::wait(
-      test_driver = test_driver,
-      expr = test_driver$client$findElement(using = 'id', value = 'n')
-    )
-
-  # Set input$n to 500
-  test_driver$client$executeScript(script = 'Shiny.setInputValue("n","500");')
-  
-})
-
-testthat::context("testing reactivity on a good app")
-
-# We run a test with the expectation that the hist tag will be triggered once.
-
-testthat::describe('good reactive',{
-
-  hist_counter <- reactor::test_reactor(
-    expr          = driver_commands,
-    test_driver   = reactor::firefox_driver(),
-    processx_args = reactor::runApp_args(
-      appDir = system.file('examples/good_app.R',package = 'reactor')
-    )
+obj <- obj%>%
+  set_chrome_driver(
+     opts = chrome_options(headless = FALSE)
   )
-  
-  it('reactive hits in plot reactive chunk',{
-    reactor::expect_reactivity(object = hist_counter, tag = 'hist',count =  2)
-  })
-  
-})
+```
 
-# We now run the same test but with the "bad" app  
-  
-testthat::context("testing reactivity on a bad app")
+<details closed>
+<summary>
+<span title="Click to Open"> reactor object </span>
+</summary>
 
-testthat::describe('bad reactive',{
-
-  hist_counter <- reactor::test_reactor(
-    expr          = driver_commands,
-    test_driver   = reactor::firefox_driver(),
-    processx_args = reactor::runApp_args(
-      appDir = system.file('examples/bad_app.R',package = 'reactor')
-    )
-  )
-
-  it('reactive hits in plot reactive chunk',{
-    reactor::expect_reactivity(hist_counter, tag = 'hist', 2)
-  })
-
-})
+``` yml
+reactor:
+  processx:
+    runApp:
+      test_port: 47904
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
+      test_ip: 127.0.0.1
+      appDir: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R
+  driver:
+    chrome:
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
+      verbose: no
+      port: 32218
+      opts:
+        args:
+        - --disable-gpu
+        - --window-size=1280,800
+        prefs:
+          profile.default_content_settings.popups: 0
+          download.prompt_for_download: no
+          download.directory_upgrade: yes
+          safebrowsing.enabled: yes
+          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
 ```
 
 </details>
 
 <br>
+
+### Starting Reactor
+
+Once we have specifications in place we can start reactor using
+`start_reactor()`.
+
+``` r
+obj%>%
+  start_reactor()
+```
+
+### Interacting with the application
+
+Now that the app is running we can send to the webdriver to interact
+with the application
+
+-   `set_id_value()`:
+    -   expects an input id and the new value
+    -   returns back the reactor object
+
+``` r
+obj%>%
+  set_id_value('n',500)
+```
+
+The user can use the following utility functions to interact and query
+with an application
+
+Inject:
+
+-   Inputs
+    -   `set_id_value()`: Sets a value for a shiny input object by id
+-   JavaScript
+    -   `execute()`: Executes a JavaScript call
+
+Query:
+
+-   Inputs
+    -   `query_input_names()`: Returns names of the shiny input ids
+    -   `query_input_id()`: Returns current values of a shiny input by
+        id
+-   Outputs
+    -   `query_output_names()`: Returns names of the shiny output ids
+    -   `query_output_id()`: Returns current values of a shiny output by
+        id
+-   JavaScript
+    -   `query()`: Returns a value from JavaScript call
+
+### Closing Reactor
+
+To safely close reactor and all the child processes use `kill_app()`:
+
+``` r
+obj%>%
+  kill_app()
+```
+
+### Pipeline Operations
+
+Because each function is returning the reactor object it is simple to
+create reactor pipelines.
+
+Reactor will wait for shiny to finish each action before proceeding to
+the next one.
+
+``` r
+init_reactor()%>%
+  set_runapp_args(
+    appDir = system.file('examples/good_app.R',package = 'reactor')
+  )%>%
+  set_chrome_driver()%>%
+  start_reactor()%>%
+  set_id_value('n',500)%>%
+  set_id_value('n',300)%>%
+  kill_app()
+```
+
+### Testing Expectations
+
+Finally reactor tests reactivity expectations in a `testthat` framework
+using the builtin `expect_reactivity()` function
+
+``` r
+init_reactor()%>%
+  set_runapp_args(
+    appDir = system.file('examples/good_app.R',package = 'reactor')
+  )%>%
+  set_chrome_driver()%>%
+  start_reactor()%>%
+  set_id_value('n',500)%>%
+  expect_reactivity('hist',1)%>%
+  set_id_value('n',200)%>%
+  expect_reactivity('hist',2)%>%
+  kill_app()
+```

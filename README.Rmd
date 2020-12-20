@@ -29,59 +29,151 @@ And the development version from [GitHub](https://github.com/) with:
 # install.packages("remotes")
 remotes::install_github("yonicd/reactor")
 ```
-## Example
 
-This is a basic example which shows you how to solve a common problem:
+## Usage
 
-```{r example}
+Reactor is a pipeline driven api where the user does not need to learn RSelenium in order to be able to drive their applications
+
+### Initializing Reactor
+
+Start by creating a reactor class object
+
+```{r}
 library(reactor)
+obj <- init_reactor()
+obj
 ```
 
-## Simple App
+### Populating Specifications
 
-### Good App
+You can see it is expecting to be populated by two objects 
 
-In this app the plot is only rendered when the `input$n` is updated. 
+  - __processx__: Specifications for the background process that will host the application
+  - __driver__: Specifications for the webdriver that will interact with the application in the background process
+  
+Reactor comes with functions to help you create these specifications
 
-- We expect the reactive element that creates the plot to be invalidated only once.
+  - __processx__: 
+    - `set_runapp_args()` : Assumes that the application is located in a path on the machine and uses `shiny::runApp` as the function to launch the application
+    - `set_golem_args()`: Assumes that the application is a [golem](https://github.com/ThinkR-open/golem) package and uses the `golem` logic to launch the application.
+  - __driver__:
+    - `set_chrome_driver()`: Launches `RSelenium` with a chrome webdriver 
+    - `set_firefox_driver()`: Launches `RSelenium` with a firefox (gecko) webdriver 
 
-![](https://github.com/yonicd/reactor/raw/media/good_app.gif)
+```{r}
+obj <- obj%>%
+  set_runapp_args(
+    appDir = system.file('examples/good_app.R',package = 'reactor')
+  )%>%
+  set_chrome_driver()
 
-```{r,echo = FALSE}
-details::details('inst/examples/good_app.R',summary = 'Good App Script')
+```
+ 
+```{r,include=FALSE}
+library(details)
+```
+ 
+```{details, echo = FALSE,details.lang = 'yml',details.summary = 'reactor object'}
+obj
 ```
 
-### Bad App
+If you want turn off headless mode you can update the object
 
-In this app the plot is rendered every time reactive elements in `input` are invalidated. 
+```{r}
+obj <- obj%>%
+  set_chrome_driver(
+     opts = chrome_options(headless = FALSE)
+  )
 
-  - This kind of setup can cause a lot of unwanted reactivity in larger apps with many elements.
-  - We expect the reactive element that creates the plot to be invalidated more than once.
-  - Notice how on the app initialization the chunk is rendered twice. 
-
-![](https://github.com/yonicd/reactor/raw/media/bad_app.gif)
-
-```{r,echo = FALSE}
-details::details('inst/examples/bad_app.R',summary = 'Bad App Script')
 ```
 
-### Testing
+```{details, echo = FALSE, details.lang = 'yml',details.summary = 'reactor object'}
+obj
+```
 
-Using `reactor` we can test this expectation!
+### Starting Reactor
 
-If we run the test on the `good app` the test will pass and if we run it on the `bad app` then it will fail signaling a problem.
+Once we have specifications in place we can start reactor using `start_reactor()`. 
 
-To run a test you can use standard `testthat` functions like `testthat::test_dir()`, or you can use a `reactor` function `reactor::test_app()`. 
+```{r,eval = FALSE}
+obj%>%
+  start_reactor()
+```
 
-To use `test_app` just name the test file `reactor-*.R` instead of `test-*.R` this will have two benefits.
+### Interacting with the application
 
-  1. `covr` will not pass the tests. This allows you to run the tests using `test_dir` which does have the necessary characteristics to run the tests.
-  2. Allows the app tests to be isolated from the other unit tests thus allowing for `covr` and `testthat` to run on R CMD CHECK without needing to add `skip_*` into the app test files.
+Now that the app is running we can send to the webdriver to interact with the application
 
+- `set_id_value()`: 
+  - expects an input id and the new value
+  - returns back the reactor object
 
-![](https://github.com/yonicd/reactor/raw/media/example.gif)
+```{r,eval = FALSE}
+obj%>%
+  set_id_value('n',500)
+```
 
+The user can use the following utility functions to interact and query with an application
 
-```{r,echo=FALSE}
-details::details('tests/testthat/reactor-reactivity.R',summary = 'Reactivity Test Script')
+Inject:
+
+- Inputs
+  - `set_id_value()`: Sets a value for a shiny input object by id
+- JavaScript
+  - `execute()`: Executes a JavaScript call
+
+Query:
+
+- Inputs 
+  - `query_input_names()`: Returns names of the shiny input ids
+  - `query_input_id()`: Returns current values of a shiny input by id
+- Outputs
+  - `query_output_names()`: Returns names of the shiny output ids
+  - `query_output_id()`: Returns current values of a shiny output by id
+- JavaScript
+  - `query()`: Returns a value from JavaScript call
+
+### Closing Reactor
+
+To safely close reactor and all the child processes use `kill_app()`:
+
+```{r,eval = FALSE}
+obj%>%
+  kill_app()
+```
+
+### Pipeline Operations
+
+Because each function is returning the reactor object it is simple to create reactor pipelines.
+
+Reactor will wait for shiny to finish each action before proceeding to the next one.
+
+```{r,eval = FALSE}
+init_reactor()%>%
+  set_runapp_args(
+    appDir = system.file('examples/good_app.R',package = 'reactor')
+  )%>%
+  set_chrome_driver()%>%
+  start_reactor()%>%
+  set_id_value('n',500)%>%
+  set_id_value('n',300)%>%
+  kill_app()
+```
+
+### Testing Expectations
+
+Finally reactor tests reactivity expectations in a `testthat` framework using the builtin `expect_reactivity()` function 
+
+```{r,eval = FALSE}
+init_reactor()%>%
+  set_runapp_args(
+    appDir = system.file('examples/good_app.R',package = 'reactor')
+  )%>%
+  set_chrome_driver()%>%
+  start_reactor()%>%
+  set_id_value('n',500)%>%
+  expect_reactivity('hist',1)%>%
+  set_id_value('n',200)%>%
+  expect_reactivity('hist',2)%>%
+  kill_app()
 ```

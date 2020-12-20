@@ -27,16 +27,6 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
 
-      - name: Install Google Chrome
-        run: |
-         brew cask install chromedriver
-         chromedriver --version
-         
-      - name: Install Gecko
-        run: |
-         brew install geckodriver
-         geckodriver --version
-
       - name: Cache R packages
         uses: actions/cache@v1
         with:
@@ -48,12 +38,3 @@ jobs:
 
       - name: Check
         run: Rscript -e "rcmdcheck::rcmdcheck(args = '${{ matrix.config.args }}', error_on = 'warning', check_dir = 'check')"
-
-      - name: Install package
-        run: R CMD INSTALL .
-
-      - name: Run Reactor
-        run: |
-          reactor::test_app()
-        shell: Rscript {0}
-        
