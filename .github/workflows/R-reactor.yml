@@ -43,7 +43,7 @@ jobs:
         run: |
           install.packages('remotes')
           remotes::install_deps(dependencies = TRUE)
-          remotes::install_github('yonicd/reactor@api')
+          remotes::install_github('yonicd/reactor')
         shell: Rscript {0}
 
       - name: Install crrry
