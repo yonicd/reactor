@@ -57,6 +57,10 @@ To use `test_app` just name the test file `reactor-*.R` instead of `test-*.R` th
   2. Allows the app tests to be isolated from the other unit tests thus allowing for `covr` and `testthat` to run on R CMD CHECK without needing to add `skip_*` into the app test files.
 
 
-```{details,echo = FALSE,details.summary = 'Reactivity Test Script',details.open = TRUE}
-'../tests/testthat/reactor-rselenium.R'
+```{details,echo = FALSE,details.summary = 'Reactivity Test Script for Good App',details.open = TRUE}
+'../tests/testthat/reactor-rselenium_good.R'
+```
+
+```{details,echo = FALSE,details.summary = 'Reactivity Test Script for Bad App',details.open = TRUE}
+'../tests/testthat/reactor-rselenium_bad.R'
 ```

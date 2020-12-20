@@ -54,6 +54,6 @@ jobs:
       - name: Run Reactor
         run: |
           library(reactor)
-          test_app()
+          test_app(filter = 'good')
         shell: Rscript {0}
         
