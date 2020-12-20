@@ -17,6 +17,9 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+![R-mac](https://github.com/yonicd/reactor/workflows/R-mac/badge.svg)
+![pkgdown](https://github.com/yonicd/reactor/workflows/pkgdown/badge.svg)
+![Reactor](https://github.com/yonicd/reactor/workflows/Reactor/badge.svg)
 <!-- badges: end -->
 
 When developing Shiny apps there is a lot of reactivity problems that can arise when one `reactive` or `observe` element triggers other elements. In some cases these can create cascading reactivity (the horror). The goal of `reactor` is to diagnose these reactivity problems and then plan unit tests to avert them during development to make development less painful.

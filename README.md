@@ -7,6 +7,9 @@
 
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+![R-mac](https://github.com/yonicd/reactor/workflows/R-mac/badge.svg)
+![pkgdown](https://github.com/yonicd/reactor/workflows/pkgdown/badge.svg)
+![Reactor](https://github.com/yonicd/reactor/workflows/Reactor/badge.svg)
 <!-- badges: end -->
 
 When developing Shiny apps there is a lot of reactivity problems that
@@ -84,15 +87,15 @@ obj <- obj%>%
 reactor:
   processx:
     runApp:
-      test_port: 47904
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
+      test_port: 21377
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp3CWCYB
       test_ip: 127.0.0.1
       appDir: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R
   driver:
     chrome:
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp3CWCYB
       verbose: no
-      port: 29175
+      port: 10516
       opts:
         args:
         - --headless
@@ -103,7 +106,7 @@ reactor:
           download.prompt_for_download: no
           download.directory_upgrade: yes
           safebrowsing.enabled: yes
-          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
+          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp3CWCYB
 ```
 
 </details>
@@ -128,15 +131,15 @@ obj <- obj%>%
 reactor:
   processx:
     runApp:
-      test_port: 47904
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
+      test_port: 21377
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp3CWCYB
       test_ip: 127.0.0.1
       appDir: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R
   driver:
     chrome:
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp3CWCYB
       verbose: no
-      port: 32218
+      port: 44501
       opts:
         args:
         - --disable-gpu
@@ -146,7 +149,7 @@ reactor:
           download.prompt_for_download: no
           download.directory_upgrade: yes
           safebrowsing.enabled: yes
-          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
+          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp3CWCYB
 ```
 
 </details>
