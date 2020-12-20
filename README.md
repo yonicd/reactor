@@ -84,15 +84,15 @@ obj <- obj%>%
 reactor:
   processx:
     runApp:
-      test_port: 9706
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpUcJ0fu
+      test_port: 47904
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
       test_ip: 127.0.0.1
       appDir: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R
   driver:
     chrome:
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpUcJ0fu
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
       verbose: no
-      port: 7387
+      port: 29175
       opts:
         args:
         - --headless
@@ -103,7 +103,7 @@ reactor:
           download.prompt_for_download: no
           download.directory_upgrade: yes
           safebrowsing.enabled: yes
-          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpUcJ0fu
+          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
 ```
 
 </details>
@@ -128,15 +128,15 @@ obj <- obj%>%
 reactor:
   processx:
     runApp:
-      test_port: 9706
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpUcJ0fu
+      test_port: 47904
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
       test_ip: 127.0.0.1
       appDir: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R
   driver:
     chrome:
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpUcJ0fu
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
       verbose: no
-      port: 19027
+      port: 32218
       opts:
         args:
         - --disable-gpu
@@ -146,7 +146,7 @@ reactor:
           download.prompt_for_download: no
           download.directory_upgrade: yes
           safebrowsing.enabled: yes
-          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpUcJ0fu
+          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmph3pVj0
 ```
 
 </details>
@@ -180,11 +180,25 @@ obj%>%
 The user can use the following utility functions to interact and query
 with an application
 
--   `set_id_value()`: Sets a value for a shiny input object
--   `execute_script()`: Executes a JavaScript call
--   `query()`: Returns a value from JavaScript call
--   `query_verbatimText()`: Returns the text from
-    `shiny::verbatimTextOutput()`
+Inject:
+
+-   Inputs
+    -   `set_id_value()`: Sets a value for a shiny input object by id
+-   JavaScript
+    -   `execute()`: Executes a JavaScript call
+
+Query:
+
+-   Inputs
+    -   `query_input_names()`: Returns names of the shiny input ids
+    -   `query_input_id()`: Returns current values of a shiny input by
+        id
+-   Outputs
+    -   `query_output_names()`: Returns names of the shiny output ids
+    -   `query_output_id()`: Returns current values of a shiny output by
+        id
+-   JavaScript
+    -   `query()`: Returns a value from JavaScript call
 
 ### Closing Reactor
 
@@ -217,7 +231,7 @@ init_reactor()%>%
 
 ### Testing Expectations
 
-Reactor can also test reactivity expectations in a `testthat` framework
+Finally reactor tests reactivity expectations in a `testthat` framework
 using the builtin `expect_reactivity()` function
 
 ``` r

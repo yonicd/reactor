@@ -4,7 +4,6 @@
 ^README\.Rmd$
 ^slides$
 ^\.github$
-^golem\_tests\.R$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$

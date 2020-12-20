@@ -4,12 +4,14 @@
 \alias{query}
 \title{FUNCTION_TITLE}
 \usage{
-query(obj, command)
+query(obj, command, flatten = FALSE)
 }
 \arguments{
 \item{obj}{PARAM_DESCRIPTION}
 
 \item{command}{PARAM_DESCRIPTION}
+
+\item{flatten}{logical, flatten the output list. Default: FALSE}
 }
 \value{
 OUTPUT_DESCRIPTION

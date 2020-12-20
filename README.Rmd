@@ -115,10 +115,23 @@ obj%>%
 
 The user can use the following utility functions to interact and query with an application
 
-- `set_id_value()`: Sets a value for a shiny input object
-- `execute_script()`: Executes a JavaScript call
-- `query()`: Returns a value from JavaScript call
-- `query_verbatimText()`: Returns the text from `shiny::verbatimTextOutput()`
+Inject:
+
+- Inputs
+  - `set_id_value()`: Sets a value for a shiny input object by id
+- JavaScript
+  - `execute()`: Executes a JavaScript call
+
+Query:
+
+- Inputs 
+  - `query_input_names()`: Returns names of the shiny input ids
+  - `query_input_id()`: Returns current values of a shiny input by id
+- Outputs
+  - `query_output_names()`: Returns names of the shiny output ids
+  - `query_output_id()`: Returns current values of a shiny output by id
+- JavaScript
+  - `query()`: Returns a value from JavaScript call
 
 ### Closing Reactor
 
@@ -149,7 +162,7 @@ init_reactor()%>%
 
 ### Testing Expectations
 
-Reactor can also test reactivity expectations in a `testthat` framework using the builtin `expect_reactivity()` function 
+Finally reactor tests reactivity expectations in a `testthat` framework using the builtin `expect_reactivity()` function 
 
 ```{r,eval = FALSE}
 init_reactor()%>%

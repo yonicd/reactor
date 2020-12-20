@@ -40,5 +40,4 @@ rsconnect/
 .DS_Store
 inst/doc
 
-golem_tests.R
 docs

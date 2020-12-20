@@ -141,6 +141,7 @@ navigate_to_app <- function(obj){
     obj$app_flag <- TRUE  
   }
   
+  obj <- set_timeout(obj)
   obj$test_driver$client$navigate(glue::glue('http://{ip}:{port}'))
   invisible(obj)
 }
@@ -240,12 +241,15 @@ timeouts <- function (remDr, milliseconds){
 
 is_busy <- function(obj){
   
-  query(obj,"document.querySelector('html').getAttribute('class')=='shiny-busy'")
+  query(
+    obj,"document.querySelector('html').getAttribute('class')=='shiny-busy'",
+    flatten = TRUE)
   
 }
 
 is_empty <- function(obj){
   
-  query(obj,"document.getElementsByTagName('head')[0].innerHTML==''")
+  query(obj,"document.getElementsByTagName('head')[0].innerHTML==''",
+        flatten = TRUE)
   
 }
