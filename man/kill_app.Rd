@@ -2,23 +2,20 @@
 % Please edit documentation in R/api.R
 \name{kill_app}
 \alias{kill_app}
-\title{FUNCTION_TITLE}
+\title{Close reactor}
 \usage{
 kill_app(obj, processx_cleanup = TRUE)
 }
 \arguments{
-\item{obj}{PARAM_DESCRIPTION}
+\item{obj}{reactor object}
 
-\item{processx_cleanup}{logical, cleanup the side effects created by processx. Default: TRUE}
+\item{processx_cleanup}{logical, cleanup the side effects created by reactor. Default: TRUE}
 }
 \value{
-OUTPUT_DESCRIPTION
+reactor object
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
+Safely close a reactor session.
 }
 \examples{
 \dontrun{
@@ -27,3 +24,14 @@ if(interactive()){
  }
 }
 }
+\seealso{
+Other reactor: 
+\code{\link{init_reactor}()},
+\code{\link{navigate_to_app}()},
+\code{\link{reactor_path}()},
+\code{\link{read_reactor}()},
+\code{\link{reset_counter}()},
+\code{\link{start_reactor}()},
+\code{\link{wait_for_shiny}()}
+}
+\concept{reactor}

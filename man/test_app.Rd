@@ -23,4 +23,8 @@ reactor unit test files are like testthat test files, just the name is \verb{rea
 }
 \seealso{
 \link[testthat:test_dir]{test_dir}
+
+Other testing: 
+\code{\link{expect_reactivity}()}
 }
+\concept{testing}

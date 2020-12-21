@@ -1,17 +1,16 @@
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Initialize Reactor
+#' @description Initialize the reactor object.
+#' @return reactor object
+#' @details The reactor object is initialized with two emtpy slots that
+#' must be filled. 
+#' - __processx__: Specifications for the background process that will host the application
+#' - __driver__: Specifications for the webdriver that will interact with the application in the background process
 #' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
+#' init_reactor()
 #' @rdname init_reactor
-#' @importFrom whereami counter_names
+#' @family reactor
 #' @export 
+#' @importFrom whereami counter_names
 init_reactor <- function(){
   ret <- list(
     processx = NULL,
@@ -22,41 +21,21 @@ init_reactor <- function(){
   structure(ret,class = 'reactor')
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Chrome Driver Version
+#' @description Retrieves chrome driver version installed.
+#' @return character
 #' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
+#' chrome_version()
 #' @seealso 
 #'  \code{\link[pagedown]{find_chrome}}
 #' @rdname chrome_version
+#' @family driver
 #' @export 
 #' @importFrom pagedown find_chrome
 chrome_version <- function(){
   gsub('[^0-9.]','',system2(pagedown::find_chrome(),args = '--version',stdout = TRUE))
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param x PARAM_DESCRIPTION
-#' @param ... PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @seealso 
-#'  \code{\link[yaml]{as.yaml}}
-#' @rdname print.reactor
 #' @export 
 #' @importFrom yaml as.yaml
 print.reactor <- function(x,...){
@@ -64,13 +43,12 @@ print.reactor <- function(x,...){
   cat(yaml::as.yaml(list(reactor = x_print)))
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param obj PARAM_DESCRIPTION
-#' @param silent PARAM_DESCRIPTION
-#' @param processx_cleanup PARAM_DESCRIPTION, Default: TRUE
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Start the reactor
+#' @description Using the populated elements of reactor you can start
+#' the child sessions. 
+#' @param obj reactor object
+#' @param silent logical, start silently. Default: FALSE
+#' @return reactor object
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
@@ -80,9 +58,10 @@ print.reactor <- function(x,...){
 #' @seealso 
 #'  \code{\link[processx]{process}}
 #' @rdname start_reactor
+#' @family reactor
 #' @export 
 #' @importFrom processx process
-start_reactor <- function(obj, silent = FALSE, processx_cleanup = TRUE){
+start_reactor <- function(obj, silent = FALSE){
   
   driver_name <- names(obj$driver)
   process_name <- names(obj$processx)
@@ -122,12 +101,11 @@ start_reactor <- function(obj, silent = FALSE, processx_cleanup = TRUE){
 
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param obj PARAM_DESCRIPTION
-#' @param silent PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Navigate to Application
+#' @description Navigating to application after reactor startup.
+#' @param obj reactor object
+#' @param silent logical, start silently. Default: FALSE
+#' @return obj reactor object
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
@@ -137,6 +115,7 @@ start_reactor <- function(obj, silent = FALSE, processx_cleanup = TRUE){
 #' @seealso 
 #'  \code{\link[glue]{glue}}
 #' @rdname navigate_to_app
+#' @family reactor
 #' @export 
 #' @importFrom glue glue
 navigate_to_app <- function(obj,silent = FALSE){
@@ -147,12 +126,11 @@ navigate_to_app <- function(obj,silent = FALSE){
   invisible(obj)
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param obj PARAM_DESCRIPTION
-#' @param processx_cleanup logical, cleanup the side effects created by processx. Default: TRUE
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Close reactor
+#' @description Safely close a reactor session.
+#' @param obj reactor object
+#' @param processx_cleanup logical, cleanup the side effects created by reactor. Default: TRUE
+#' @return reactor object
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
@@ -160,6 +138,7 @@ navigate_to_app <- function(obj,silent = FALSE){
 #'  }
 #' }
 #' @rdname kill_app
+#' @family reactor
 #' @export 
 kill_app <- function(obj, processx_cleanup = TRUE){
   
@@ -178,12 +157,12 @@ kill_app <- function(obj, processx_cleanup = TRUE){
   invisible(obj)
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param obj PARAM_DESCRIPTION
-#' @param maxiter PARAM_DESCRIPTION, Default: 20
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Wait for shiny
+#' @description Holds the system while shiny is invalidating.
+#' @param obj reactor object
+#' @param maxiter Number of iterations to wait for shiny, Default: 20
+#' @return reactor object
+#' @details R side explicit timeout is defined as 0.02 * iteration number in seconds.
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
@@ -191,6 +170,7 @@ kill_app <- function(obj, processx_cleanup = TRUE){
 #'  }
 #' }
 #' @rdname wait_for_shiny
+#' @family reactor
 #' @export 
 wait_for_shiny <- function(obj,maxiter = 20){
   i <- 0
@@ -208,12 +188,11 @@ wait_for_shiny <- function(obj,maxiter = 20){
   invisible(obj)
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param obj PARAM_DESCRIPTION
-#' @param milliseconds PARAM_DESCRIPTION, Default: 10000
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Set Implicit Timeout
+#' @description Set the implicit timeout for the webdriver.
+#' @param obj reactor object
+#' @param milliseconds Time interval to wait in milliseconds, Default: 10000
+#' @return obj reactor object
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
@@ -221,6 +200,7 @@ wait_for_shiny <- function(obj,maxiter = 20){
 #'  }
 #' }
 #' @rdname set_timeout
+#' @family driver
 #' @export 
 set_timeout <- function(obj, milliseconds = 10000){
   timeouts(obj$test_driver$client, milliseconds = milliseconds)
@@ -230,7 +210,8 @@ set_timeout <- function(obj, milliseconds = 10000){
 timeouts <- function (remDr, milliseconds){
   qpath <- sprintf("%s/session/%s/timeouts", remDr$serverURL,
                    remDr$sessionInfo[["id"]])
-  remDr$queryRD(qpath, method = "POST", 
+  remDr$queryRD(qpath, 
+                method = "POST", 
                 qdata = jsonlite::toJSON(
                   list(
                     type = "implicit", 

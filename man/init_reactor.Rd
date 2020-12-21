@@ -2,23 +2,35 @@
 % Please edit documentation in R/api.R
 \name{init_reactor}
 \alias{init_reactor}
-\title{FUNCTION_TITLE}
+\title{Initialize Reactor}
 \usage{
 init_reactor()
 }
 \value{
-OUTPUT_DESCRIPTION
+reactor object
 }
 \description{
-FUNCTION_DESCRIPTION
+Initialize the reactor object.
 }
 \details{
-DETAILS
+The reactor object is initialized with two emtpy slots that
+must be filled.
+\itemize{
+\item \strong{processx}: Specifications for the background process that will host the application
+\item \strong{driver}: Specifications for the webdriver that will interact with the application in the background process
+}
 }
 \examples{
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
+init_reactor()
 }
+\seealso{
+Other reactor: 
+\code{\link{kill_app}()},
+\code{\link{navigate_to_app}()},
+\code{\link{reactor_path}()},
+\code{\link{read_reactor}()},
+\code{\link{reset_counter}()},
+\code{\link{start_reactor}()},
+\code{\link{wait_for_shiny}()}
 }
+\concept{reactor}

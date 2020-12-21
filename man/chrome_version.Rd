@@ -2,26 +2,27 @@
 % Please edit documentation in R/api.R
 \name{chrome_version}
 \alias{chrome_version}
-\title{FUNCTION_TITLE}
+\title{Chrome Driver Version}
 \usage{
 chrome_version()
 }
 \value{
-OUTPUT_DESCRIPTION
+character
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
+Retrieves chrome driver version installed.
 }
 \examples{
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
+chrome_version()
 }
 \seealso{
 \code{\link[pagedown]{find_chrome}}
+
+Other driver: 
+\code{\link{chrome_options}()},
+\code{\link{firefox_driver}()},
+\code{\link{set_chrome_driver}()},
+\code{\link{set_firefox_driver}()},
+\code{\link{set_timeout}()}
 }
+\concept{driver}

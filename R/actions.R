@@ -1,8 +1,8 @@
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param obj PARAM_DESCRIPTION
-#' @param expr PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
+#' @title Execute Command in Application
+#' @description Execute JavaScript function in application.
+#' @param obj reactor object
+#' @param expr character, Javascript command
+#' @return reactor object
 #' @details DETAILS
 #' @examples 
 #' \dontrun{
@@ -11,6 +11,7 @@
 #'  }
 #' }
 #' @rdname execute
+#' @family actions
 #' @export
 execute <- function(obj,expr){
   wait_for_shiny(obj)
@@ -19,14 +20,14 @@ execute <- function(obj,expr){
   invisible(obj)
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param obj PARAM_DESCRIPTION
-#' @param command PARAM_DESCRIPTION
-#' @param id PARAM_DESCRIPTION
+#' @title Query Command in Application
+#' @description Send a query to the application and return a value.
+#' @param obj reactor object
+#' @param command character, JavaScript command
+#' @param id character, id of the element
 #' @param flatten logical, flatten the output list. Default: FALSE
 #' @param include_clientdata logical, include the client data in the output. Default: FALSE
-#' @return OUTPUT_DESCRIPTION
+#' @return value returned by the query
 #' @details DETAILS
 #' @examples 
 #' \dontrun{
@@ -37,6 +38,7 @@ execute <- function(obj,expr){
 #' @seealso 
 #'  \code{\link[glue]{glue}}
 #' @rdname query
+#' @family actions
 #' @export 
 #' @importFrom glue glue
 query <- function(obj,command,flatten = FALSE){
@@ -49,11 +51,11 @@ query <- function(obj,command,flatten = FALSE){
   ret
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param obj PARAM_DESCRIPTION
-#' @param id PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
+#' @title Click an element
+#' @description Send a click command to an element in the application.
+#' @param obj reactor object
+#' @param id character, id of the element
+#' @return reactor object
 #' @details DETAILS
 #' @examples 
 #' \dontrun{
@@ -64,18 +66,19 @@ query <- function(obj,command,flatten = FALSE){
 #' @seealso 
 #'  \code{\link[glue]{glue}}
 #' @rdname click_id
+#' @family actions
 #' @export 
 #' @importFrom glue glue
 click_id <- function(obj,id){
   execute(obj,glue::glue("$('#{id}').click()"))
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param obj PARAM_DESCRIPTION
-#' @param id PARAM_DESCRIPTION
-#' @param value PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
+#' @title Set the value of an element
+#' @description Set the value of an element by element id.
+#' @param obj reactor object
+#' @param id character, id of the element
+#' @param value value to set the element to
+#' @return reactor object
 #' @details DETAILS
 #' @examples 
 #' \dontrun{
@@ -86,6 +89,7 @@ click_id <- function(obj,id){
 #' @seealso 
 #'  \code{\link[glue]{glue}}
 #' @rdname set_id_value
+#' @family actions
 #' @export 
 #' @importFrom glue glue
 set_id_value <- function(obj,id,value){

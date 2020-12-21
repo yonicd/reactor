@@ -3,5 +3,6 @@
 #' @importFrom magrittr %>%
 #' @name %>%
 #' @rdname pipe
+#' @family utils
 #' @export
 NULL

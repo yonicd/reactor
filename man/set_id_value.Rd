@@ -2,22 +2,22 @@
 % Please edit documentation in R/actions.R
 \name{set_id_value}
 \alias{set_id_value}
-\title{FUNCTION_TITLE}
+\title{Set the value of an element}
 \usage{
 set_id_value(obj, id, value)
 }
 \arguments{
-\item{obj}{PARAM_DESCRIPTION}
+\item{obj}{reactor object}
 
-\item{id}{PARAM_DESCRIPTION}
+\item{id}{character, id of the element}
 
-\item{value}{PARAM_DESCRIPTION}
+\item{value}{value to set the element to}
 }
 \value{
-OUTPUT_DESCRIPTION
+reactor object
 }
 \description{
-FUNCTION_DESCRIPTION
+Set the value of an element by element id.
 }
 \details{
 DETAILS
@@ -31,4 +31,10 @@ if(interactive()){
 }
 \seealso{
 \code{\link[glue]{glue}}
+
+Other actions: 
+\code{\link{click_id}()},
+\code{\link{execute}()},
+\code{\link{query}()}
 }
+\concept{actions}

@@ -2,23 +2,23 @@
 % Please edit documentation in R/api.R
 \name{wait_for_shiny}
 \alias{wait_for_shiny}
-\title{FUNCTION_TITLE}
+\title{Wait for shiny}
 \usage{
 wait_for_shiny(obj, maxiter = 20)
 }
 \arguments{
-\item{obj}{PARAM_DESCRIPTION}
+\item{obj}{reactor object}
 
-\item{maxiter}{PARAM_DESCRIPTION, Default: 20}
+\item{maxiter}{Number of iterations to wait for shiny, Default: 20}
 }
 \value{
-OUTPUT_DESCRIPTION
+reactor object
 }
 \description{
-FUNCTION_DESCRIPTION
+Holds the system while shiny is invalidating.
 }
 \details{
-DETAILS
+R side explicit timeout is defined as 0.02 * iteration number in seconds.
 }
 \examples{
 \dontrun{
@@ -27,3 +27,14 @@ if(interactive()){
  }
 }
 }
+\seealso{
+Other reactor: 
+\code{\link{init_reactor}()},
+\code{\link{kill_app}()},
+\code{\link{navigate_to_app}()},
+\code{\link{reactor_path}()},
+\code{\link{read_reactor}()},
+\code{\link{reset_counter}()},
+\code{\link{start_reactor}()}
+}
+\concept{reactor}

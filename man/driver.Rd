@@ -51,4 +51,19 @@ if(interactive()){
 }
 \seealso{
 \code{\link[RSelenium]{rsDriver}}
+
+Other driver: 
+\code{\link{chrome_options}()},
+\code{\link{chrome_version}()},
+\code{\link{set_chrome_driver}()},
+\code{\link{set_firefox_driver}()},
+\code{\link{set_timeout}()}
+
+Other driver: 
+\code{\link{chrome_options}()},
+\code{\link{chrome_version}()},
+\code{\link{set_chrome_driver}()},
+\code{\link{set_firefox_driver}()},
+\code{\link{set_timeout}()}
 }
+\concept{driver}

@@ -12,6 +12,7 @@
 #' }
 #' }
 #' @rdname expect_reactivity
+#' @family testing
 #' @export
 expect_reactivity <- function(object, tag, count) {
   UseMethod('expect_reactivity')

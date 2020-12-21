@@ -22,3 +22,32 @@ contents of the file
 \description{
 Read files created by reactor in the test folder
 }
+\seealso{
+Other reactor: 
+\code{\link{init_reactor}()},
+\code{\link{kill_app}()},
+\code{\link{navigate_to_app}()},
+\code{\link{reactor_path}()},
+\code{\link{reset_counter}()},
+\code{\link{start_reactor}()},
+\code{\link{wait_for_shiny}()}
+
+Other reactor: 
+\code{\link{init_reactor}()},
+\code{\link{kill_app}()},
+\code{\link{navigate_to_app}()},
+\code{\link{reactor_path}()},
+\code{\link{reset_counter}()},
+\code{\link{start_reactor}()},
+\code{\link{wait_for_shiny}()}
+
+Other reactor: 
+\code{\link{init_reactor}()},
+\code{\link{kill_app}()},
+\code{\link{navigate_to_app}()},
+\code{\link{reactor_path}()},
+\code{\link{reset_counter}()},
+\code{\link{start_reactor}()},
+\code{\link{wait_for_shiny}()}
+}
+\concept{reactor}

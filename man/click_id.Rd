@@ -2,20 +2,20 @@
 % Please edit documentation in R/actions.R
 \name{click_id}
 \alias{click_id}
-\title{FUNCTION_TITLE}
+\title{Click an element}
 \usage{
 click_id(obj, id)
 }
 \arguments{
-\item{obj}{PARAM_DESCRIPTION}
+\item{obj}{reactor object}
 
-\item{id}{PARAM_DESCRIPTION}
+\item{id}{character, id of the element}
 }
 \value{
-OUTPUT_DESCRIPTION
+reactor object
 }
 \description{
-FUNCTION_DESCRIPTION
+Send a click command to an element in the application.
 }
 \details{
 DETAILS
@@ -29,4 +29,10 @@ if(interactive()){
 }
 \seealso{
 \code{\link[glue]{glue}}
+
+Other actions: 
+\code{\link{execute}()},
+\code{\link{query}()},
+\code{\link{set_id_value}()}
 }
+\concept{actions}

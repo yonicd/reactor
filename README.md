@@ -10,6 +10,8 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 [![R-CMD-check](https://github.com/yonicd/reactor/workflows/R-CMD-check/badge.svg)](https://github.com/yonicd/reactor/actions)
 [![pkgdown](https://github.com/yonicd/reactor/workflows/pkgdown/badge.svg)](https://github.com/yonicd/reactor/actions)
 [![Reactor](https://github.com/yonicd/reactor/workflows/Reactor/badge.svg)](https://github.com/yonicd/reactor/actions)
+[![Covrpage
+Summary](https://img.shields.io/badge/covrpage-Last_Build_2020_12_21-brightgreen.svg)](https://tinyurl.com/yd2odf5g)
 <!-- badges: end -->
 
 When developing Shiny apps there is a lot of reactivity problems that
@@ -87,15 +89,15 @@ obj <- obj%>%
 reactor:
   processx:
     runApp:
-      test_port: 36752
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpV3lNvX
+      test_port: 31443
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P
       test_ip: 127.0.0.1
-      appDir: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R
+      appDir: /Users/yonis/projects/reactor/inst/examples/good_app.R
   driver:
     chrome:
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpV3lNvX
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P
       verbose: no
-      port: 47157
+      port: 34303
       opts:
         args:
         - --headless
@@ -106,7 +108,7 @@ reactor:
           download.prompt_for_download: no
           download.directory_upgrade: yes
           safebrowsing.enabled: yes
-          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpV3lNvX
+          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P
 ```
 
 </details>
@@ -131,17 +133,18 @@ obj <- obj%>%
 reactor:
   processx:
     runApp:
-      test_port: 36752
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpV3lNvX
+      test_port: 31443
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P
       test_ip: 127.0.0.1
-      appDir: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R
+      appDir: /Users/yonis/projects/reactor/inst/examples/good_app.R
   driver:
     chrome:
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpV3lNvX
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P
       verbose: no
-      port: 2970
+      port: 34303
       opts:
         args:
+        - --headless
         - --disable-gpu
         - --window-size=1280,800
         prefs:
@@ -149,7 +152,7 @@ reactor:
           download.prompt_for_download: no
           download.directory_upgrade: yes
           safebrowsing.enabled: yes
-          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpV3lNvX
+          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P
 ```
 
 </details>

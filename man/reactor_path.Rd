@@ -2,28 +2,33 @@
 % Please edit documentation in R/read_files.R
 \name{reactor_path}
 \alias{reactor_path}
-\title{FUNCTION_TITLE}
+\title{Construct Path to reactor directory}
 \usage{
 reactor_path(x = tempdir(), ...)
 }
 \arguments{
-\item{x}{PARAM_DESCRIPTION, Default: tempdir()}
+\item{x}{character, root of the path, Default: tempdir()}
 
-\item{...}{PARAM_DESCRIPTION}
+\item{...}{additional arguments to pass to file.path}
 }
 \value{
-OUTPUT_DESCRIPTION
+character
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
+Consructs the path to reactor temporary directory.
 }
 \examples{
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
+reactor_path()
+reactor_path(tempdir(),'internal')
 }
+\seealso{
+Other reactor: 
+\code{\link{init_reactor}()},
+\code{\link{kill_app}()},
+\code{\link{navigate_to_app}()},
+\code{\link{read_reactor}()},
+\code{\link{reset_counter}()},
+\code{\link{start_reactor}()},
+\code{\link{wait_for_shiny}()}
 }
+\concept{reactor}

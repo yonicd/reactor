@@ -11,6 +11,8 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+
+library(details)
 ```
 
 # reactor <img src="https://github.com/yonicd/hex/raw/master/images/logos/reactor.png" align="right" class="logo"/>
@@ -20,6 +22,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/yonicd/reactor/workflows/R-CMD-check/badge.svg)](https://github.com/yonicd/reactor/actions)
 [![pkgdown](https://github.com/yonicd/reactor/workflows/pkgdown/badge.svg)](https://github.com/yonicd/reactor/actions)
 [![Reactor](https://github.com/yonicd/reactor/workflows/Reactor/badge.svg)](https://github.com/yonicd/reactor/actions)
+[![Covrpage Summary](https://img.shields.io/badge/covrpage-Last_Build_2020_12_21-brightgreen.svg)](https://tinyurl.com/yd2odf5g)
 <!-- badges: end -->
 
 When developing Shiny apps there is a lot of reactivity problems that can arise when one `reactive` or `observe` element triggers other elements. In some cases these can create cascading reactivity (the horror). The goal of `reactor` is to diagnose these reactivity problems and then plan unit tests to avert them during development to make development less painful.
@@ -71,10 +74,7 @@ obj <- obj%>%
   set_chrome_driver()
 
 ```
- 
-```{r,include=FALSE}
-library(details)
-```
+
  
 ```{details, echo = FALSE,details.lang = 'yml',details.summary = 'reactor object'}
 obj

@@ -2,7 +2,7 @@
 % Please edit documentation in R/drivers.R
 \name{set_firefox_driver}
 \alias{set_firefox_driver}
-\title{FUNCTION_TITLE}
+\title{Attach Firefox Driver to Reactor}
 \usage{
 set_firefox_driver(
   obj,
@@ -14,26 +14,23 @@ set_firefox_driver(
 )
 }
 \arguments{
-\item{obj}{PARAM_DESCRIPTION}
+\item{obj}{reactor object}
 
-\item{test_path}{PARAM_DESCRIPTION, Default: tempdir()}
+\item{test_path}{character, Path the child process will have access to on the master, Default: tempdir()}
 
-\item{verbose}{PARAM_DESCRIPTION, Default: FALSE}
+\item{verbose}{logical, start the webdriver verbosely. Default: FALSE}
 
-\item{port}{PARAM_DESCRIPTION, Default: httpuv::randomPort()}
+\item{port}{integer, port to run the webdriver on, Default: httpuv::randomPort()}
 
-\item{opts}{PARAM_DESCRIPTION, Default: firefox_options(download_path = test_path)}
+\item{opts}{named list, options to initialize firefox with. Default: chrome_options(download_path = test_path)}
 
-\item{...}{PARAM_DESCRIPTION}
+\item{...}{additional arguments to pass to \code{\link[RSelenium]{rsDriver}}}
 }
 \value{
-OUTPUT_DESCRIPTION
+reactor object
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
+Attach firefox driver to a reactor object.
 }
 \examples{
 \dontrun{
@@ -42,3 +39,12 @@ if(interactive()){
  }
 }
 }
+\seealso{
+Other driver: 
+\code{\link{chrome_options}()},
+\code{\link{chrome_version}()},
+\code{\link{firefox_driver}()},
+\code{\link{set_chrome_driver}()},
+\code{\link{set_timeout}()}
+}
+\concept{driver}

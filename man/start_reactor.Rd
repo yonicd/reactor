@@ -2,25 +2,21 @@
 % Please edit documentation in R/api.R
 \name{start_reactor}
 \alias{start_reactor}
-\title{FUNCTION_TITLE}
+\title{Start the reactor}
 \usage{
-start_reactor(obj, silent = FALSE, processx_cleanup = TRUE)
+start_reactor(obj, silent = FALSE)
 }
 \arguments{
-\item{obj}{PARAM_DESCRIPTION}
+\item{obj}{reactor object}
 
-\item{silent}{PARAM_DESCRIPTION}
-
-\item{processx_cleanup}{PARAM_DESCRIPTION, Default: TRUE}
+\item{silent}{logical, start silently. Default: FALSE}
 }
 \value{
-OUTPUT_DESCRIPTION
+reactor object
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
+Using the populated elements of reactor you can start
+the child sessions.
 }
 \examples{
 \dontrun{
@@ -31,4 +27,14 @@ if(interactive()){
 }
 \seealso{
 \code{\link[processx]{process}}
+
+Other reactor: 
+\code{\link{init_reactor}()},
+\code{\link{kill_app}()},
+\code{\link{navigate_to_app}()},
+\code{\link{reactor_path}()},
+\code{\link{read_reactor}()},
+\code{\link{reset_counter}()},
+\code{\link{wait_for_shiny}()}
 }
+\concept{reactor}

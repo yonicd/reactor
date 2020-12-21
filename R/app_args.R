@@ -14,8 +14,7 @@
 #'   - A directory containing app.R.
 #'   - An .R file containing a Shiny application, ending with an expression that produces a Shiny app object.
 #' @param package_name name of the golem package
-#' @param test_port integer, port to run the app on, Default: httpuv::randomPort()
-#' Default: getOption("shiny.host", "127.0.0.1")
+#' @param test_port integer, port to run the app on. Default: httpuv::randomPort()
 #' @param test_ip The IPv4 address that the application should listen on.
 #' @param test_path character, Path the child process will have access to on the master, Default: tempdir()
 #' @return character
@@ -26,7 +25,8 @@
 #' golem_args()
 #' 
 #' @seealso [runApp][shiny::runApp], [process][processx::process]
-#' @rdname runApp_args
+#' @rdname app_args
+#' @family application
 #' @export 
 #' @importFrom glue glue
 #' @import shiny
@@ -43,7 +43,8 @@ runApp_args <- function(
     )
 }
 
-#' @rdname runApp_args
+#' @rdname app_args
+#' @family application
 #' @export 
 #' @importFrom glue glue
 #' @importFrom httpuv randomPort
@@ -73,22 +74,20 @@ reactor_args <- function(test_path = tempdir()){
   
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param obj PARAM_DESCRIPTION
-#' @param appDir PARAM_DESCRIPTION, Default: getwd()
-#' @param test_port PARAM_DESCRIPTION, Default: httpuv::randomPort()
-#' @param test_ip The IPv4 address that the application should listen on.
-#' @param test_path PARAM_DESCRIPTION, Default: tempdir()
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Attach Commands for Shiny Application to Reactor
+#' @description Attach commands for starting shiny application 
+#' using runApp or golem commands to the reactor object.
+#' @param obj reactor object
+#' @inheritParams runApp_args
+#' @return reactor object
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @rdname set_runapp_args
+#' @rdname set_app_args
+#' @family application
 #' @export 
 #' @importFrom httpuv randomPort
 set_runapp_args <- function(
@@ -110,22 +109,8 @@ set_runapp_args <- function(
   invisible(obj)
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param obj PARAM_DESCRIPTION
-#' @param package_name PARAM_DESCRIPTION, Default: ''
-#' @param test_port PARAM_DESCRIPTION, Default: httpuv::randomPort()
-#' @param test_ip The IPv4 address that the application should listen on.
-#' @param test_path PARAM_DESCRIPTION, Default: tempdir()
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @rdname set_golem_args
+#' @rdname set_app_args
+#' @family application
 #' @export 
 #' @importFrom httpuv randomPort
 set_golem_args <- function(

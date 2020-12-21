@@ -2,20 +2,20 @@
 % Please edit documentation in R/actions.R
 \name{execute}
 \alias{execute}
-\title{FUNCTION_TITLE}
+\title{Execute Command in Application}
 \usage{
 execute(obj, expr)
 }
 \arguments{
-\item{obj}{PARAM_DESCRIPTION}
+\item{obj}{reactor object}
 
-\item{expr}{PARAM_DESCRIPTION}
+\item{expr}{character, Javascript command}
 }
 \value{
-OUTPUT_DESCRIPTION
+reactor object
 }
 \description{
-FUNCTION_DESCRIPTION
+Execute JavaScript function in application.
 }
 \details{
 DETAILS
@@ -27,3 +27,10 @@ if(interactive()){
  }
 }
 }
+\seealso{
+Other actions: 
+\code{\link{click_id}()},
+\code{\link{query}()},
+\code{\link{set_id_value}()}
+}
+\concept{actions}

@@ -2,23 +2,20 @@
 % Please edit documentation in R/api.R
 \name{navigate_to_app}
 \alias{navigate_to_app}
-\title{FUNCTION_TITLE}
+\title{Navigate to Application}
 \usage{
 navigate_to_app(obj, silent = FALSE)
 }
 \arguments{
-\item{obj}{PARAM_DESCRIPTION}
+\item{obj}{reactor object}
 
-\item{silent}{PARAM_DESCRIPTION}
+\item{silent}{logical, start silently. Default: FALSE}
 }
 \value{
-OUTPUT_DESCRIPTION
+obj reactor object
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
+Navigating to application after reactor startup.
 }
 \examples{
 \dontrun{
@@ -29,4 +26,14 @@ if(interactive()){
 }
 \seealso{
 \code{\link[glue]{glue}}
+
+Other reactor: 
+\code{\link{init_reactor}()},
+\code{\link{kill_app}()},
+\code{\link{reactor_path}()},
+\code{\link{read_reactor}()},
+\code{\link{reset_counter}()},
+\code{\link{start_reactor}()},
+\code{\link{wait_for_shiny}()}
 }
+\concept{reactor}

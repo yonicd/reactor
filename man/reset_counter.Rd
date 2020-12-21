@@ -2,21 +2,18 @@
 % Please edit documentation in R/read_files.R
 \name{reset_counter}
 \alias{reset_counter}
-\title{FUNCTION_TITLE}
+\title{Reset the whereami counter object}
 \usage{
 reset_counter(obj)
 }
 \arguments{
-\item{obj}{PARAM_DESCRIPTION}
+\item{obj}{reactor object}
 }
 \value{
-OUTPUT_DESCRIPTION
+reactor object
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
+Resets the whereami counter object to an empty json file.
 }
 \examples{
 \dontrun{
@@ -25,3 +22,14 @@ if(interactive()){
  }
 }
 }
+\seealso{
+Other reactor: 
+\code{\link{init_reactor}()},
+\code{\link{kill_app}()},
+\code{\link{navigate_to_app}()},
+\code{\link{reactor_path}()},
+\code{\link{read_reactor}()},
+\code{\link{start_reactor}()},
+\code{\link{wait_for_shiny}()}
+}
+\concept{reactor}

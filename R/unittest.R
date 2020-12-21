@@ -8,6 +8,7 @@
 #' @seealso
 #'  [test_dir][testthat::test_dir]
 #' @rdname test_app
+#' @family testing
 #' @export
 #' @importFrom testthat test_dir
 test_app <- function(path = 'tests/testthat',...){

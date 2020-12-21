@@ -4,18 +4,21 @@
 #'   object. Default: tempdir()
 #' @return contents of the file
 #' @rdname read_reactor
+#' @family reactor
 #' @export 
 read_reactor <- function(x) {
   UseMethod('read_reactor')
 }
 
 #' @rdname read_reactor
+#' @family reactor
 #' @export 
 read_stdout <- function(x) {
   UseMethod('read_stdout')
 }
 
 #' @rdname read_reactor
+#' @family reactor
 #' @export 
 read_stderr <- function(x) {
   UseMethod('read_stderr')
@@ -28,19 +31,16 @@ read_text <- function(path){
 }
 
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param x PARAM_DESCRIPTION, Default: tempdir()
-#' @param ... PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Construct Path to reactor directory
+#' @description Consructs the path to reactor temporary directory.
+#' @param x character, root of the path, Default: tempdir()
+#' @param ... additional arguments to pass to file.path
+#' @return character
 #' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
+#' reactor_path()
+#' reactor_path(tempdir(),'internal')
 #' @rdname reactor_path
+#' @family reactor
 #' @export
 reactor_path <- function(x = tempdir(),...){
   file.path(x,'reactor',...)
@@ -88,11 +88,10 @@ read_reactor.reactor <- function(x) {
 }
 
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param obj PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Reset the whereami counter object
+#' @description Resets the whereami counter object to an empty json file.
+#' @param obj reactor object
+#' @return reactor object
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
@@ -100,9 +99,11 @@ read_reactor.reactor <- function(x) {
 #'  }
 #' }
 #' @rdname reset_counter
+#' @family reactor
 #' @export 
 reset_counter <- function(obj){
   test_path <- obj$processx[[1]]$test_path
-  file.create(file.path(test_path,'reactor','whereami.json'),showWarnings = FALSE)
+  file.create(file.path(test_path,'reactor','whereami.json'),
+              showWarnings = FALSE)
   invisible(obj)
 }

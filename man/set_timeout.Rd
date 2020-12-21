@@ -2,23 +2,20 @@
 % Please edit documentation in R/api.R
 \name{set_timeout}
 \alias{set_timeout}
-\title{FUNCTION_TITLE}
+\title{Set Implicit Timeout}
 \usage{
 set_timeout(obj, milliseconds = 10000)
 }
 \arguments{
-\item{obj}{PARAM_DESCRIPTION}
+\item{obj}{reactor object}
 
-\item{milliseconds}{PARAM_DESCRIPTION, Default: 10000}
+\item{milliseconds}{Time interval to wait in milliseconds, Default: 10000}
 }
 \value{
-OUTPUT_DESCRIPTION
+obj reactor object
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
+Set the implicit timeout for the webdriver.
 }
 \examples{
 \dontrun{
@@ -27,3 +24,12 @@ if(interactive()){
  }
 }
 }
+\seealso{
+Other driver: 
+\code{\link{chrome_options}()},
+\code{\link{chrome_version}()},
+\code{\link{firefox_driver}()},
+\code{\link{set_chrome_driver}()},
+\code{\link{set_firefox_driver}()}
+}
+\concept{driver}

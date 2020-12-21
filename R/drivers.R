@@ -25,6 +25,7 @@
 #' firefox_options()
 #' 
 #' @rdname driver_options
+#' @family driver
 #' @export
 chrome_options <- function(
   cargs = c("--disable-gpu", "--window-size=1280,800"), 
@@ -48,6 +49,7 @@ chrome_options <- function(
 }
 
 #' @rdname driver_options
+#' @family driver
 #' @export
 firefox_options <- function(cargs  = c('--width=1280','--height=800','--memory 1024mb'), headless = TRUE,..., download_path = tempdir()){
   
@@ -83,6 +85,7 @@ firefox_options <- function(cargs  = c('--width=1280','--height=800','--memory 1
 #' @seealso 
 #'  \code{\link[RSelenium]{rsDriver}}
 #' @rdname driver
+#' @family driver
 #' @export 
 #' @importFrom RSelenium rsDriver
 #' @importFrom httpuv randomPort
@@ -104,6 +107,7 @@ firefox_driver <- function(test_path = tempdir(),
 }
 
 #' @rdname driver
+#' @family driver
 #' @export 
 #' @importFrom RSelenium rsDriver
 #' @importFrom httpuv randomPort
@@ -125,16 +129,15 @@ chrome_driver <- function(test_path = tempdir(),
 }
 
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param obj PARAM_DESCRIPTION
-#' @param test_path PARAM_DESCRIPTION, Default: tempdir()
-#' @param verbose PARAM_DESCRIPTION, Default: FALSE
-#' @param port PARAM_DESCRIPTION, Default: httpuv::randomPort()
-#' @param opts PARAM_DESCRIPTION, Default: chrome_options(download_path = test_path)
-#' @param ... PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Attach Chrome Driver to Reactor
+#' @description Attach chrome driver to a reactor object.
+#' @param obj reactor object
+#' @param test_path character, Path the child process will have access to on the master, Default: tempdir()
+#' @param verbose logical, start the webdriver verbosely. Default: FALSE
+#' @param port integer, port to run the webdriver on, Default: httpuv::randomPort()
+#' @param opts named list, options to initialize webdriver with. Default: chrome_options(download_path = test_path)
+#' @param ... additional arguments to pass to \code{\link[RSelenium]{rsDriver}}
+#' @return reactor object
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
@@ -142,6 +145,7 @@ chrome_driver <- function(test_path = tempdir(),
 #'  }
 #' }
 #' @rdname set_chrome_driver
+#' @family driver
 #' @export 
 #' @importFrom httpuv randomPort
 set_chrome_driver <- function(
@@ -166,16 +170,15 @@ set_chrome_driver <- function(
   invisible(obj)
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param obj PARAM_DESCRIPTION
-#' @param test_path PARAM_DESCRIPTION, Default: tempdir()
-#' @param verbose PARAM_DESCRIPTION, Default: FALSE
-#' @param port PARAM_DESCRIPTION, Default: httpuv::randomPort()
-#' @param opts PARAM_DESCRIPTION, Default: firefox_options(download_path = test_path)
-#' @param ... PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Attach Firefox Driver to Reactor
+#' @description Attach firefox driver to a reactor object.
+#' @param obj reactor object
+#' @param test_path character, Path the child process will have access to on the master, Default: tempdir()
+#' @param verbose logical, start the webdriver verbosely. Default: FALSE
+#' @param port integer, port to run the webdriver on, Default: httpuv::randomPort()
+#' @param opts named list, options to initialize firefox with. Default: chrome_options(download_path = test_path)
+#' @param ... additional arguments to pass to \code{\link[RSelenium]{rsDriver}}
+#' @return reactor object
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
@@ -183,6 +186,7 @@ set_chrome_driver <- function(
 #'  }
 #' }
 #' @rdname set_firefox_driver
+#' @family driver
 #' @export 
 #' @importFrom httpuv randomPort
 set_firefox_driver <- function(

@@ -8,7 +8,7 @@
 \alias{query_outputs}
 \alias{query_input_names}
 \alias{query_output_names}
-\title{FUNCTION_TITLE}
+\title{Query Command in Application}
 \usage{
 query(obj, command, flatten = FALSE)
 
@@ -25,21 +25,21 @@ query_input_names(obj)
 query_output_names(obj)
 }
 \arguments{
-\item{obj}{PARAM_DESCRIPTION}
+\item{obj}{reactor object}
 
-\item{command}{PARAM_DESCRIPTION}
+\item{command}{character, JavaScript command}
 
 \item{flatten}{logical, flatten the output list. Default: FALSE}
 
-\item{id}{PARAM_DESCRIPTION}
+\item{id}{character, id of the element}
 
 \item{include_clientdata}{logical, include the client data in the output. Default: FALSE}
 }
 \value{
-OUTPUT_DESCRIPTION
+value returned by the query
 }
 \description{
-FUNCTION_DESCRIPTION
+Send a query to the application and return a value.
 }
 \details{
 DETAILS
@@ -53,4 +53,10 @@ if(interactive()){
 }
 \seealso{
 \code{\link[glue]{glue}}
+
+Other actions: 
+\code{\link{click_id}()},
+\code{\link{execute}()},
+\code{\link{set_id_value}()}
 }
+\concept{actions}

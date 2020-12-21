@@ -1,0 +1,52 @@
+destination: docs
+
+title: reactor
+
+development:
+  mode: auto
+
+navbar:
+  structure:
+    left:  [home, reference, articleindex, news]
+    right: [github, twitter]
+  components:
+    articles: ~
+    articleindex:
+      text: Articles
+      href: articles/index.html
+    twitter:
+      icon: fa-lg fa-twitter
+      href: http://twitter.com/yoniceedee
+
+reference:
+  - title: 'Reactor'
+    contents: 
+      - has_concept("reactor")
+  - title: 'Setting up the webdriver'
+    contents:
+      - has_concept("driver")
+  - title: 'Setting up the application'
+    contents:
+      - has_concept("application")
+  - title: 'Interacting with the application'
+    contents: 
+      - has_concept("actions")
+  - title: 'Testing Functions'
+    contents: 
+      - has_concept("testing")
+  - title: 'Utility Functions'
+    contents: 
+      - has_concept("utils")
+
+articles:
+  - title: "Standard Applications"
+    contents:
+      - simple_example
+  - title: "Golem Applications"
+    contents:
+      - golem
+  - title: "Unit Tests and Code Coverage"
+    contents: 
+      - tests_and_coverage
+hexURL:
+  https://github.com/yonicd/hex/raw/master/images/logos/reactor.png?raw=true

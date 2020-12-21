@@ -28,8 +28,7 @@ that contains the file index.html.
 \item An .R file containing a Shiny application, ending with an expression that produces a Shiny app object.
 }}
 
-\item{test_port}{integer, port to run the app on, Default: httpuv::randomPort()
-Default: getOption("shiny.host", "127.0.0.1")}
+\item{test_port}{integer, port to run the app on. Default: httpuv::randomPort()}
 
 \item{test_ip}{The IPv4 address that the application should listen on.}
 
@@ -58,4 +57,11 @@ golem_args()
 }
 \seealso{
 \link[shiny:runApp]{runApp}, \link[processx:process]{process}
+
+Other application: 
+\code{\link{set_runapp_args}()}
+
+Other application: 
+\code{\link{set_runapp_args}()}
 }
+\concept{application}

@@ -27,3 +27,8 @@ if(interactive()){
 }
 }
 }
+\seealso{
+Other testing: 
+\code{\link{test_app}()}
+}
+\concept{testing}
