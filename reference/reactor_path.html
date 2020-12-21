@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>FUNCTION_TITLE — reactor_path • reactor</title>
+<title>Construct Path to reactor directory — reactor_path • reactor</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="FUNCTION_TITLE — reactor_path" />
-<meta property="og:description" content="FUNCTION_DESCRIPTION" />
+<meta property="og:title" content="Construct Path to reactor directory — reactor_path" />
+<meta property="og:description" content="Consructs the path to reactor temporary directory." />
 
 
 
@@ -87,26 +87,20 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/golem.html">Using reactor with golem</a>
-    </li>
-    <li>
-      <a href="../articles/simple_example.html">Simple Example</a>
-    </li>
-  </ul>
+<li>
+  <a href="../articles/index.html">Articles</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/yonicd/reactor/">
     <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://twitter.com/yoniceedee">
+    <span class="fas fa-lg fa-twitter"></span>
      
   </a>
 </li>
@@ -123,13 +117,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>FUNCTION_TITLE</h1>
+    <h1>Construct Path to reactor directory</h1>
     <small class="dont-index">Source: <a href='https://github.com/yonicd/reactor/blob/master/R/read_files.R'><code>R/read_files.R</code></a></small>
     <div class="hidden name"><code>reactor_path.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>FUNCTION_DESCRIPTION</p>
+    <p>Consructs the path to reactor temporary directory.</p>
     </div>
 
     <pre class="usage"><span class='fu'>reactor_path</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
@@ -139,28 +133,32 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>PARAM_DESCRIPTION, Default: tempdir()</p></td>
+      <td><p>character, root of the path, Default: tempdir()</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>PARAM_DESCRIPTION</p></td>
+      <td><p>additional arguments to pass to file.path</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>OUTPUT_DESCRIPTION</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>character</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>DETAILS</p>
+    <div class='dont-index'><p>Other reactor: 
+<code><a href='init_reactor.html'>init_reactor</a>()</code>,
+<code><a href='kill_app.html'>kill_app</a>()</code>,
+<code><a href='navigate_to_app.html'>navigate_to_app</a>()</code>,
+<code><a href='read_reactor.html'>read_reactor</a>()</code>,
+<code><a href='reset_counter.html'>reset_counter</a>()</code>,
+<code><a href='start_reactor.html'>start_reactor</a>()</code>,
+<code><a href='wait_for_shiny.html'>wait_for_shiny</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>{</span>
- <span class='co'>#EXAMPLE1</span>
- <span class='op'>}</span>
-<span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>reactor_path</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpoq6rp2/reactor"</div><div class='input'><span class='fu'>reactor_path</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,<span class='st'>'internal'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpoq6rp2/reactor/internal"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

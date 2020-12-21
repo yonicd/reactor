@@ -86,26 +86,20 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/golem.html">Using reactor with golem</a>
-    </li>
-    <li>
-      <a href="../articles/simple_example.html">Simple Example</a>
-    </li>
-  </ul>
+<li>
+  <a href="../articles/index.html">Articles</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/yonicd/reactor/">
     <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://twitter.com/yoniceedee">
+    <span class="fas fa-lg fa-twitter"></span>
      
   </a>
 </li>
@@ -136,7 +130,68 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <h2 id="section-reactor" class="hasAnchor"><a href="#section-reactor" class="anchor"></a>Reactor</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="init_reactor.html">init_reactor()</a></code> </p>
+        </td>
+        <td><p>Initialize Reactor</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="kill_app.html">kill_app()</a></code> </p>
+        </td>
+        <td><p>Close reactor</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="navigate_to_app.html">navigate_to_app()</a></code> </p>
+        </td>
+        <td><p>Navigate to Application</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="reactor_path.html">reactor_path()</a></code> </p>
+        </td>
+        <td><p>Construct Path to reactor directory</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="read_reactor.html">read_reactor()</a></code> <code><a href="read_reactor.html">read_stdout()</a></code> <code><a href="read_reactor.html">read_stderr()</a></code> </p>
+        </td>
+        <td><p>Read Child Process Side Effects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="reset_counter.html">reset_counter()</a></code> </p>
+        </td>
+        <td><p>Reset the whereami counter object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="start_reactor.html">start_reactor()</a></code> </p>
+        </td>
+        <td><p>Start the reactor</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="wait_for_shiny.html">wait_for_shiny()</a></code> </p>
+        </td>
+        <td><p>Wait for shiny</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-setting-up-the-webdriver" class="hasAnchor"><a href="#section-setting-up-the-webdriver" class="anchor"></a>Setting up the webdriver</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -150,13 +205,7 @@
         <td>
           <p><code><a href="chrome_version.html">chrome_version()</a></code> </p>
         </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="click_id.html">click_id()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
+        <td><p>Chrome Driver Version</p></td>
       </tr><tr>
         
         <td>
@@ -172,10 +221,97 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="set_chrome_driver.html">set_chrome_driver()</a></code> </p>
+        </td>
+        <td><p>Attach Chrome Driver to Reactor</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="set_firefox_driver.html">set_firefox_driver()</a></code> </p>
+        </td>
+        <td><p>Attach Firefox Driver to Reactor</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="set_timeout.html">set_timeout()</a></code> </p>
+        </td>
+        <td><p>Set Implicit Timeout</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-setting-up-the-application" class="hasAnchor"><a href="#section-setting-up-the-application" class="anchor"></a>Setting up the application</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="app_args.html">runApp_args()</a></code> <code><a href="app_args.html">golem_args()</a></code> </p>
+        </td>
+        <td><p>Arguments to pass to a Shiny App in a child process</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="set_app_args.html">set_runapp_args()</a></code> <code><a href="set_app_args.html">set_golem_args()</a></code> </p>
+        </td>
+        <td><p>Attach Commands for Shiny Application to Reactor</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-interacting-with-the-application" class="hasAnchor"><a href="#section-interacting-with-the-application" class="anchor"></a>Interacting with the application</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="click_id.html">click_id()</a></code> </p>
+        </td>
+        <td><p>Click an element</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="execute.html">execute()</a></code> </p>
         </td>
-        <td><p>FUNCTION_TITLE</p></td>
+        <td><p>Execute Command in Application</p></td>
       </tr><tr>
+        
+        <td>
+          <p><code><a href="query.html">query()</a></code> <code><a href="query.html">query_output_id()</a></code> <code><a href="query.html">query_input_id()</a></code> <code><a href="query.html">query_inputs()</a></code> <code><a href="query.html">query_outputs()</a></code> <code><a href="query.html">query_input_names()</a></code> <code><a href="query.html">query_output_names()</a></code> </p>
+        </td>
+        <td><p>Query Command in Application</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="set_id_value.html">set_id_value()</a></code> </p>
+        </td>
+        <td><p>Set the value of an element</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-testing-functions" class="hasAnchor"><a href="#section-testing-functions" class="anchor"></a>Testing Functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
           <p><code><a href="expect_reactivity.html">expect_reactivity()</a></code> </p>
@@ -184,123 +320,28 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="file_timeout.html">file_timeout()</a></code> </p>
+          <p><code><a href="test_app.html">test_app()</a></code> </p>
         </td>
-        <td><p>Timer for waiting for File</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="init_reactor.html">init_reactor()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="kill_app.html">kill_app()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="navigate_to_app.html">navigate_to_app()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
+        <td><p>Reactor Unit Testing</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-utility-functions" class="hasAnchor"><a href="#section-utility-functions" class="anchor"></a>Utility Functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
           <p><code><a href="pipe.html">%>%</a></code> </p>
         </td>
         <td><p>re-export magrittr pipe operators</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="print.reactor.html">print(<i>&lt;reactor&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="query.html">query()</a></code> <code><a href="query.html">query_output_id()</a></code> <code><a href="query.html">query_input_id()</a></code> <code><a href="query.html">query_inputs()</a></code> <code><a href="query.html">query_outputs()</a></code> <code><a href="query.html">query_input_names()</a></code> <code><a href="query.html">query_output_names()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="reactor_path.html">reactor_path()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="read_reactor.html">read_reactor()</a></code> <code><a href="read_reactor.html">read_stdout()</a></code> <code><a href="read_reactor.html">read_stderr()</a></code> </p>
-        </td>
-        <td><p>Read Child Process Side Effects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="reset_counter.html">reset_counter()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="runApp_args.html">runApp_args()</a></code> <code><a href="runApp_args.html">golem_args()</a></code> </p>
-        </td>
-        <td><p>Arguments to pass to a Shiny App in a child process</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="set_chrome_driver.html">set_chrome_driver()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="set_firefox_driver.html">set_firefox_driver()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="set_golem_args.html">set_golem_args()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="set_id_value.html">set_id_value()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="set_runapp_args.html">set_runapp_args()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="set_timeout.html">set_timeout()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="start_reactor.html">start_reactor()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="test_app.html">test_app()</a></code> </p>
-        </td>
-        <td><p>Reactor Unit Testing</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="wait_for_shiny.html">wait_for_shiny()</a></code> </p>
-        </td>
-        <td><p>FUNCTION_TITLE</p></td>
       </tr>
     </tbody>
     </table>

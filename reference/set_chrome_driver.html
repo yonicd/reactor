@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>FUNCTION_TITLE — set_chrome_driver • reactor</title>
+<title>Attach Chrome Driver to Reactor — set_chrome_driver • reactor</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="FUNCTION_TITLE — set_chrome_driver" />
-<meta property="og:description" content="FUNCTION_DESCRIPTION" />
+<meta property="og:title" content="Attach Chrome Driver to Reactor — set_chrome_driver" />
+<meta property="og:description" content="Attach chrome driver to a reactor object." />
 
 
 
@@ -87,26 +87,20 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/golem.html">Using reactor with golem</a>
-    </li>
-    <li>
-      <a href="../articles/simple_example.html">Simple Example</a>
-    </li>
-  </ul>
+<li>
+  <a href="../articles/index.html">Articles</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/yonicd/reactor/">
     <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://twitter.com/yoniceedee">
+    <span class="fas fa-lg fa-twitter"></span>
      
   </a>
 </li>
@@ -123,13 +117,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>FUNCTION_TITLE</h1>
+    <h1>Attach Chrome Driver to Reactor</h1>
     <small class="dont-index">Source: <a href='https://github.com/yonicd/reactor/blob/master/R/drivers.R'><code>R/drivers.R</code></a></small>
     <div class="hidden name"><code>set_chrome_driver.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>FUNCTION_DESCRIPTION</p>
+    <p>Attach chrome driver to a reactor object.</p>
     </div>
 
     <pre class="usage"><span class='fu'>set_chrome_driver</span><span class='op'>(</span>
@@ -146,36 +140,41 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>obj</th>
-      <td><p>PARAM_DESCRIPTION</p></td>
+      <td><p>reactor object</p></td>
     </tr>
     <tr>
       <th>test_path</th>
-      <td><p>PARAM_DESCRIPTION, Default: tempdir()</p></td>
+      <td><p>character, Path the child process will have access to on the master, Default: tempdir()</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>PARAM_DESCRIPTION, Default: FALSE</p></td>
+      <td><p>logical, start the webdriver verbosely. Default: FALSE</p></td>
     </tr>
     <tr>
       <th>port</th>
-      <td><p>PARAM_DESCRIPTION, Default: httpuv::randomPort()</p></td>
+      <td><p>integer, port to run the webdriver on, Default: httpuv::randomPort()</p></td>
     </tr>
     <tr>
       <th>opts</th>
-      <td><p>PARAM_DESCRIPTION, Default: chrome_options(download_path = test_path)</p></td>
+      <td><p>named list, options to initialize webdriver with. Default: chrome_options(download_path = test_path)</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>PARAM_DESCRIPTION</p></td>
+      <td><p>additional arguments to pass to <code><a href='https://docs.ropensci.org/RSelenium/reference/rsDriver.html'>rsDriver</a></code></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>OUTPUT_DESCRIPTION</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>reactor object</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>DETAILS</p>
+    <div class='dont-index'><p>Other driver: 
+<code><a href='chrome_options.html'>chrome_options</a>()</code>,
+<code><a href='chrome_version.html'>chrome_version</a>()</code>,
+<code><a href='firefox_driver.html'>firefox_driver</a>()</code>,
+<code><a href='set_firefox_driver.html'>set_firefox_driver</a>()</code>,
+<code><a href='set_timeout.html'>set_timeout</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Chrome Driver Options — chrome_options • reactor</title>
+<title>Attach Commands for Shiny Application to Reactor — set_runapp_args • reactor</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Chrome Driver Options — chrome_options" />
-<meta property="og:description" content="Arguments and preferences to pass to chrome driver" />
+<meta property="og:title" content="Attach Commands for Shiny Application to Reactor — set_runapp_args" />
+<meta property="og:description" content="Attach commands for starting shiny application
+using runApp or golem commands to the reactor object." />
 
 
 
@@ -117,121 +118,82 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Chrome Driver Options</h1>
-    <small class="dont-index">Source: <a href='https://github.com/yonicd/reactor/blob/master/R/drivers.R'><code>R/drivers.R</code></a></small>
-    <div class="hidden name"><code>driver_options.Rd</code></div>
+    <h1>Attach Commands for Shiny Application to Reactor</h1>
+    <small class="dont-index">Source: <a href='https://github.com/yonicd/reactor/blob/master/R/app_args.R'><code>R/app_args.R</code></a></small>
+    <div class="hidden name"><code>set_app_args.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Arguments and preferences to pass to chrome driver</p>
+    <p>Attach commands for starting shiny application
+using runApp or golem commands to the reactor object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>chrome_options</span><span class='op'>(</span>
-  cargs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"--disable-gpu"</span>, <span class='st'>"--window-size=1280,800"</span><span class='op'>)</span>,
-  headless <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  <span class='va'>...</span>,
-  download_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>set_runapp_args</span><span class='op'>(</span>
+  <span class='va'>obj</span>,
+  appDir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>,
+  test_port <span class='op'>=</span> <span class='fu'>httpuv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/httpuv/man/randomPort.html'>randomPort</a></span><span class='op'>(</span><span class='op'>)</span>,
+  test_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,
+  test_ip <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"shiny.host"</span>, <span class='st'>"127.0.0.1"</span><span class='op'>)</span>
 <span class='op'>)</span>
 
-<span class='fu'>firefox_options</span><span class='op'>(</span>
-  cargs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"--width=1280"</span>, <span class='st'>"--height=800"</span>, <span class='st'>"--memory 1024mb"</span><span class='op'>)</span>,
-  headless <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  <span class='va'>...</span>,
-  download_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>set_golem_args</span><span class='op'>(</span>
+  <span class='va'>obj</span>,
+  package_name <span class='op'>=</span> <span class='st'>""</span>,
+  test_port <span class='op'>=</span> <span class='fu'>httpuv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/httpuv/man/randomPort.html'>randomPort</a></span><span class='op'>(</span><span class='op'>)</span>,
+  test_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,
+  test_ip <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"shiny.host"</span>, <span class='st'>"127.0.0.1"</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>cargs</th>
-      <td><p>character arguments to pass to driver.</p></td>
+      <th>obj</th>
+      <td><p>reactor object</p></td>
     </tr>
     <tr>
-      <th>headless</th>
-      <td><p>logical, is the driver run in headless state. Default: TRUE</p></td>
+      <th>appDir</th>
+      <td><p>The application to run. Should be one of the following (Default: getwd()):</p><ul>
+<li><p>A directory containing server.R, plus, either ui.R or a www directory
+that contains the file index.html.</p></li>
+<li><p>A directory containing app.R.</p></li>
+<li><p>An .R file containing a Shiny application, ending with an expression that produces a Shiny app object.</p></li>
+</ul></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>additional preferences to add to driver.</p></td>
+      <th>test_port</th>
+      <td><p>integer, port to run the app on. Default: httpuv::randomPort()</p></td>
     </tr>
     <tr>
-      <th>download_path</th>
-      <td><p>character, Path to save files to. Default: tempdir()</p></td>
+      <th>test_path</th>
+      <td><p>character, Path the child process will have access to on the master, Default: tempdir()</p></td>
+    </tr>
+    <tr>
+      <th>test_ip</th>
+      <td><p>The IPv4 address that the application should listen on.</p></td>
+    </tr>
+    <tr>
+      <th>package_name</th>
+      <td><p>name of the golem package</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>By default the preferences are set to allow for local dowloading to a user defined path.</p><ul>
-<li><p>chrome:</p><ul>
-<li><p>"profile.default_content_settings.popups" = 0L</p></li>
-<li><p>download.prompt_for_download" = FALSE</p></li>
-<li><p>download.directory_upgrade" = TRUE</p></li>
-<li><p>safebrowsing.enabled" = TRUE</p></li>
-<li><p>download.default_directory" = download_path</p></li>
-</ul></li>
-<li><p>firefox:</p><ul>
-<li><p>'browser.download.folderList' = 2</p></li>
-<li><p>'browser.download.lastDir' = download_path</p></li>
-<li><p>'browser.download.dir' = download_path</p></li>
-</ul></li>
-</ul>
-
+    <p>reactor object</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other driver: 
-<code><a href='chrome_version.html'>chrome_version</a>()</code>,
-<code><a href='firefox_driver.html'>firefox_driver</a>()</code>,
-<code><a href='set_chrome_driver.html'>set_chrome_driver</a>()</code>,
-<code><a href='set_firefox_driver.html'>set_firefox_driver</a>()</code>,
-<code><a href='set_timeout.html'>set_timeout</a>()</code></p>
-<p>Other driver: 
-<code><a href='chrome_version.html'>chrome_version</a>()</code>,
-<code><a href='firefox_driver.html'>firefox_driver</a>()</code>,
-<code><a href='set_chrome_driver.html'>set_chrome_driver</a>()</code>,
-<code><a href='set_firefox_driver.html'>set_firefox_driver</a>()</code>,
-<code><a href='set_timeout.html'>set_timeout</a>()</code></p></div>
+    <div class='dont-index'><p>Other application: 
+<code><a href='runApp_args.html'>runApp_args</a>()</code></p>
+<p>Other application: 
+<code><a href='runApp_args.html'>runApp_args</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>chrome_options</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $args
-#&gt; [1] "--headless"             "--disable-gpu"          "--window-size=1280,800"
-#&gt; 
-#&gt; $prefs
-#&gt; $prefs$profile.default_content_settings.popups
-#&gt; [1] 0
-#&gt; 
-#&gt; $prefs$download.prompt_for_download
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $prefs$download.directory_upgrade
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $prefs$safebrowsing.enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $prefs$download.default_directory
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpoq6rp2"
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'>firefox_options</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $args
-#&gt; [1] "--headless"      "--width=1280"    "--height=800"    "--memory 1024mb"
-#&gt; 
-#&gt; $prefs
-#&gt; $prefs$browser.download.folderList
-#&gt; [1] 2
-#&gt; 
-#&gt; $prefs$browser.download.lastDir
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpoq6rp2"
-#&gt; 
-#&gt; $prefs$browser.download.dir
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpoq6rp2"
-#&gt; 
-#&gt; </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>{</span>
+ <span class='co'>#EXAMPLE1</span>
+ <span class='op'>}</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

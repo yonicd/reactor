@@ -4,5 +4,6 @@ pkgdown_sha: ~
 articles:
   golem: golem.html
   simple_example: simple_example.html
-last_built: 2020-12-20T21:15Z
+  tests_and_coverage: tests_and_coverage.html
+last_built: 2020-12-21T12:14Z
 
