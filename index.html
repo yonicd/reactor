@@ -103,7 +103,7 @@
 <span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/init_reactor.html">init_reactor</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">obj</span>
 <span class="co">#&gt; reactor:</span>
-<span class="co">#&gt;   processx: ~</span>
+<span class="co">#&gt;   application: ~</span>
 <span class="co">#&gt;   driver: ~</span></code></pre></div>
 </div>
 <div id="populating-specifications" class="section level3">
@@ -112,14 +112,14 @@
 <p>You can see it is expecting to be populated by two objects</p>
 <ul>
 <li>
-<strong>processx</strong>: Specifications for the background process that will host the application</li>
+<strong>application</strong>: Specifications for the background process that will host the application</li>
 <li>
 <strong>driver</strong>: Specifications for the webdriver that will interact with the application in the background process</li>
 </ul>
 <p>Reactor comes with functions to help you create these specifications</p>
 <ul>
 <li>
-<strong>processx</strong>:
+<strong>application</strong>:
 <ul>
 <li>
 <code><a href="reference/set_runapp_args.html">set_runapp_args()</a></code> : Assumes that the application is located in a path on the machine and uses <code><a href="https://shiny.rstudio.com/reference/shiny/latest/runApp.html">shiny::runApp</a></code> as the function to launch the application</li>
@@ -142,20 +142,22 @@
   <span class="fu"><a href="reference/set_runapp_args.html">set_runapp_args</a></span><span class="op">(</span>
     appDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">'examples/good_app.R'</span>,package <span class="op">=</span> <span class="st">'reactor'</span><span class="op">)</span>
   <span class="op">)</span><span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/set_chrome_driver.html">set_chrome_driver</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="reference/set_chrome_driver.html">set_chrome_driver</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; Adding runApp Settings</span>
+<span class="co">#&gt; Adding chrome Settings</span></code></pre></div>
 <details closed><p><summary><span title="Click to Open"> reactor object </span> </summary></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">reactor</span><span class="kw">:</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="at">  </span><span class="fu">processx</span><span class="kw">:</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="at">  </span><span class="fu">application</span><span class="kw">:</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="at">    </span><span class="fu">runApp</span><span class="kw">:</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="at">      </span><span class="fu">test_port</span><span class="kw">:</span><span class="at"> </span><span class="dv">31443</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="at">      </span><span class="fu">test_path</span><span class="kw">:</span><span class="at"> /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="at">      </span><span class="fu">test_port</span><span class="kw">:</span><span class="at"> </span><span class="dv">41896</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="at">      </span><span class="fu">test_path</span><span class="kw">:</span><span class="at"> /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp2f3Exn</span></span>
 <span id="cb4-6"><a href="#cb4-6"></a><span class="at">      </span><span class="fu">test_ip</span><span class="kw">:</span><span class="at"> </span><span class="fl">127.0.0.1</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="at">      </span><span class="fu">appDir</span><span class="kw">:</span><span class="at"> /Users/yonis/projects/reactor/inst/examples/good_app.R</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="at">      </span><span class="fu">appDir</span><span class="kw">:</span><span class="at"> /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R</span></span>
 <span id="cb4-8"><a href="#cb4-8"></a><span class="at">  </span><span class="fu">driver</span><span class="kw">:</span></span>
 <span id="cb4-9"><a href="#cb4-9"></a><span class="at">    </span><span class="fu">chrome</span><span class="kw">:</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="at">      </span><span class="fu">test_path</span><span class="kw">:</span><span class="at"> /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="at">      </span><span class="fu">test_path</span><span class="kw">:</span><span class="at"> /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp2f3Exn</span></span>
 <span id="cb4-11"><a href="#cb4-11"></a><span class="at">      </span><span class="fu">verbose</span><span class="kw">:</span><span class="at"> </span><span class="ch">no</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a><span class="at">      </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">34303</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="at">      </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">11136</span></span>
 <span id="cb4-13"><a href="#cb4-13"></a><span class="at">      </span><span class="fu">opts</span><span class="kw">:</span></span>
 <span id="cb4-14"><a href="#cb4-14"></a><span class="at">        </span><span class="fu">args</span><span class="kw">:</span></span>
 <span id="cb4-15"><a href="#cb4-15"></a><span class="at">        </span><span class="kw">-</span><span class="at"> --headless</span></span>
@@ -166,38 +168,38 @@
 <span id="cb4-20"><a href="#cb4-20"></a><span class="at">          </span><span class="fu">download.prompt_for_download</span><span class="kw">:</span><span class="at"> </span><span class="ch">no</span></span>
 <span id="cb4-21"><a href="#cb4-21"></a><span class="at">          </span><span class="fu">download.directory_upgrade</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
 <span id="cb4-22"><a href="#cb4-22"></a><span class="at">          </span><span class="fu">safebrowsing.enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
-<span id="cb4-23"><a href="#cb4-23"></a><span class="at">          </span><span class="fu">download.default_directory</span><span class="kw">:</span><span class="at"> /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P</span></span></code></pre></div>
+<span id="cb4-23"><a href="#cb4-23"></a><span class="at">          </span><span class="fu">download.default_directory</span><span class="kw">:</span><span class="at"> /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp2f3Exn</span></span></code></pre></div>
 </details><p><br></p>
 <p>If you want turn off headless mode you can update the object</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">obj</span> <span class="op">&lt;-</span> <span class="va">obj</span><span class="op">%&gt;%</span>
   <span class="fu"><a href="reference/set_chrome_driver.html">set_chrome_driver</a></span><span class="op">(</span>
      opts <span class="op">=</span> <span class="fu"><a href="reference/chrome_options.html">chrome_options</a></span><span class="op">(</span>headless <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-  <span class="op">)</span></code></pre></div>
+  <span class="op">)</span>
+<span class="co">#&gt; Updating chrome Settings</span></code></pre></div>
 <details closed><p><summary><span title="Click to Open"> reactor object </span> </summary></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">reactor</span><span class="kw">:</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="at">  </span><span class="fu">processx</span><span class="kw">:</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="at">  </span><span class="fu">application</span><span class="kw">:</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a><span class="at">    </span><span class="fu">runApp</span><span class="kw">:</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="at">      </span><span class="fu">test_port</span><span class="kw">:</span><span class="at"> </span><span class="dv">31443</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="at">      </span><span class="fu">test_path</span><span class="kw">:</span><span class="at"> /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="at">      </span><span class="fu">test_port</span><span class="kw">:</span><span class="at"> </span><span class="dv">41896</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="at">      </span><span class="fu">test_path</span><span class="kw">:</span><span class="at"> /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp2f3Exn</span></span>
 <span id="cb6-6"><a href="#cb6-6"></a><span class="at">      </span><span class="fu">test_ip</span><span class="kw">:</span><span class="at"> </span><span class="fl">127.0.0.1</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="at">      </span><span class="fu">appDir</span><span class="kw">:</span><span class="at"> /Users/yonis/projects/reactor/inst/examples/good_app.R</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="at">      </span><span class="fu">appDir</span><span class="kw">:</span><span class="at"> /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R</span></span>
 <span id="cb6-8"><a href="#cb6-8"></a><span class="at">  </span><span class="fu">driver</span><span class="kw">:</span></span>
 <span id="cb6-9"><a href="#cb6-9"></a><span class="at">    </span><span class="fu">chrome</span><span class="kw">:</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="at">      </span><span class="fu">test_path</span><span class="kw">:</span><span class="at"> /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="at">      </span><span class="fu">test_path</span><span class="kw">:</span><span class="at"> /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp2f3Exn</span></span>
 <span id="cb6-11"><a href="#cb6-11"></a><span class="at">      </span><span class="fu">verbose</span><span class="kw">:</span><span class="at"> </span><span class="ch">no</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="at">      </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">34303</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="at">      </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">14336</span></span>
 <span id="cb6-13"><a href="#cb6-13"></a><span class="at">      </span><span class="fu">opts</span><span class="kw">:</span></span>
 <span id="cb6-14"><a href="#cb6-14"></a><span class="at">        </span><span class="fu">args</span><span class="kw">:</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="at">        </span><span class="kw">-</span><span class="at"> --headless</span></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="at">        </span><span class="kw">-</span><span class="at"> --disable-gpu</span></span>
-<span id="cb6-17"><a href="#cb6-17"></a><span class="at">        </span><span class="kw">-</span><span class="at"> --window-size=1280,800</span></span>
-<span id="cb6-18"><a href="#cb6-18"></a><span class="at">        </span><span class="fu">prefs</span><span class="kw">:</span></span>
-<span id="cb6-19"><a href="#cb6-19"></a><span class="at">          </span><span class="fu">profile.default_content_settings.popups</span><span class="kw">:</span><span class="at"> </span><span class="dv">0</span></span>
-<span id="cb6-20"><a href="#cb6-20"></a><span class="at">          </span><span class="fu">download.prompt_for_download</span><span class="kw">:</span><span class="at"> </span><span class="ch">no</span></span>
-<span id="cb6-21"><a href="#cb6-21"></a><span class="at">          </span><span class="fu">download.directory_upgrade</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
-<span id="cb6-22"><a href="#cb6-22"></a><span class="at">          </span><span class="fu">safebrowsing.enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
-<span id="cb6-23"><a href="#cb6-23"></a><span class="at">          </span><span class="fu">download.default_directory</span><span class="kw">:</span><span class="at"> /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P</span></span></code></pre></div>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="at">        </span><span class="kw">-</span><span class="at"> --disable-gpu</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="at">        </span><span class="kw">-</span><span class="at"> --window-size=1280,800</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a><span class="at">        </span><span class="fu">prefs</span><span class="kw">:</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a><span class="at">          </span><span class="fu">profile.default_content_settings.popups</span><span class="kw">:</span><span class="at"> </span><span class="dv">0</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a><span class="at">          </span><span class="fu">download.prompt_for_download</span><span class="kw">:</span><span class="at"> </span><span class="ch">no</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a><span class="at">          </span><span class="fu">download.directory_upgrade</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb6-21"><a href="#cb6-21"></a><span class="at">          </span><span class="fu">safebrowsing.enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a><span class="at">          </span><span class="fu">download.default_directory</span><span class="kw">:</span><span class="at"> /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp2f3Exn</span></span></code></pre></div>
 </details><p><br></p>
 </div>
 <div id="starting-reactor" class="section level3">

@@ -133,7 +133,8 @@ using runApp or golem commands to the reactor object.</p>
   appDir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>,
   test_port <span class='op'>=</span> <span class='fu'>httpuv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/httpuv/man/randomPort.html'>randomPort</a></span><span class='op'>(</span><span class='op'>)</span>,
   test_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,
-  test_ip <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"shiny.host"</span>, <span class='st'>"127.0.0.1"</span><span class='op'>)</span>
+  test_ip <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"shiny.host"</span>, <span class='st'>"127.0.0.1"</span><span class='op'>)</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
 
 <span class='fu'>set_golem_args</span><span class='op'>(</span>
@@ -141,7 +142,8 @@ using runApp or golem commands to the reactor object.</p>
   package_name <span class='op'>=</span> <span class='st'>""</span>,
   test_port <span class='op'>=</span> <span class='fu'>httpuv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/httpuv/man/randomPort.html'>randomPort</a></span><span class='op'>(</span><span class='op'>)</span>,
   test_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,
-  test_ip <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"shiny.host"</span>, <span class='st'>"127.0.0.1"</span><span class='op'>)</span>
+  test_ip <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"shiny.host"</span>, <span class='st'>"127.0.0.1"</span><span class='op'>)</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -171,6 +173,10 @@ that contains the file index.html.</p></li>
     <tr>
       <th>test_ip</th>
       <td><p>The IPv4 address that the application should listen on.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>logical, reactor willn notify the action taken. Default: TRUE</p></td>
     </tr>
     <tr>
       <th>package_name</th>

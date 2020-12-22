@@ -129,7 +129,8 @@
     <pre class="usage"><span class='fu'>set_firefox_driver</span><span class='op'>(</span>
   <span class='va'>obj</span>,
   test_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,
-  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  verbose_driver <span class='op'>=</span> <span class='cn'>FALSE</span>,
   port <span class='op'>=</span> <span class='fu'>httpuv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/httpuv/man/randomPort.html'>randomPort</a></span><span class='op'>(</span><span class='op'>)</span>,
   opts <span class='op'>=</span> <span class='fu'><a href='chrome_options.html'>firefox_options</a></span><span class='op'>(</span>download_path <span class='op'>=</span> <span class='va'>test_path</span><span class='op'>)</span>,
   <span class='va'>...</span>
