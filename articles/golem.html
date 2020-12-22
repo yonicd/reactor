@@ -200,11 +200,11 @@
     id <span class="op">=</span> <span class="st">'ans'</span>
   <span class="op">)</span></code></pre></div>
 <p>Given the correct answer the app is supposed to change the border of the div surrounding the textInput with the color green.</p>
-<p>We can send a query to the app using <code><a href="../reference/query_style_id.html">query_style_id()</a></code> that queries the style of an element by element id and return the value to R. The argument flatten is used to unlist the result and return the character.</p>
+<p>We can send a query to the app using <code><a href="../reference/query.html">query_style_id()</a></code> that queries the style of an element by element id and return the value to R. The argument flatten is used to unlist the result and return the character.</p>
 <p>We can test this expectation using testthat expectations.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">obj</span><span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/query_style_id.html">query_style_id</a></span><span class="op">(</span>
+  <span class="fu"><a href="../reference/query.html">query_style_id</a></span><span class="op">(</span>
     id <span class="op">=</span> <span class="st">'anspanel'</span>,
     style <span class="op">=</span> <span class="st">'borderColor'</span>,
     flatten <span class="op">=</span> <span class="cn">TRUE</span>
