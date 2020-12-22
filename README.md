@@ -44,7 +44,7 @@ library(reactor)
 obj <- init_reactor()
 obj
 #> reactor:
-#>   processx: ~
+#>   application: ~
 #>   driver: ~
 ```
 
@@ -52,14 +52,14 @@ obj
 
 You can see it is expecting to be populated by two objects
 
--   **processx**: Specifications for the background process that will
+-   **application**: Specifications for the background process that will
     host the application
 -   **driver**: Specifications for the webdriver that will interact with
     the application in the background process
 
 Reactor comes with functions to help you create these specifications
 
--   **processx**:
+-   **application**:
     -   `set_runapp_args()` : Assumes that the application is located in
         a path on the machine and uses `shiny::runApp` as the function
         to launch the application
@@ -78,6 +78,8 @@ obj <- obj%>%
     appDir = system.file('examples/good_app.R',package = 'reactor')
   )%>%
   set_chrome_driver()
+#> Adding runApp Settings
+#> Adding chrome Settings
 ```
 
 <details closed>
@@ -87,17 +89,17 @@ obj <- obj%>%
 
 ``` yml
 reactor:
-  processx:
+  application:
     runApp:
-      test_port: 31443
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P
+      test_port: 41896
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp2f3Exn
       test_ip: 127.0.0.1
-      appDir: /Users/yonis/projects/reactor/inst/examples/good_app.R
+      appDir: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R
   driver:
     chrome:
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp2f3Exn
       verbose: no
-      port: 34303
+      port: 11136
       opts:
         args:
         - --headless
@@ -108,7 +110,7 @@ reactor:
           download.prompt_for_download: no
           download.directory_upgrade: yes
           safebrowsing.enabled: yes
-          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P
+          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp2f3Exn
 ```
 
 </details>
@@ -122,6 +124,7 @@ obj <- obj%>%
   set_chrome_driver(
      opts = chrome_options(headless = FALSE)
   )
+#> Updating chrome Settings
 ```
 
 <details closed>
@@ -131,20 +134,19 @@ obj <- obj%>%
 
 ``` yml
 reactor:
-  processx:
+  application:
     runApp:
-      test_port: 31443
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P
+      test_port: 41896
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp2f3Exn
       test_ip: 127.0.0.1
-      appDir: /Users/yonis/projects/reactor/inst/examples/good_app.R
+      appDir: /Library/Frameworks/R.framework/Versions/3.6/Resources/library/reactor/examples/good_app.R
   driver:
     chrome:
-      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp2f3Exn
       verbose: no
-      port: 34303
+      port: 14336
       opts:
         args:
-        - --headless
         - --disable-gpu
         - --window-size=1280,800
         prefs:
@@ -152,7 +154,7 @@ reactor:
           download.prompt_for_download: no
           download.directory_upgrade: yes
           safebrowsing.enabled: yes
-          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpVVpx6P
+          download.default_directory: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//Rtmp2f3Exn
 ```
 
 </details>

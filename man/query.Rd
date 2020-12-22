@@ -57,6 +57,7 @@ if(interactive()){
 Other actions: 
 \code{\link{click_id}()},
 \code{\link{execute}()},
+\code{\link{query_style_id}()},
 \code{\link{set_id_value}()}
 }
 \concept{actions}

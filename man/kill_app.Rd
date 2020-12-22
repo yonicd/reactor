@@ -4,12 +4,12 @@
 \alias{kill_app}
 \title{Close reactor}
 \usage{
-kill_app(obj, processx_cleanup = TRUE)
+kill_app(obj, application_cleanup = TRUE)
 }
 \arguments{
 \item{obj}{reactor object}
 
-\item{processx_cleanup}{logical, cleanup the side effects created by reactor. Default: TRUE}
+\item{application_cleanup}{logical, cleanup the side effects created by reactor. Default: TRUE}
 }
 \value{
 reactor object

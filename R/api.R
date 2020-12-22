@@ -3,7 +3,7 @@
 #' @return reactor object
 #' @details The reactor object is initialized with two emtpy slots that
 #' must be filled. 
-#' - __processx__: Specifications for the background process that will host the application
+#' - __application__: Specifications for the background process that will host the application
 #' - __driver__: Specifications for the webdriver that will interact with the application in the background process
 #' @examples 
 #' init_reactor()
@@ -13,7 +13,7 @@
 #' @importFrom whereami counter_names
 init_reactor <- function(){
   ret <- list(
-    processx = NULL,
+    application = NULL,
     driver   = NULL
   )
   # force import of whereami
@@ -21,25 +21,10 @@ init_reactor <- function(){
   structure(ret,class = 'reactor')
 }
 
-#' @title Chrome Driver Version
-#' @description Retrieves chrome driver version installed.
-#' @return character
-#' @examples 
-#' chrome_version()
-#' @seealso 
-#'  \code{\link[pagedown]{find_chrome}}
-#' @rdname chrome_version
-#' @family driver
-#' @export 
-#' @importFrom pagedown find_chrome
-chrome_version <- function(){
-  gsub('[^0-9.]','',system2(pagedown::find_chrome(),args = '--version',stdout = TRUE))
-}
-
 #' @export 
 #' @importFrom yaml as.yaml
 print.reactor <- function(x,...){
-  x_print <- x[grep('^(processx|driver)$',names(x))]
+  x_print <- x[grep('^(application|driver)$',names(x))]
   cat(yaml::as.yaml(list(reactor = x_print)))
 }
 
@@ -64,7 +49,7 @@ print.reactor <- function(x,...){
 start_reactor <- function(obj, silent = FALSE){
   
   driver_name <- names(obj$driver)
-  process_name <- names(obj$processx)
+  process_name <- names(obj$application)
   
   driver_fun <- get(sprintf('%s_driver',driver_name),
                     envir = asNamespace('reactor'))
@@ -73,10 +58,10 @@ start_reactor <- function(obj, silent = FALSE){
                      envir = asNamespace('reactor'))
   
   obj$test_driver <- do.call(driver_fun,obj$driver[[driver_name]])
-  obj$process <- do.call(process_fun,obj$processx[[process_name]])
+  obj$process <- do.call(process_fun,obj$application[[process_name]])
   
-  test_path <- obj$processx[[process_name]]$test_path
-  test_port <- obj$processx[[process_name]]$test_port
+  test_path <- obj$application[[process_name]]$test_path
+  test_port <- obj$application[[process_name]]$test_port
   
   testdir <- file.path(test_path,'reactor')
   dir.create(testdir,showWarnings = FALSE)
@@ -119,8 +104,8 @@ start_reactor <- function(obj, silent = FALSE){
 #' @export 
 #' @importFrom glue glue
 navigate_to_app <- function(obj,silent = FALSE){
-  port <- obj$processx[[1]]$test_port
-  ip <- obj$processx[[1]]$test_ip
+  port <- obj$application[[1]]$test_port
+  ip <- obj$application[[1]]$test_ip
   obj <- rachet(obj,ip,port,silent)
   obj <- set_timeout(obj)
   invisible(obj)
@@ -129,7 +114,7 @@ navigate_to_app <- function(obj,silent = FALSE){
 #' @title Close reactor
 #' @description Safely close a reactor session.
 #' @param obj reactor object
-#' @param processx_cleanup logical, cleanup the side effects created by reactor. Default: TRUE
+#' @param application_cleanup logical, cleanup the side effects created by reactor. Default: TRUE
 #' @return reactor object
 #' @examples 
 #' \dontrun{
@@ -140,7 +125,7 @@ navigate_to_app <- function(obj,silent = FALSE){
 #' @rdname kill_app
 #' @family reactor
 #' @export 
-kill_app <- function(obj, processx_cleanup = TRUE){
+kill_app <- function(obj, application_cleanup = TRUE){
   
   obj$test_driver$client$closeall()
   obj$test_driver$server$stop()
@@ -149,8 +134,8 @@ kill_app <- function(obj, processx_cleanup = TRUE){
   obj$test_process <- NULL
   obj$test_driver <- NULL
   
-  if(processx_cleanup){
-    test_dir <- file.path(obj$processx[[1]]$test_path,'reactor')
+  if(application_cleanup){
+    test_dir <- file.path(obj$application[[1]]$test_path,'reactor')
     unlink(test_dir,recursive = TRUE,force = TRUE)
   }
   

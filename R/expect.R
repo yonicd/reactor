@@ -58,7 +58,7 @@ expect_reactivity.reactor <- function(object, tag, count) {
 wait_for_whereami <- function(obj, timeout = 0.3){
   
   whereami_json <- reactor_path(
-    obj$processx[[1]]$test_path,
+    obj$application[[1]]$test_path,
     'whereami.json'
   ) 
   

@@ -3,7 +3,7 @@
 \name{chrome_options}
 \alias{chrome_options}
 \alias{firefox_options}
-\title{Chrome Driver Options}
+\title{Firefox and Chrome Driver Options}
 \usage{
 chrome_options(
   cargs = c("--disable-gpu", "--window-size=1280,800"),

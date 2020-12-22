@@ -1,4 +1,4 @@
-#' @title Chrome Driver Options
+#' @title Firefox and Chrome Driver Options
 #' @description Arguments and preferences to pass to chrome driver
 #' @param cargs character arguments to pass to driver. 
 #' @param headless logical, is the driver run in headless state. Default: TRUE
@@ -133,7 +133,8 @@ chrome_driver <- function(test_path = tempdir(),
 #' @description Attach chrome driver to a reactor object.
 #' @param obj reactor object
 #' @param test_path character, Path the child process will have access to on the master, Default: tempdir()
-#' @param verbose logical, start the webdriver verbosely. Default: FALSE
+#' @param verbose logical, reactor willn notify the action taken. Default: TRUE
+#' @param verbose_driver logical, start the webdriver verbosely. Default: FALSE
 #' @param port integer, port to run the webdriver on, Default: httpuv::randomPort()
 #' @param opts named list, options to initialize webdriver with. Default: chrome_options(download_path = test_path)
 #' @param ... additional arguments to pass to \code{\link[RSelenium]{rsDriver}}
@@ -151,14 +152,19 @@ chrome_driver <- function(test_path = tempdir(),
 set_chrome_driver <- function(
   obj,
   test_path = tempdir(),
-  verbose = FALSE, 
+  verbose = TRUE,
+  verbose_driver = FALSE, 
   port = httpuv::randomPort(),
   opts = chrome_options(download_path = test_path),
   ...){
   
+  if(verbose){
+    reactor_message(names(obj$driver),to = 'chrome')
+  }
+  
   chrome = list(
     test_path = test_path,
-    verbose = verbose, 
+    verbose = verbose_driver, 
     port = port,
     opts = opts
   )
@@ -192,14 +198,19 @@ set_chrome_driver <- function(
 set_firefox_driver <- function(
   obj,
   test_path = tempdir(),
-  verbose = FALSE, 
+  verbose = TRUE,
+  verbose_driver = FALSE, 
   port = httpuv::randomPort(),
   opts = firefox_options(download_path = test_path),
   ...){
   
+  if(verbose){
+    reactor_message(names(obj$driver),to = 'firefox')
+  }
+  
   firefox = list(
     test_path = test_path,
-    verbose = verbose, 
+    verbose = verbose_driver, 
     port = port,
     opts = opts
   )
@@ -209,4 +220,27 @@ set_firefox_driver <- function(
   obj$driver <- list(firefox = firefox)
   
   invisible(obj)
+}
+
+#' @title Driver Version
+#' @description Retrieves chrome driver version installed.
+#' @return character
+#' @examples 
+#' chrome_version()
+#' gecko_version()
+#' @seealso 
+#'  \code{\link[pagedown]{find_chrome}}
+#' @rdname driver_version
+#' @family driver
+#' @export 
+#' @importFrom pagedown find_chrome
+chrome_version <- function(){
+  gsub('[^0-9.]','',system2(pagedown::find_chrome(),args = '--version',stdout = TRUE))
+}
+
+#' @rdname driver_version
+#' @family driver
+#' @export 
+gecko_version <- function(){
+  gsub('[^0-9.]','',system2('geckodriver',args = '-V',stdout = TRUE)[1])
 }

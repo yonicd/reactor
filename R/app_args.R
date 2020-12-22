@@ -79,6 +79,7 @@ reactor_args <- function(test_path = tempdir()){
 #' using runApp or golem commands to the reactor object.
 #' @param obj reactor object
 #' @inheritParams runApp_args
+#' @param verbose logical, reactor willn notify the action taken. Default: TRUE
 #' @return reactor object
 #' @examples 
 #' \dontrun{
@@ -95,9 +96,14 @@ set_runapp_args <- function(
   appDir = getwd(), 
   test_port = httpuv::randomPort(),
   test_path = tempdir(), 
-  test_ip = getOption('shiny.host','127.0.0.1')){
+  test_ip = getOption('shiny.host','127.0.0.1'),
+  verbose = TRUE){
   
-  obj$processx <- list(
+  if(verbose){
+    reactor_message(names(obj$application),to = 'runApp')
+  }
+  
+  obj$application <- list(
     runApp = list(
       test_port = test_port, 
       test_path = test_path, 
@@ -118,9 +124,15 @@ set_golem_args <- function(
   package_name ='', 
   test_port = httpuv::randomPort(),
   test_path = tempdir(), 
-  test_ip = getOption('shiny.host','127.0.0.1')
+  test_ip = getOption('shiny.host','127.0.0.1'),
+  verbose = TRUE
   ){
-  obj$processx <- list(
+  
+  if(verbose){
+    reactor_message(names(obj$application),to = 'golem')
+  }
+
+  obj$application <- list(
     golem = list(
       test_port = test_port, 
       test_path = test_path, 
@@ -130,4 +142,27 @@ set_golem_args <- function(
   )
   
   invisible(obj)
+}
+
+#' @importFrom glue glue
+reactor_message <- function(nm,to){
+  
+  if(is.null(nm)){
+    
+    msg <- glue::glue('Adding {to} Settings')
+    
+  }else{
+    
+    if(nm==to){
+      
+      msg <- glue::glue('Updating {nm} Settings')
+      
+    }else{
+      msg <- glue::glue('Replacing {nm} with {to} Settings')
+    }
+    
+  }
+  
+  message(msg)
+  
 }

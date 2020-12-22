@@ -54,12 +54,12 @@ obj
 
 You can see it is expecting to be populated by two objects 
 
-  - __processx__: Specifications for the background process that will host the application
+  - __application__: Specifications for the background process that will host the application
   - __driver__: Specifications for the webdriver that will interact with the application in the background process
   
 Reactor comes with functions to help you create these specifications
 
-  - __processx__: 
+  - __application__: 
     - `set_runapp_args()` : Assumes that the application is located in a path on the machine and uses `shiny::runApp` as the function to launch the application
     - `set_golem_args()`: Assumes that the application is a [golem](https://github.com/ThinkR-open/golem) package and uses the `golem` logic to launch the application.
   - __driver__:

@@ -10,7 +10,8 @@ set_runapp_args(
   appDir = getwd(),
   test_port = httpuv::randomPort(),
   test_path = tempdir(),
-  test_ip = getOption("shiny.host", "127.0.0.1")
+  test_ip = getOption("shiny.host", "127.0.0.1"),
+  verbose = TRUE
 )
 
 set_golem_args(
@@ -18,7 +19,8 @@ set_golem_args(
   package_name = "",
   test_port = httpuv::randomPort(),
   test_path = tempdir(),
-  test_ip = getOption("shiny.host", "127.0.0.1")
+  test_ip = getOption("shiny.host", "127.0.0.1"),
+  verbose = TRUE
 )
 }
 \arguments{
@@ -37,6 +39,8 @@ that contains the file index.html.
 \item{test_path}{character, Path the child process will have access to on the master, Default: tempdir()}
 
 \item{test_ip}{The IPv4 address that the application should listen on.}
+
+\item{verbose}{logical, reactor willn notify the action taken. Default: TRUE}
 
 \item{package_name}{name of the golem package}
 }

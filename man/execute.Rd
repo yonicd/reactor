@@ -30,6 +30,7 @@ if(interactive()){
 \seealso{
 Other actions: 
 \code{\link{click_id}()},
+\code{\link{query_style_id}()},
 \code{\link{query}()},
 \code{\link{set_id_value}()}
 }

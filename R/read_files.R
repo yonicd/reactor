@@ -71,19 +71,19 @@ read_reactor.default <- function(x = tempdir()) {
 
 #' @export 
 read_stderr.reactor <- function(x) {
-  path <- x$processx[[1]]$test_path
+  path <- x$application[[1]]$test_path
   read_stderr(path)
 }
 
 #' @export 
 read_stdout.reactor <- function(x) {
-  path <- x$processx[[1]]$test_path
+  path <- x$application[[1]]$test_path
   read_stdout(path)
 }
 
 #' @export
 read_reactor.reactor <- function(x) {
-  path <- x$processx[[1]]$test_path
+  path <- x$application[[1]]$test_path
   read_reactor(path)
 }
 
@@ -102,7 +102,7 @@ read_reactor.reactor <- function(x) {
 #' @family reactor
 #' @export 
 reset_counter <- function(obj){
-  test_path <- obj$processx[[1]]$test_path
+  test_path <- obj$application[[1]]$test_path
   file.create(file.path(test_path,'reactor','whereami.json'),
               showWarnings = FALSE)
   invisible(obj)

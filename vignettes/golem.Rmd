@@ -120,31 +120,38 @@ obj%>%
 
 ### Querying the Application
 
-Now we are interested in querying the value of a question in order to send correct value to the appropriate textInput with an id 'ans'.
+Now we are interested in querying the value of a question in order to send correct value to the appropriate textInput with an id 'ans' using `set_id_value()`.
 
 We can do this with `query_output_id()` using the 'ques' id, the result is in the form of a question, e.g. '3 + 1 ?'
- 
+
 ```{r}
-current_ans <- obj%>%
+obj%>%
   query_output_id('ques')%>%
   gsub('\\?','',.)%>%
   parse(text = .)%>%
-  eval()
-
-obj%>%
-  set_id_value('ans',current_ans)
-
+  eval()%>%
+  set_id_value(
+    obj = obj, 
+    id = 'ans'
+  )
 ```
  
-Given the correct answer the app is supposed to change the border of the div surrounding the textInput with the color green, rgb (0,128,0). We can send a query to the app using JavaScript functions and return the value to R. The argument flatten is used to unlist the result and return the character.  
+Given the correct answer the app is supposed to change the border of the div surrounding the textInput with the color green. 
+
+We can send a query to the app using `query_style_id()` that queries the style of an element by element id and return the value to R. The argument flatten is used to unlist the result and return the character.  
 
 We can test this expectation using testthat expectations. 
 
 ```{r}
 obj%>%
-  query("$('#anspanel').css('border-color')",flatten = TRUE)%>%
-  testthat::expect_equal(expected = "rgb(0, 128, 0)")
-
+  query_style_id(
+    id = 'anspanel',
+    style = 'borderColor',
+    flatten = TRUE
+  )%>%
+  testthat::expect_equal(
+    expected = "green"
+  )
 ```
 
 ### Closing Reactor

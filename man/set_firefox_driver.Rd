@@ -7,7 +7,8 @@
 set_firefox_driver(
   obj,
   test_path = tempdir(),
-  verbose = FALSE,
+  verbose = TRUE,
+  verbose_driver = FALSE,
   port = httpuv::randomPort(),
   opts = firefox_options(download_path = test_path),
   ...

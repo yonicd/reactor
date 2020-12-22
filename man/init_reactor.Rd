@@ -16,7 +16,7 @@ Initialize the reactor object.
 The reactor object is initialized with two emtpy slots that
 must be filled.
 \itemize{
-\item \strong{processx}: Specifications for the background process that will host the application
+\item \strong{application}: Specifications for the background process that will host the application
 \item \strong{driver}: Specifications for the webdriver that will interact with the application in the background process
 }
 }
