@@ -32,7 +32,6 @@ if(interactive()){
 
 Other actions: 
 \code{\link{execute}()},
-\code{\link{query_style_id}()},
 \code{\link{query}()},
 \code{\link{set_id_value}()}
 }

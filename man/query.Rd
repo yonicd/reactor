@@ -2,6 +2,7 @@
 % Please edit documentation in R/actions.R
 \name{query}
 \alias{query}
+\alias{query_style_id}
 \alias{query_output_id}
 \alias{query_input_id}
 \alias{query_inputs}
@@ -11,6 +12,8 @@
 \title{Query Command in Application}
 \usage{
 query(obj, command, flatten = FALSE)
+
+query_style_id(obj, id, style, flatten = FALSE)
 
 query_output_id(obj, id)
 
@@ -32,6 +35,8 @@ query_output_names(obj)
 \item{flatten}{logical, flatten the output list. Default: FALSE}
 
 \item{id}{character, id of the element}
+
+\item{style}{name of the style element}
 
 \item{include_clientdata}{logical, include the client data in the output. Default: FALSE}
 }
@@ -57,7 +62,6 @@ if(interactive()){
 Other actions: 
 \code{\link{click_id}()},
 \code{\link{execute}()},
-\code{\link{query_style_id}()},
 \code{\link{set_id_value}()}
 }
 \concept{actions}

@@ -25,6 +25,7 @@ execute <- function(obj,expr){
 #' @param obj reactor object
 #' @param command character, JavaScript command
 #' @param id character, id of the element
+#' @param style name of the style element
 #' @param flatten logical, flatten the output list. Default: FALSE
 #' @param include_clientdata logical, include the client data in the output. Default: FALSE
 #' @return value returned by the query
@@ -96,23 +97,7 @@ set_id_value <- function(obj,id,value){
   execute(obj,glue::glue("Shiny.setInputValue('{id}',{jsonlite::toJSON(value)});"))
 }
 
-#' @title Query CSS Style
-#' @description Query the style value of an element by id
-#' @param obj reactor object
-#' @param id character, id of the element
-#' @param style name of the style element
-#' @param flatten PARAM_DESCRIPTION, Default: FALSE
-#' @param flatten logical, flatten the output list. Default: FALSE
-#' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @seealso 
-#'  \code{\link[glue]{glue}}
-#' @rdname query_style_id
-#' @family actions
+#' @rdname query
 #' @export 
 #' @importFrom glue glue
 query_style_id <- function(obj,id,style,flatten = FALSE){
