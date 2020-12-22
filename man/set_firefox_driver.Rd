@@ -19,7 +19,9 @@ set_firefox_driver(
 
 \item{test_path}{character, Path the child process will have access to on the master, Default: tempdir()}
 
-\item{verbose}{logical, start the webdriver verbosely. Default: FALSE}
+\item{verbose}{logical, reactor will notify the action taken. Default: TRUE}
+
+\item{verbose_driver}{logical, start the webdriver verbosely. Default: FALSE}
 
 \item{port}{integer, port to run the webdriver on, Default: httpuv::randomPort()}
 

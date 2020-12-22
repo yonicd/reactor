@@ -133,7 +133,7 @@ chrome_driver <- function(test_path = tempdir(),
 #' @description Attach chrome driver to a reactor object.
 #' @param obj reactor object
 #' @param test_path character, Path the child process will have access to on the master, Default: tempdir()
-#' @param verbose logical, reactor willn notify the action taken. Default: TRUE
+#' @param verbose logical, reactor will notify the action taken. Default: TRUE
 #' @param verbose_driver logical, start the webdriver verbosely. Default: FALSE
 #' @param port integer, port to run the webdriver on, Default: httpuv::randomPort()
 #' @param opts named list, options to initialize webdriver with. Default: chrome_options(download_path = test_path)
@@ -180,7 +180,8 @@ set_chrome_driver <- function(
 #' @description Attach firefox driver to a reactor object.
 #' @param obj reactor object
 #' @param test_path character, Path the child process will have access to on the master, Default: tempdir()
-#' @param verbose logical, start the webdriver verbosely. Default: FALSE
+#' @param verbose logical, reactor will notify the action taken. Default: TRUE
+#' @param verbose_driver logical, start the webdriver verbosely. Default: FALSE
 #' @param port integer, port to run the webdriver on, Default: httpuv::randomPort()
 #' @param opts named list, options to initialize firefox with. Default: chrome_options(download_path = test_path)
 #' @param ... additional arguments to pass to \code{\link[RSelenium]{rsDriver}}

@@ -19,7 +19,7 @@ set_chrome_driver(
 
 \item{test_path}{character, Path the child process will have access to on the master, Default: tempdir()}
 
-\item{verbose}{logical, reactor willn notify the action taken. Default: TRUE}
+\item{verbose}{logical, reactor will notify the action taken. Default: TRUE}
 
 \item{verbose_driver}{logical, start the webdriver verbosely. Default: FALSE}
 
