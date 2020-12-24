@@ -3,8 +3,7 @@ library(reactor)
 obj <- init_reactor()%>%
   set_golem_args(package_name = 'puzzlemath')%>%
   set_chrome_driver(
-    chromever = chrome_version(),
-    opts = chrome_options(headless = FALSE)
+    chromever = chrome_version()
   )
 
 obj <- obj%>%
