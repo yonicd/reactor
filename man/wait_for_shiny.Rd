@@ -4,12 +4,14 @@
 \alias{wait_for_shiny}
 \title{Wait for shiny}
 \usage{
-wait_for_shiny(obj, maxiter = 20)
+wait_for_shiny(obj, maxiter = 20, ...)
 }
 \arguments{
 \item{obj}{reactor object}
 
 \item{maxiter}{Number of iterations to wait for shiny, Default: 20}
+
+\item{...}{pass arguments to time logger.}
 }
 \value{
 reactor object
@@ -29,6 +31,7 @@ if(interactive()){
 }
 \seealso{
 Other reactor: 
+\code{\link{get_busy_time}()},
 \code{\link{init_reactor}()},
 \code{\link{kill_app}()},
 \code{\link{navigate_to_app}()},

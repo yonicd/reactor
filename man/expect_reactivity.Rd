@@ -29,6 +29,7 @@ if(interactive()){
 }
 \seealso{
 Other testing: 
+\code{\link{expect_busy_time}()},
 \code{\link{test_app}()}
 }
 \concept{testing}

@@ -25,6 +25,7 @@ reactor unit test files are like testthat test files, just the name is \verb{rea
 \link[testthat:test_dir]{test_dir}
 
 Other testing: 
+\code{\link{expect_busy_time}()},
 \code{\link{expect_reactivity}()}
 }
 \concept{testing}

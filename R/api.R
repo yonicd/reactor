@@ -14,7 +14,8 @@
 init_reactor <- function(){
   ret <- list(
     application = NULL,
-    driver   = NULL
+    driver   = NULL,
+    maxiter = 20
   )
   # force import of whereami
   whereami::counter_names() 
@@ -79,10 +80,10 @@ start_reactor <- function(obj, silent = FALSE){
     stop('error in child process')
   }
   obj$app_flag <- FALSE
-  
+  obj <- reset_busy_time(obj)
   obj <- navigate_to_app(obj,silent)
   
-  invisible(wait_for_shiny(obj))
+  invisible(wait_for_shiny(obj,maxiter = obj$maxiter))
 
 }
 
@@ -146,6 +147,7 @@ kill_app <- function(obj, application_cleanup = TRUE){
 #' @description Holds the system while shiny is invalidating.
 #' @param obj reactor object
 #' @param maxiter Number of iterations to wait for shiny, Default: 20
+#' @param ... pass arguments to time logger.
 #' @return reactor object
 #' @details R side explicit timeout is defined as 0.02 * iteration number in seconds.
 #' @examples 
@@ -157,7 +159,7 @@ kill_app <- function(obj, application_cleanup = TRUE){
 #' @rdname wait_for_shiny
 #' @family reactor
 #' @export 
-wait_for_shiny <- function(obj,maxiter = 20){
+wait_for_shiny <- function(obj, maxiter = 20, ...){
   i <- 0
   DONE <- FALSE
   
@@ -170,6 +172,9 @@ wait_for_shiny <- function(obj,maxiter = 20){
     i <- i + 1 
     
   }
+  
+  time_logger(i,...)
+  
   invisible(obj)
 }
 
@@ -219,4 +224,40 @@ is_empty <- function(obj){
   query(obj,"document.getElementsByTagName('head')[0].innerHTML==''",
         flatten = TRUE)
   
+}
+
+#' @title Shiny busy loggers
+#' @description Query/Reset shiny busy loggers
+#' @param obj reactor object
+#' @param history logical, return all the logged times, 
+#' or only the last logged time? Default: FALSE
+#' @return numeric
+#' @details DETAILS
+#' @examples 
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname busy_time
+#' @family reactor
+#' @export 
+
+get_busy_time <- function(obj, history = FALSE){
+  
+  ret <- get('busy_time',envir = env)
+  
+  if(!history&length(ret)>0){
+    ret <- ret[length(ret)]
+  }
+  
+  ret
+  
+}
+
+#' @rdname busy_time
+#' @export
+reset_busy_time <- function(obj){
+  assign('busy_time',numeric(),envir = env)
+  invisible(obj)
 }

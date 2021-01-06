@@ -25,6 +25,7 @@ init_reactor()
 }
 \seealso{
 Other reactor: 
+\code{\link{get_busy_time}()},
 \code{\link{kill_app}()},
 \code{\link{navigate_to_app}()},
 \code{\link{reactor_path}()},
