@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Attach Commands for Shiny Application to Reactor — set_runapp_args • reactor</title>
+<title>Expectation: How long is shiny busy? — expect_busy_time • reactor</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Attach Commands for Shiny Application to Reactor — set_runapp_args" />
-<meta property="og:description" content="Attach commands for starting shiny application
-using runApp or golem commands to the reactor object." />
+<meta property="og:title" content="Expectation: How long is shiny busy? — expect_busy_time" />
+<meta property="og:description" content="Test the expectation that shiny was busy for an interval of time." />
 
 
 
@@ -118,87 +117,47 @@ using runApp or golem commands to the reactor object." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Attach Commands for Shiny Application to Reactor</h1>
-    <small class="dont-index">Source: <a href='https://github.com/yonicd/reactor/blob/master/R/app_args.R'><code>R/app_args.R</code></a></small>
-    <div class="hidden name"><code>set_app_args.Rd</code></div>
+    <h1>Expectation: How long is shiny busy?</h1>
+    <small class="dont-index">Source: <a href='https://github.com/yonicd/reactor/blob/master/R/expect.R'><code>R/expect.R</code></a></small>
+    <div class="hidden name"><code>expect_busy_time.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Attach commands for starting shiny application
-using runApp or golem commands to the reactor object.</p>
+    <p>Test the expectation that shiny was busy for an interval of time.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>set_runapp_args</span><span class='op'>(</span>
-  <span class='va'>obj</span>,
-  appDir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>,
-  test_port <span class='op'>=</span> <span class='fu'>httpuv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/httpuv/man/randomPort.html'>randomPort</a></span><span class='op'>(</span><span class='op'>)</span>,
-  test_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,
-  test_ip <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"shiny.host"</span>, <span class='st'>"127.0.0.1"</span><span class='op'>)</span>,
-  test_trace <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
-
-<span class='fu'>set_golem_args</span><span class='op'>(</span>
-  <span class='va'>obj</span>,
-  package_name <span class='op'>=</span> <span class='st'>""</span>,
-  test_port <span class='op'>=</span> <span class='fu'>httpuv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/httpuv/man/randomPort.html'>randomPort</a></span><span class='op'>(</span><span class='op'>)</span>,
-  test_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,
-  test_ip <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"shiny.host"</span>, <span class='st'>"127.0.0.1"</span><span class='op'>)</span>,
-  test_trace <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>expect_busy_time</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>max_time</span>, history <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>obj</th>
+      <th>object</th>
       <td><p>reactor object</p></td>
     </tr>
     <tr>
-      <th>appDir</th>
-      <td><p>The application to run. Should be one of the following (Default: getwd()):</p><ul>
-<li><p>A directory containing server.R, plus, either ui.R or a www directory
-that contains the file index.html.</p></li>
-<li><p>A directory containing app.R.</p></li>
-<li><p>An .R file containing a Shiny application, ending with an expression that produces a Shiny app object.</p></li>
-</ul></td>
+      <th>max_time</th>
+      <td><p>numeric, maximum expected time</p></td>
     </tr>
     <tr>
-      <th>test_port</th>
-      <td><p>integer, port to run the app on. Default: httpuv::randomPort()</p></td>
-    </tr>
-    <tr>
-      <th>test_path</th>
-      <td><p>character, Path the child process will have access to on the master, Default: tempdir()</p></td>
-    </tr>
-    <tr>
-      <th>test_ip</th>
-      <td><p>The IPv4 address that the application should listen on.</p></td>
-    </tr>
-    <tr>
-      <th>test_trace</th>
-      <td><p>logical, turn on the shiny.trace option in the background proccess?. Default: FALSE</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p>logical, reactor willn notify the action taken. Default: TRUE</p></td>
-    </tr>
-    <tr>
-      <th>package_name</th>
-      <td><p>name of the golem package</p></td>
+      <th>history</th>
+      <td><p>logical, calculate the full history of time
+or only the last operation, Default: FALSE</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>reactor object</p>
+    <p>invisible reactor object</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>DETAILS</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other application: 
-<code><a href='runApp_args.html'>runApp_args</a>()</code></p>
-<p>Other application: 
-<code><a href='runApp_args.html'>runApp_args</a>()</code></p></div>
+    <div class='dont-index'><p><code><a href='https://testthat.r-lib.org/reference/expect.html'>expect</a></code></p>
+<p>Other testing: 
+<code><a href='expect_reactivity.html'>expect_reactivity</a>()</code>,
+<code><a href='test_app.html'>test_app</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>

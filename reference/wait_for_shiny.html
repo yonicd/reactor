@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">reactor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@
     <p>Holds the system while shiny is invalidating.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>wait_for_shiny</span><span class='op'>(</span><span class='va'>obj</span>, maxiter <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>wait_for_shiny</span><span class='op'>(</span><span class='va'>obj</span>, maxiter <span class='op'>=</span> <span class='fl'>20</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -139,6 +139,10 @@
       <th>maxiter</th>
       <td><p>Number of iterations to wait for shiny, Default: 20</p></td>
     </tr>
+    <tr>
+      <th>...</th>
+      <td><p>pass arguments to time logger.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -150,6 +154,7 @@
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other reactor: 
+<code><a href='get_busy_time.html'>get_busy_time</a>()</code>,
 <code><a href='init_reactor.html'>init_reactor</a>()</code>,
 <code><a href='kill_app.html'>kill_app</a>()</code>,
 <code><a href='navigate_to_app.html'>navigate_to_app</a>()</code>,
