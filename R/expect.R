@@ -41,10 +41,42 @@ expect_reactivity.default <- function(object, tag, count) {
   )
 }
 
+#' @title Expectation: How long is shiny busy?
+#' @description Test the expectation that shiny was busy for an interval of time.
+#' @param object reactor object
+#' @param max_time numeric, maximum expected time
+#' @param history logical, calculate the full history of time
+#' or only the last operation, Default: FALSE
+#' @return invisible reactor object
+#' @details DETAILS
+#' @examples 
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso 
+#'  \code{\link[testthat]{expect}}
+#' @rdname expect_busy_time
+#' @family testing
+#' @export 
+#' @importFrom testthat expect
+expect_busy_time <- function(object, max_time, history = FALSE){
+  
+  act <- sum(get_busy_time(object,history = history))
+  
+  testthat::expect(
+    act <= max_time,
+    sprintf("Shiny was busy for %s seconds expected %s seconds", act, max_time)
+  )
+  
+  invisible(object)
+}
+
 #' @export
 expect_reactivity.reactor <- function(object, tag, count) {
 
-  wait_for_shiny(object)
+  wait_for_shiny(object,maxiter = object$maxiter, log_time = FALSE)
   
   wait_for_whereami(object)
 

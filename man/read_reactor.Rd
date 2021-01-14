@@ -24,6 +24,7 @@ Read files created by reactor in the test folder
 }
 \seealso{
 Other reactor: 
+\code{\link{get_busy_time}()},
 \code{\link{init_reactor}()},
 \code{\link{kill_app}()},
 \code{\link{navigate_to_app}()},
@@ -33,6 +34,7 @@ Other reactor:
 \code{\link{wait_for_shiny}()}
 
 Other reactor: 
+\code{\link{get_busy_time}()},
 \code{\link{init_reactor}()},
 \code{\link{kill_app}()},
 \code{\link{navigate_to_app}()},
@@ -42,6 +44,7 @@ Other reactor:
 \code{\link{wait_for_shiny}()}
 
 Other reactor: 
+\code{\link{get_busy_time}()},
 \code{\link{init_reactor}()},
 \code{\link{kill_app}()},
 \code{\link{navigate_to_app}()},

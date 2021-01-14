@@ -23,6 +23,7 @@ reactor_path(tempdir(),'internal')
 }
 \seealso{
 Other reactor: 
+\code{\link{get_busy_time}()},
 \code{\link{init_reactor}()},
 \code{\link{kill_app}()},
 \code{\link{navigate_to_app}()},

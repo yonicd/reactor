@@ -14,9 +14,9 @@
 #' @family actions
 #' @export
 execute <- function(obj,expr){
-  wait_for_shiny(obj)
+  wait_for_shiny(obj, maxiter = obj$maxiter, log_time = FALSE)
   obj$test_driver$client$executeScript(expr)
-  wait_for_shiny(obj)
+  wait_for_shiny(obj, maxiter = obj$maxiter)
   invisible(obj)
 }
 

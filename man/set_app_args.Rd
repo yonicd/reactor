@@ -11,6 +11,7 @@ set_runapp_args(
   test_port = httpuv::randomPort(),
   test_path = tempdir(),
   test_ip = getOption("shiny.host", "127.0.0.1"),
+  test_trace = FALSE,
   verbose = TRUE
 )
 
@@ -20,6 +21,7 @@ set_golem_args(
   test_port = httpuv::randomPort(),
   test_path = tempdir(),
   test_ip = getOption("shiny.host", "127.0.0.1"),
+  test_trace = FALSE,
   verbose = TRUE
 )
 }
@@ -39,6 +41,8 @@ that contains the file index.html.
 \item{test_path}{character, Path the child process will have access to on the master, Default: tempdir()}
 
 \item{test_ip}{The IPv4 address that the application should listen on.}
+
+\item{test_trace}{logical, turn on the shiny.trace option in the background proccess?. Default: FALSE}
 
 \item{verbose}{logical, reactor willn notify the action taken. Default: TRUE}
 

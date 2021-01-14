@@ -17,6 +17,7 @@
 #' @param test_port integer, port to run the app on. Default: httpuv::randomPort()
 #' @param test_ip The IPv4 address that the application should listen on.
 #' @param test_path character, Path the child process will have access to on the master, Default: tempdir()
+#' @param test_trace logical, turn on the shiny.trace option in the background proccess?. Default: FALSE
 #' @return character
 #' @examples 
 #' 
@@ -35,10 +36,11 @@ runApp_args <- function(
   appDir = getwd(),
   test_port = httpuv::randomPort(),
   test_ip = getOption("shiny.host", "127.0.0.1"),
-  test_path = tempdir()){
+  test_path = tempdir(),
+  test_trace = FALSE){
   
   c(reactor_args(test_path = test_path),
-    glue::glue("options('shiny.port'= {test_port},shiny.host='{test_ip}')"),
+    glue::glue("options('shiny.port'= {test_port}, shiny.host='{test_ip}', shiny.trace = {test_trace})"),
     glue::glue("shiny::runApp(appDir = '{appDir}')")
     )
 }
@@ -51,7 +53,8 @@ runApp_args <- function(
 golem_args <- function(package_name ='', 
                        test_port = httpuv::randomPort(),
                        test_ip = getOption('shiny.host','127.0.0.1'),
-                       test_path = tempdir()){
+                       test_path = tempdir(),
+                       test_trace = FALSE){
   
   app_call <- "run_app()"
   
@@ -59,7 +62,7 @@ golem_args <- function(package_name ='',
     app_call <- paste(package_name,app_call,sep = '::')  
   }
 
-  shiny_opts <- glue::glue("options('shiny.port'= {test_port},shiny.host='{test_ip}')")
+  shiny_opts <- glue::glue("options('shiny.port'= {test_port}, shiny.host='{test_ip}', shiny.trace = {test_trace})")
   
   c(reactor_args(test_path = test_path),shiny_opts,app_call)
   
@@ -97,6 +100,7 @@ set_runapp_args <- function(
   test_port = httpuv::randomPort(),
   test_path = tempdir(), 
   test_ip = getOption('shiny.host','127.0.0.1'),
+  test_trace = FALSE,
   verbose = TRUE){
   
   if(verbose){
@@ -108,6 +112,7 @@ set_runapp_args <- function(
       test_port = test_port, 
       test_path = test_path, 
       test_ip = test_ip,
+      test_trace = test_trace,
       appDir = appDir
     )
   )
@@ -125,6 +130,7 @@ set_golem_args <- function(
   test_port = httpuv::randomPort(),
   test_path = tempdir(), 
   test_ip = getOption('shiny.host','127.0.0.1'),
+  test_trace = FALSE,
   verbose = TRUE
   ){
   
@@ -137,6 +143,7 @@ set_golem_args <- function(
       test_port = test_port, 
       test_path = test_path, 
       test_ip = test_ip,
+      test_trace = test_trace,
       package = package_name
     )
   )

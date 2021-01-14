@@ -9,14 +9,16 @@ runApp_args(
   appDir = getwd(),
   test_port = httpuv::randomPort(),
   test_ip = getOption("shiny.host", "127.0.0.1"),
-  test_path = tempdir()
+  test_path = tempdir(),
+  test_trace = FALSE
 )
 
 golem_args(
   package_name = "",
   test_port = httpuv::randomPort(),
   test_ip = getOption("shiny.host", "127.0.0.1"),
-  test_path = tempdir()
+  test_path = tempdir(),
+  test_trace = FALSE
 )
 }
 \arguments{
@@ -33,6 +35,8 @@ that contains the file index.html.
 \item{test_ip}{The IPv4 address that the application should listen on.}
 
 \item{test_path}{character, Path the child process will have access to on the master, Default: tempdir()}
+
+\item{test_trace}{logical, turn on the shiny.trace option in the background proccess?. Default: FALSE}
 
 \item{package_name}{name of the golem package}
 }
