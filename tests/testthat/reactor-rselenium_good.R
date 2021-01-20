@@ -2,7 +2,7 @@ testthat::context("testing reactivity on a good app with reactor")
 
 obj <- init_reactor()%>%
   set_chrome_driver(
-    chromever = chrome_version()
+    chromever = '88.0.4324.27'
   )
 
 # We run a test with the expectation that the hist tag 
