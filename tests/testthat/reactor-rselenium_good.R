@@ -5,7 +5,6 @@ obj <- init_reactor()%>%
     chromever = chrome_version()
   )
 
-
 # We run a test with the expectation that the hist tag 
 # will be triggered once at app startup and once after 
 # input$n is updated
