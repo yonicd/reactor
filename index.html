@@ -163,7 +163,7 @@ What's going on under the hood?
 
 Reactor is setting up the necessary definitions for serving a Shiny application calls via __{processx}__.
 
-![:scale 85%](media/reactor_01_a.svg)
+.center[![:scale 85%](media/reactor_01_a.svg)]
 
 ```yml
 reactor:
@@ -385,7 +385,6 @@ init_reactor() %&gt;%
   kill_app()
 ```
 
-
 ---
 
 ### Fixing our App
@@ -417,9 +416,7 @@ output$plot &lt;- shiny::renderPlot({
 testthat::context("testing reactivity on a good app with reactor")
 
 obj &lt;- init_reactor()%&gt;%
-  set_chrome_driver(
-    chromever = chrome_version()
-  )
+  set_firefox_driver()
 
 testthat::describe('good reactive',{
 
@@ -453,13 +450,13 @@ tests
 ```
 
   - This serves the purpose of making it simpler to isolate reactivity tests from the other tests that may be in a package.
-  
+  - Will not interact with `covr`
   - Reactivity tests can be called directly by using `reactor::test_app()`
 
 ---
 
 # Unit Testing Reactivity ![:scale_right 25%](https://media.giphy.com/media/l3UcA1HpL5kLuiWOc/giphy.gif)
-&lt;img src = "https://github.com/yonicd/reactor/raw/media/example.gif" height="450px"&gt;
+.center[![:scale 60%](https://github.com/yonicd/reactor/raw/media/example_api.gif)]
 
 ---
 
