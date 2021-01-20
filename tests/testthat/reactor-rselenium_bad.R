@@ -3,9 +3,7 @@ testthat::context("testing reactivity on a bad app with reactor")
 # We now run the same test but with the "bad" app  
 
 obj <- init_reactor()%>%
-  set_chrome_driver(
-    chromever = chrome_version()
-  )
+  set_firefox_driver()
 
 testthat::describe('bad reactive',{
 

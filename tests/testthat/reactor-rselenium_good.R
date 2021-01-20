@@ -1,9 +1,7 @@
 testthat::context("testing reactivity on a good app with reactor")
 
 obj <- init_reactor()%>%
-  set_chrome_driver(
-    chromever = chrome_version()
-  )
+  set_firefox_driver()
 
 # We run a test with the expectation that the hist tag 
 # will be triggered once at app startup and once after 
@@ -12,7 +10,7 @@ obj <- init_reactor()%>%
 testthat::describe('good reactive',{
 
   it('reactive hits in plot reactive chunk',{
-    obj%>%
+    obj <- obj%>%
       set_runapp_args(
         appDir = system.file('examples/good_app.R',
                              package = 'reactor')
