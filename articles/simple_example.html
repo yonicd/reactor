@@ -186,9 +186,7 @@
 <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/context.html">context</a></span><span class="op">(</span><span class="st">"testing reactivity on a good app with reactor"</span><span class="op">)</span>
 
 <span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/init_reactor.html">init_reactor</a></span><span class="op">(</span><span class="op">)</span><span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/set_chrome_driver.html">set_chrome_driver</a></span><span class="op">(</span>
-    chromever <span class="op">=</span> <span class="fu"><a href="../reference/chrome_version.html">chrome_version</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="op">)</span>
+  <span class="fu"><a href="../reference/set_firefox_driver.html">set_firefox_driver</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># We run a test with the expectation that the hist tag </span>
 <span class="co"># will be triggered once at app startup and once after </span>
@@ -197,7 +195,7 @@
 <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/describe.html">describe</a></span><span class="op">(</span><span class="st">'good reactive'</span>,<span class="op">{</span>
 
   <span class="fu">it</span><span class="op">(</span><span class="st">'reactive hits in plot reactive chunk'</span>,<span class="op">{</span>
-    <span class="va">obj</span><span class="op">%&gt;%</span>
+    <span class="va">obj</span> <span class="op">&lt;-</span> <span class="va">obj</span><span class="op">%&gt;%</span>
       <span class="fu"><a href="../reference/set_runapp_args.html">set_runapp_args</a></span><span class="op">(</span>
         appDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">'examples/good_app.R'</span>,
                              package <span class="op">=</span> <span class="st">'reactor'</span><span class="op">)</span>
@@ -218,9 +216,7 @@
 <span class="co"># We now run the same test but with the "bad" app  </span>
 
 <span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/init_reactor.html">init_reactor</a></span><span class="op">(</span><span class="op">)</span><span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/set_chrome_driver.html">set_chrome_driver</a></span><span class="op">(</span>
-    chromever <span class="op">=</span> <span class="fu"><a href="../reference/chrome_version.html">chrome_version</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="op">)</span>
+  <span class="fu"><a href="../reference/set_firefox_driver.html">set_firefox_driver</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/describe.html">describe</a></span><span class="op">(</span><span class="st">'bad reactive'</span>,<span class="op">{</span>
 
