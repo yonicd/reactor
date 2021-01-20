@@ -1,7 +1,9 @@
 testthat::context("testing reactivity on a good app with reactor")
 
 obj <- init_reactor()%>%
-  set_firefox_driver()
+  set_chrome_driver(
+    chromever = chrome_version()
+  )
 
 # We run a test with the expectation that the hist tag 
 # will be triggered once at app startup and once after 
