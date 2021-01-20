@@ -7,31 +7,16 @@ date: 'Edinburgh R<br/><br/>https://bit.ly/36fTYFs'
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: ["css/xaringan-themer.css", "css/colours.css","css/title.css"]
+    css: ["resources/css/xaringan-themer.css", "resources/css/colours.css","resources/css/title.css","resources/css/overflow.css","resources/css/lightbox.css"]
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
-      beforeInit: "js/macros.js"
+      beforeInit: ["resources/js/macros.js","resources/js/lightbox-plus-jquery.js"]
 ---
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-```
-
-```{css, echo=FALSE}
-pre {
-  background: #FFBB33;
-  max-width: 100%;
-  max-height: 525px;
-  overflow-x: auto;
-  overflow-y: auto;
-  white-space: pre-wrap;
-  white-space: -moz-pre-wrap;
-  white-space: -pre-wrap;
-  white-space: -o-pre-wrap;
-  word-wrap: break-word;
-}
 ```
 
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
@@ -155,13 +140,11 @@ obj <- obj%>%
 ```
 
 ---
-## Application
+## Application <a class="reactor-link" data-lightbox="reactor" data-title="Reactor Workflow" href="media/reactor_01_a.svg"> <img src="media/reactor_01_a.svg" style="width:50%;float:right"></a>
 
 What's going on under the hood?
 
 Reactor is setting up the necessary definitions for serving a Shiny application calls via __{processx}__.
-
-.center[![:scale 85%](media/reactor_01_a.svg)]
 
 ```yml
 reactor:
@@ -176,7 +159,7 @@ reactor:
 ```
 
 ---
-### Driver
+### Driver <a class="reactor-link" data-lightbox="reactor" data-title="Reactor Workflow" href="media/reactor_02_c.svg"> <img src="media/reactor_02_c.svg" style="width:25%;float:right"></a>
 
 Next we will choose which `Web Driver` we want to use:
 
@@ -203,16 +186,6 @@ obj <- obj %>%
   )
 # Updating firefox Settings
 ```
-
----
-
-### Driver
-
-What's going on under the hood?
-
-Web driver is via __{RSelenium}__ is initialized giving the ability to interact with the application. As app is reacting to the commands sent to it __{whereami}__ logs the reactivity events.
-
-![](media/reactor_02_c.svg)
 
 ---
 ### Starting Reactor
@@ -265,15 +238,25 @@ Reactor comes with prebuilt common actions that lower the threshold to interact 
 ]
 
 ---
-# Closing Reactor
+## Closing Reactor
 
 Closing reactor is simple
 
+.pull-left[
+
 ```r
-obj %>% kill_app()
+obj %>% 
+  kill_app()
 ```
 
-This will close both child processes that reactor is using and clean up the temp directory from sideffects.
+This will 
+- Close both child processes that reactor is using
+- Clean up the temporary directory from side-effects.
+
+]
+.pull-right[
+![](https://media.giphy.com/media/l3q2wMdhTXm84vbaw/giphy-downsized.gif)
+]
 
 ---
 
@@ -362,13 +345,14 @@ init_reactor() %>%
 
 ---
 
-# Testing Expectations
+# Testing Expectations <a class="reactor-link" data-lightbox="reactor" data-title="Reactor Workflow" href="media/reactor_03_b.svg"> <img src="media/reactor_03_b.svg" style="width:25%;float:right"></a>
 
-Testing expectations is done as a natural extension of the pipeline
+Testing expectations is done as a natural extension of the pipeline. 
 
-.center[![:scale 50%](media/reactor_03_b.svg)]
+.panelset[
+.panel[.panel-name[Reactivity]
 
-```r
+```{r,eval = FALSE}
 init_reactor() %>%
   set_runapp_args(
     appDir = system.file('examples/good_app.R',package = 'reactor')
@@ -376,11 +360,31 @@ init_reactor() %>%
   set_chrome_driver() %>%
   start_reactor() %>%
   set_id_value('n',500) %>%
-  expect_reactivity('hist',1) %>%
+  expect_reactivity('hist',1) %>%  #<<
   set_id_value('n',200) %>%
-  expect_reactivity('hist',2) %>%
+  expect_reactivity('hist',2) %>% #<<
   kill_app()
 ```
+]
+.panel[.panel-name[Busy Time]
+
+Test expectations for how long shiny is busy for a single interaction event or the cumulative busy time. 
+
+```{r,eval = FALSE}
+init_reactor() %>%
+  set_runapp_args(
+    appDir = system.file('examples/good_app.R',package = 'reactor')
+  ) %>%
+  set_chrome_driver() %>%
+  start_reactor() %>%
+  set_id_value('n',500) %>%
+  expect_busy_time(0.1) %>% #<<
+  expect_reactivity('hist',1) %>%
+  kill_app()
+```
+
+]
+]
 
 ---
 
@@ -408,22 +412,26 @@ output$plot <- shiny::renderPlot({
 # Testthat Integration
 
 ```r
-testthat::context("testing reactivity on a good app with reactor")
+testthat::context("testing reactivity with reactor")
 
-obj <- init_reactor()%>%
-  set_firefox_driver()
+obj <- init_reactor() %>%
+  set_firefox_driver() %>%
+  set_runapp_args( appDir = system.file( 'examples/good_app.R', package = 'reactor') )
 
 testthat::describe('good reactive',{
 
   it('reactive hits in plot reactive chunk',{
-    obj%>%
-      set_runapp_args(
-        appDir = system.file('examples/good_app.R',
-                             package = 'reactor')
-      )%>%
-      start_reactor()%>%
-      set_id_value('n',500)%>%
-      expect_reactivity(tag = 'hist',count =  2)%>%
+    obj %>%
+      start_reactor() %>%
+      set_id_value('n',500) %>%
+      expect_reactivity(tag = 'hist',count =  2) %>%
+      kill_app()
+  })
+  
+  it('another expectation',{
+    obj %>%
+      start_reactor() %>%
+      ... %>%
       kill_app()
   })
   
@@ -451,21 +459,23 @@ tests
 ---
 
 # Unit Testing Reactivity ![:scale_right 25%](https://media.giphy.com/media/l3UcA1HpL5kLuiWOc/giphy.gif)
-.center[![:scale 60%](https://github.com/yonicd/reactor/raw/media/example_api.gif)]
+
+.center[<a class="reactor05-link" data-lightbox="reactor05" data-title="Testthat Console" href="https://github.com/yonicd/reactor/raw/media/example_api.gif"> <img src="https://github.com/yonicd/reactor/raw/media/example_api.gif" style="width:60%"></a>]
 
 ---
 
 # Continuous Integration
 
+.pull-left[
+
 {reactor} can also be utilized with version control and continuous integration to improve the stability of shiny app development with many collaborators. 
 
 An example workflow for github actions which comes with `googledriver` and `geckodriver` pre-installed can be found [here](https://github.com/yonicd/reactor/blob/master/.github/workflows/R-reactor.yml).
+]
+.pull-right[
+ <a class="reactor06-link" data-lightbox="reactor06" data-title="Continuous Integration" href="media/gha_2.png"> <img src="media/gha_2.png"></a>
+]
 
----
-
-# Continuous Integration Output
-
-.center[![:scale 80%](media/gha_2.png)]
 ---
 
 

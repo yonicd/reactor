@@ -9,9 +9,11 @@
     <script src="libs/anchor-sections/anchor-sections.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
-    <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
-    <link rel="stylesheet" href="css/colours.css" type="text/css" />
-    <link rel="stylesheet" href="css/title.css" type="text/css" />
+    <link rel="stylesheet" href="resources/css/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="resources/css/colours.css" type="text/css" />
+    <link rel="stylesheet" href="resources/css/title.css" type="text/css" />
+    <link rel="stylesheet" href="resources/css/overflow.css" type="text/css" />
+    <link rel="stylesheet" href="resources/css/lightbox.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -26,21 +28,6 @@ class: center, middle, inverse, title-slide
 
 
 
-
-&lt;style type="text/css"&gt;
-pre {
-  background: #FFBB33;
-  max-width: 100%;
-  max-height: 525px;
-  overflow-x: auto;
-  overflow-y: auto;
-  white-space: pre-wrap;
-  white-space: -moz-pre-wrap;
-  white-space: -pre-wrap;
-  white-space: -o-pre-wrap;
-  word-wrap: break-word;
-}
-&lt;/style&gt;
 
 
 
@@ -157,13 +144,11 @@ obj &lt;- obj%&gt;%
 ```
 
 ---
-## Application
+## Application &lt;a class="reactor-link" data-lightbox="reactor" data-title="Reactor Workflow" href="media/reactor_01_a.svg"&gt; &lt;img src="media/reactor_01_a.svg" style="width:50%;float:right"&gt;&lt;/a&gt;
 
 What's going on under the hood?
 
 Reactor is setting up the necessary definitions for serving a Shiny application calls via __{processx}__.
-
-.center[![:scale 85%](media/reactor_01_a.svg)]
 
 ```yml
 reactor:
@@ -178,7 +163,7 @@ reactor:
 ```
 
 ---
-### Driver
+### Driver &lt;a class="reactor-link" data-lightbox="reactor" data-title="Reactor Workflow" href="media/reactor_02_c.svg"&gt; &lt;img src="media/reactor_02_c.svg" style="width:25%;float:right"&gt;&lt;/a&gt;
 
 Next we will choose which `Web Driver` we want to use:
 
@@ -205,16 +190,6 @@ obj &lt;- obj %&gt;%
   )
 # Updating firefox Settings
 ```
-
----
-
-### Driver
-
-What's going on under the hood?
-
-Web driver is via __{RSelenium}__ is initialized giving the ability to interact with the application. As app is reacting to the commands sent to it __{whereami}__ logs the reactivity events.
-
-![](media/reactor_02_c.svg)
 
 ---
 ### Starting Reactor
@@ -267,15 +242,25 @@ Reactor comes with prebuilt common actions that lower the threshold to interact 
 ]
 
 ---
-# Closing Reactor
+## Closing Reactor
 
 Closing reactor is simple
 
+.pull-left[
+
 ```r
-obj %&gt;% kill_app()
+obj %&gt;% 
+  kill_app()
 ```
 
-This will close both child processes that reactor is using and clean up the temp directory from sideffects.
+This will 
+- Close both child processes that reactor is using
+- Clean up the temporary directory from side-effects.
+
+]
+.pull-right[
+![](https://media.giphy.com/media/l3q2wMdhTXm84vbaw/giphy-downsized.gif)
+]
 
 ---
 
@@ -365,11 +350,13 @@ init_reactor() %&gt;%
 
 ---
 
-# Testing Expectations
+# Testing Expectations &lt;a class="reactor-link" data-lightbox="reactor" data-title="Reactor Workflow" href="media/reactor_03_b.svg"&gt; &lt;img src="media/reactor_03_b.svg" style="width:25%;float:right"&gt;&lt;/a&gt;
 
-Testing expectations is done as a natural extension of the pipeline
+Testing expectations is done as a natural extension of the pipeline. 
 
-.center[![:scale 50%](media/reactor_03_b.svg)]
+.panelset[
+.panel[.panel-name[Reactivity]
+
 
 ```r
 init_reactor() %&gt;%
@@ -379,11 +366,32 @@ init_reactor() %&gt;%
   set_chrome_driver() %&gt;%
   start_reactor() %&gt;%
   set_id_value('n',500) %&gt;%
-  expect_reactivity('hist',1) %&gt;%
+* expect_reactivity('hist',1) %&gt;%
   set_id_value('n',200) %&gt;%
-  expect_reactivity('hist',2) %&gt;%
+* expect_reactivity('hist',2) %&gt;%
   kill_app()
 ```
+]
+.panel[.panel-name[Busy Time]
+
+Test expectations for how long shiny is busy for a single interaction event or the cumulative busy time. 
+
+
+```r
+init_reactor() %&gt;%
+  set_runapp_args(
+    appDir = system.file('examples/good_app.R',package = 'reactor')
+  ) %&gt;%
+  set_chrome_driver() %&gt;%
+  start_reactor() %&gt;%
+  set_id_value('n',500) %&gt;%
+* expect_busy_time(0.1) %&gt;%
+  expect_reactivity('hist',1) %&gt;%
+  kill_app()
+```
+
+]
+]
 
 ---
 
@@ -413,22 +421,26 @@ output$plot &lt;- shiny::renderPlot({
 # Testthat Integration
 
 ```r
-testthat::context("testing reactivity on a good app with reactor")
+testthat::context("testing reactivity with reactor")
 
-obj &lt;- init_reactor()%&gt;%
-  set_firefox_driver()
+obj &lt;- init_reactor() %&gt;%
+  set_firefox_driver() %&gt;%
+  set_runapp_args( appDir = system.file( 'examples/good_app.R', package = 'reactor') )
 
 testthat::describe('good reactive',{
 
   it('reactive hits in plot reactive chunk',{
-    obj%&gt;%
-      set_runapp_args(
-        appDir = system.file('examples/good_app.R',
-                             package = 'reactor')
-      )%&gt;%
-      start_reactor()%&gt;%
-      set_id_value('n',500)%&gt;%
-      expect_reactivity(tag = 'hist',count =  2)%&gt;%
+    obj %&gt;%
+      start_reactor() %&gt;%
+      set_id_value('n',500) %&gt;%
+      expect_reactivity(tag = 'hist',count =  2) %&gt;%
+      kill_app()
+  })
+  
+  it('another expectation',{
+    obj %&gt;%
+      start_reactor() %&gt;%
+      ... %&gt;%
       kill_app()
   })
   
@@ -456,21 +468,23 @@ tests
 ---
 
 # Unit Testing Reactivity ![:scale_right 25%](https://media.giphy.com/media/l3UcA1HpL5kLuiWOc/giphy.gif)
-.center[![:scale 60%](https://github.com/yonicd/reactor/raw/media/example_api.gif)]
+
+.center[&lt;a class="reactor05-link" data-lightbox="reactor05" data-title="Testthat Console" href="https://github.com/yonicd/reactor/raw/media/example_api.gif"&gt; &lt;img src="https://github.com/yonicd/reactor/raw/media/example_api.gif" style="width:60%"&gt;&lt;/a&gt;]
 
 ---
 
 # Continuous Integration
 
+.pull-left[
+
 {reactor} can also be utilized with version control and continuous integration to improve the stability of shiny app development with many collaborators. 
 
 An example workflow for github actions which comes with `googledriver` and `geckodriver` pre-installed can be found [here](https://github.com/yonicd/reactor/blob/master/.github/workflows/R-reactor.yml).
+]
+.pull-right[
+ &lt;a class="reactor06-link" data-lightbox="reactor06" data-title="Continuous Integration" href="media/gha_2.png"&gt; &lt;img src="media/gha_2.png"&gt;&lt;/a&gt;
+]
 
----
-
-# Continuous Integration Output
-
-.center[![:scale 80%](media/gha_2.png)]
 ---
 
 
@@ -497,7 +511,8 @@ What __{reactor}__ gives you:
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/remark/0.14.0/remark.min.js"></script>
-<script src="js/macros.js"></script>
+<script src="resources/js/macros.js"></script>
+<script src="resources/js/lightbox-plus-jquery.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
 "highlightLines": true,
