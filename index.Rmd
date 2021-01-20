@@ -3,7 +3,7 @@ title: "Reactor"
 subtitle: "Unit Testing Shiny App Reactivity"  
 author: 
   - "Jonathan Sidi"
-date: 'Toronto R<br/><br/>https://bit.ly/36fTYFs'
+date: 'Edinburgh R<br/><br/>https://bit.ly/36fTYFs'
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -37,6 +37,7 @@ pre {
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 library(xaringanthemer)
 style_mono_light(base_color = "#23395b")
+xaringanExtra::use_panelset()
 ```
 
 ```{r share-again, echo=FALSE, eval = FALSE}
@@ -85,45 +86,195 @@ remotes::install_github('yonicd/reactor')
 ---
 ### How does {reactor} fit in with other packages?
 
-Currently there are not a lot of packages that deal with unit testing and specifically testing reactivity in Shiny applications. The two primary methods are:
+Currently there are not a lot of packages that deal with unit testing and specifically testing reactivity in Shiny applications.
 
 .pull-left[
+__{shinyjster}__
+
+JavaScript testing on Shiny applications
+
 __{shinytest}__ 
-- Checks that inputs change properly and that UI behaves consistently.
+
+Checks Inputs and UI behavior.
 - Integrates with __{testthat}__
-- Integrates with Continous Integration
+- Integrates with Continuous Integration
 ]
 
 .pull-right[
 __{shiny}::testServer__
 
-Built in testing script for __{shiny}__ that works with shiny modules to create testing environment to verify reactive outputs are as expected.
+Built-in testing script for __{shiny}__ that works with shiny modules to create testing environment to verify reactive outputs are as expected.
 ]
 
 <message-blockquote>These packages work well for testing that reactivity has occurred and that the output is as expected, but they do not test if the reactivity is creating problems with the app integrity and the second order effects such as repetitive or cascading reactivity.</message-blockquote>
 
 ---
 
-# Reactor Testing Workflow
+# Reactor Object
 
-The __{reactor}__ workflow is split into three parts
+Reactor is a pipeline driven workflow. To begin we create a reactor class object
 
-1. Serving a Shiny application nested with __{whereami}__ calls via __{processx}__.
+```r
+library(reactor)
+```
 
-![:scale 85%](media/reactor_01.svg)
+```r
+obj <- init_reactor()
+obj
+#> reactor:
+#>   application: ~
+#>   driver: ~
+```
+
+You can see it is expecting to be populated by two objects 
+
+  - __application__: Specifications for the background process that will host the application
+  - __driver__: Specifications for the webdriver that will interact with the application in the background process
+  
 ---
-# Reactor Testing Workflow
+# Application
 
-2\. "Drive" the Shiny application with pre-specified commands using headless browsing via __{Rselenium}__. As the application is reacting to the commands __{whereami}__ logs the reactivity events.
+Reactor can host either a 
 
-![](media/reactor_02.svg)
+#### Standard Shiny App
+
+```r
+obj <- obj%>%
+     set_runapp_args(
+         appDir = 'PATH_TO_APP/app.R'
+     )
+# Adding runApp Settings
+```
+
+#### Golem App
+
+```r
+obj <- obj%>%
+  set_golem_args(package_name = 'mypackage')
+# Adding runApp Settings
+```
 
 ---
-# Reactor Testing Workflow
+## Application
 
-3\. Once the prespecified commands have completed the __{whereami}__ log file is used by expectations of reactivity in a __{testthat}__ environment.
+What's going on under the hood?
 
-![](media/reactor_03.svg)
+Reactor is setting up the necessary definitions for serving a Shiny application calls via __{processx}__.
+
+![:scale 85%](media/reactor_01_a.svg)
+
+```yml
+reactor:
+  application:
+    runApp:
+      test_port: 27612
+      test_path: /var/folders/kx/t4h_mm1910sb7vhm_gnfnx2c0000gn/T//RtmpW8xetO
+      test_ip: 127.0.0.1
+      test_trace: no
+      appDir: PATH_TO_APP/app.R
+  driver: ~
+```
+
+---
+### Driver
+
+Next we will choose which `Web Driver` we want to use:
+
+__Chrome__
+
+```r
+obj <- obj %>% set_chrome_driver()
+# Adding chrome Settings
+```
+
+__Firefox__
+
+```r
+obj <- obj %>% set_firefox_driver()
+# Replacing chrome with firefox Settings
+```
+
+__Turn Headless Mode Off__
+
+```r
+obj <- obj %>%
+  set_firefox_driver(
+    opts = firefox_options(headless = TRUE)
+  )
+# Updating firefox Settings
+```
+
+---
+
+### Driver
+
+What's going on under the hood?
+
+Web driver is via __{RSelenium}__ is initialized giving the ability to interact with the application. As app is reacting to the commands sent to it __{whereami}__ logs the reactivity events.
+
+![](media/reactor_02_c.svg)
+
+---
+### Starting Reactor
+
+Once we have specifications in place we can start reactor using `start_reactor()`. 
+
+```r
+obj %>% start_reactor()
+```
+.pull-left[
+Now we have two active child processes at the same time and the webdriver can manipulate the running shiny app!
+
+We use __{RSelenium}__ commands and built in __{reactor}__ functions that simplify asynchronous pipelines.
+]
+
+.pull-right[
+![](https://media.giphy.com/media/xUA7aTTTOEYbozXg2I/giphy-downsized.gif)
+]
+
+<details><summary>Side Note</summary>
+<ok-blockquote>
+{reactor} works with {crrri} or {crrry} much the same way it works with {RSelenium}. More info in the package GitHub repository.
+</ok-blockquote>
+</details>
+<br>
+
+---
+
+## Interacting with the Application
+
+Reactor comes with prebuilt common actions that lower the threshold to interact with the application
+
+.panelset[
+.panel[.panel-name[Injecting]
+- Inputs
+  - `set_id_value()`: Sets a value for a shiny input object by id
+- JavaScript
+  - `execute()`: Executes a JavaScript call
+]
+.panel[.panel-name[Querying]
+- Inputs 
+  - `query_input_names()`: Returns names of the shiny input ids
+  - `query_input_id()`: Returns current values of a shiny input by id
+- Outputs
+  - `query_output_names()`: Returns names of the shiny output ids
+  - `query_output_id()`: Returns current values of a shiny output by id
+- JavaScript
+  - `query()`: Returns a value from JavaScript call
+]
+]
+
+---
+# Closing Reactor
+
+Closing reactor is simple
+
+```r
+obj %>% kill_app()
+```
+
+This will close both child processes that reactor is using and clean up the temp directory from sideffects.
+
 ---
 
 # Shiny App
@@ -191,182 +342,44 @@ Using the __tag__ argument will log the counter to a specific internal label and
 <message-blockquote> Save the code to file to run the example </message-blockquote>
 ---
 
-# Running our App
+# Constructing Pipelines
 
-Now that we have an app with a __{whereami}__ call in the server script we need to run it in a child R process. 
+Because each function is returning the reactor object it is simple to create reactor pipelines.
 
-.pull-left[
-To do this we use __{processx}__ and use a `localhost` port by default.
-
-Don't worry! __{reactor}__ takes care of this machinery for you.
-]
-
-.pull-right[
-![:scale 80%](https://media.giphy.com/media/xUPGcEghH2dZdXvZSw/giphy-downsized.gif)
-]
-
-```{r, echo = FALSE}
-details::details(
-reactor::runApp_args(
-test_path = 'TEST_PATH',
-appDir = 'PATH_TO_APP'
-),summary = 'Dive deeper: Open to view script')
-```
-
----
-
-# Communicating with the App
-
-- To interact with the application that is running in the child process reactor depends on __{RSelenium}__.
-- When the __{RSelenium}__ is invoked it opens _another_ child process and port on the `localhost` to run the webdriver.
-
-.pull-left[
-__{RSelenium}__ uses webdrivers to manipulate content on a web browser.]
-
-.pull-right[
-__{reactor}__ comes with functions to set up the proper arguments and preferences to use webdrivers for `firefox` and `chrome`.]
-
-<details>
-<summary> Dive deeper: Open to view script </summary>
+Reactor will wait for shiny to finish each action before proceeding to the next one.
 
 ```r
-$args
-[1] "--headless" "--width=1280" "--height=800"
-$prefs
-$prefs$browser.download.folderList
-[1] 2
-$prefs$browser.download.dir
-[1] 'TEST_PATH'
-```
-
-</details>
-<br>
-
----
-
-# Interacting with the App
-.pull-left[
-Now we have two active child processes at the same time and the webdriver can manipulate the running shiny app!
-
-We use __{RSelenium}__ commands and built in __{reactor}__ functions that simplify asynchronous pipelines.
-]
-
-.pull-right[
-![](https://media.giphy.com/media/xUA7aTTTOEYbozXg2I/giphy-downsized.gif)
-]
-
-<details><summary>Side Note</summary>
-<ok-blockquote>
-{reactor} works with {crrri} or {crrry} much the same way it works with {RSelenium}. More info in the package GitHub repository.
-</ok-blockquote>
-</details>
-<br>
-
----
-
-# Test Reactor
-
-To help simplify things `test_reactor` ties all these concepts together. 
-
-```{r, eval = FALSE}
-hist_counter <- reactor::test_reactor(
-  expr          = driver_commands,
-  test_driver   = reactor::firefox_driver(),
-  processx_args = reactor::runApp_args(appDir = 'PATH_TO_APP')
-)
-```
-![](media/test_reactor.svg)
----
-
-# Driver Commands
-
-RSelenium driver methods that query and manipulate the shiny app are placed in a `quote` to be evaluated at a later time.
-
-```{r,eval = FALSE}
-driver_commands <- quote({
-  
-  # wait for input$n element to be created
-  reactor::wait(
-      test_driver = test_driver,
-      expr = test_driver$client$findElement(using = 'id', value = 'n')
-    )
-
-  # Set input$n to 500
-  test_driver$client$executeScript(script = 'Shiny.setInputValue("n","500");')
-  
-})
+init_reactor() %>%
+  set_runapp_args(
+    appDir = system.file('examples/good_app.R',package = 'reactor')
+  ) %>%
+  set_chrome_driver() %>%
+  start_reactor() %>%
+  set_id_value('n',500) %>%
+  set_id_value('n',300) %>%
+  kill_app()
 ```
 
 ---
 
-## Asynchronous Calls
+# Testing Expectations
 
-- __wait__ will run the expression only if shiny is not busy
-- This is a bit different from other implementations that use timeout in JavaScript and shinytest in that the timer is built in and will manage for you the time needed to wait.
+Testing expectations is done as a natural extension of the pipeline
 
-```{r, eval = FALSE}
-test_driver%>%
-  reactor::wait(
-    expr = test_driver$client$findElement(using = 'id', value = 'n')
-  )
-```
+.center[![:scale 50%](media/reactor_03_b.svg)]
 
-
-
----
-# Back to {whereami}
-
-.pull-left[
-As you are driving the app with __{RSelenium}__ there is a log file being updated by __{whereami}__ keeping a counter each time it is triggered. 
-<br>
-<br>
-<br>
-<br>
-
-Line 15 of the Shiny app was triggered twice consecutively.
-
-<warn-blockquote>Was this the intended action we wanted when developing the app?</warn-blockquote>
-]
-
-.pull-right[
-![](media/whereami.svg)
-
-|tag   |where         |when                 |  count|
-|:----:|:------------:|:-------------------:|:-----:|
-|hist  |app.R#15      |2020-09-27 10:19:59  |      1|
-|hist  |app.R#15      |2020-09-27 10:19:59  |      2|
-]
-
----
-
-# Unit Testing
-
-We now have a log file on disk that we can use to query expectations of app reactivity.
-
-![](media/testing.svg)
-
-
----
-# Expectations
-
-__{reactor}__ comes with its own set of expectations that are built for __{whereami}__ outputs and can be used inside __{testthat}__.
-
-Using the __{whereami}__ log output structure we indicate the `tag` we want to use (`'hist'`) and the expected counter value (`2`).
-
-```{r,eval = FALSE}
-testthat::describe('reactive test',{
-  it('reactive hits in plot reactive chunk',{
-    reactor::expect_reactivity(
-      object = hist_counter, tag = 'hist',count =  2
-    )
-  })
-})
-```
-
-If `FALSE` the following error message is returned
-
-```{r,eval = FALSE}
-Error: The tag 'hist' has reactivity count of 3, not 2.
+```r
+init_reactor() %>%
+  set_runapp_args(
+    appDir = system.file('examples/good_app.R',package = 'reactor')
+  ) %>%
+  set_chrome_driver() %>%
+  start_reactor() %>%
+  set_id_value('n',500) %>%
+  expect_reactivity('hist',1) %>%
+  set_id_value('n',200) %>%
+  expect_reactivity('hist',2) %>%
+  kill_app()
 ```
 
 ---
@@ -387,6 +400,35 @@ output$plot <- shiny::renderPlot({
   shiny::req(input$n) #<<
   whereami::whereami(tag = 'hist')
   hist(stats::runif(input$n))
+})
+```
+
+---
+
+# Testthat Integration
+
+```r
+testthat::context("testing reactivity on a good app with reactor")
+
+obj <- init_reactor()%>%
+  set_chrome_driver(
+    chromever = chrome_version()
+  )
+
+testthat::describe('good reactive',{
+
+  it('reactive hits in plot reactive chunk',{
+    obj%>%
+      set_runapp_args(
+        appDir = system.file('examples/good_app.R',
+                             package = 'reactor')
+      )%>%
+      start_reactor()%>%
+      set_id_value('n',500)%>%
+      expect_reactivity(tag = 'hist',count =  2)%>%
+      kill_app()
+  })
+  
 })
 ```
 
@@ -414,7 +456,8 @@ tests
 <img src = "https://github.com/yonicd/reactor/raw/media/example.gif" height="450px">
 
 ---
-#Continuous Integration
+
+# Continuous Integration
 
 {reactor} can also be utilized with version control and continuous integration to improve the stability of shiny app development with many collaborators. 
 
@@ -424,7 +467,7 @@ An example workflow for github actions which comes with `googledriver` and `geck
 
 # Continuous Integration Output
 
-.center[![:scale 80%](media/gha.png)]
+.center[![:scale 80%](media/gha_2.png)]
 ---
 
 
