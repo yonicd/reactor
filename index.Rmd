@@ -3,7 +3,7 @@ title: "Reactor"
 subtitle: "Unit Testing Shiny App Reactivity"  
 author: 
   - "Jonathan Sidi"
-date: 'Edinburgh R<br/><br/>https://bit.ly/36fTYFs'
+date: 'useR!2021 <br/><br/>https://bit.ly/36fTYFs'
 output:
   xaringan::moon_reader:
     lib_dir: libs

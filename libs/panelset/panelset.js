@@ -204,6 +204,9 @@
       clicked.classList.add('panel-tab-active')
       clicked.setAttribute('aria-selected', true)
 
+      // emit window resize event to trick html widgets into fitting to the panel width
+      window.dispatchEvent(new Event('resize'))
+
       // update query string
       const params = updateSearchParams(panelClicked, panelTabClicked)
       updateUrl(params)
@@ -232,6 +235,7 @@
 
       const contents = panels.map(processPanelItem).filter(o => o !== null)
       const newPanelSet = reflowPanelSet(contents, idx)
+      newPanelSet.classList = panelset.classList
       panelset.parentNode.insertBefore(newPanelSet, panelset)
       panelset.parentNode.removeChild(panelset)
 
